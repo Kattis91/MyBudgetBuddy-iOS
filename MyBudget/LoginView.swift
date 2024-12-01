@@ -56,29 +56,20 @@ struct LoginView: View {
                 }
                 
                 Button(action: {
-                    if !ValidationUtils.isNotEmpty(email) {
-                        errorMessage = "Email field cannot be empty."
-                    } else if !ValidationUtils.isValidEmail(email) {
-                        errorMessage = "Invalid email format."
-                    } else if !ValidationUtils.isValidPassword(password) {
-                        errorMessage = "Password must be at least 6 characters."
+                    if let validationError = ValidationUtils.validateInputs(email: email, password: password) {
+                        errorMessage = validationError
                     } else {
                         budgetfb.userLogin(email: email, password: password)
                     }
                 }) {
                     ButtonView(buttontext: "Sign in")
                 }
-               
                 
                 Button(action: {
-                    if !ValidationUtils.isNotEmpty(email) {
-                        errorMessage = "Email field cannot be empty."
-                    } else if !ValidationUtils.isValidEmail(email) {
-                        errorMessage = "Invalid email format."
-                    } else if !ValidationUtils.isValidPassword(password) {
-                        errorMessage = "Password must be at least 6 characters."
+                    if let validationError = ValidationUtils.validateInputs(email: email, password: password) {
+                        errorMessage = validationError
                     } else {
-                        budgetfb.userRegister(email: email, password: password)
+                        budgetfb.userLogin(email: email, password: password)
                     }
                 }) {
                     ButtonView(buttontext: "Create an account")

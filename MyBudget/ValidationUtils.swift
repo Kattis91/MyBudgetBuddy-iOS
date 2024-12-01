@@ -5,6 +5,7 @@
 //  Created by Katya Durneva Svedmark on 2024-12-01.
 //
 
+
 import Foundation
 
 struct ValidationUtils {
@@ -24,5 +25,17 @@ struct ValidationUtils {
     // Check if a field is empty
     static func isNotEmpty(_ text: String) -> Bool {
         return !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+    
+    // General input validation for forms
+    static func validateInputs(email: String, password: String) -> String? {
+        if !isNotEmpty(email) {
+            return "Email field cannot be empty."
+        } else if !isValidEmail(email) {
+            return "Invalid email format."
+        } else if !isValidPassword(password) {
+            return "Password must be at least 6 characters."
+        }
+        return nil
     }
 }
