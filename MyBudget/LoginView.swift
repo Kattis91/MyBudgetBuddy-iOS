@@ -13,6 +13,7 @@ struct LoginView: View {
     
     @State var email = ""
     @State var password = ""
+    @State var errorMessage = ""
     
     var body: some View {
         VStack {
@@ -30,27 +31,55 @@ struct LoginView: View {
            
             VStack {
                 Text("WELCOME! Let's dive in!")
+            
+                
+                TextField("Email", text: $email)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding(.horizontal)
                 
                 if budgetfb.loginerror != nil {
                     Text(budgetfb.loginerror!)
                 }
                 
-                TextField("Email", text: $email)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding(.horizontal)
                 SecureField("Password", text: $password)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding(.horizontal)
                 
+                VStack (alignment: .leading) {
+                    HStack {
+                        Text(errorMessage)
+                            .foregroundColor(.red)
+                            .multilineTextAlignment(.leading)
+                        Spacer() // Pushes the text to the left
+                    }
+                    .padding(.horizontal)
+                }
+                
                 Button(action: {
-                    budgetfb.userLogin(email: email, password: password)
+                    if !ValidationUtils.isNotEmpty(email) {
+                        errorMessage = "Email field cannot be empty."
+                    } else if !ValidationUtils.isValidEmail(email) {
+                        errorMessage = "Invalid email format."
+                    } else if !ValidationUtils.isValidPassword(password) {
+                        errorMessage = "Password must be at least 6 characters."
+                    } else {
+                        budgetfb.userLogin(email: email, password: password)
+                    }
                 }) {
                     ButtonView(buttontext: "Sign in")
                 }
                
                 
                 Button(action: {
-                    budgetfb.userRegister(email: email, password: password)
+                    if !ValidationUtils.isNotEmpty(email) {
+                        errorMessage = "Email field cannot be empty."
+                    } else if !ValidationUtils.isValidEmail(email) {
+                        errorMessage = "Invalid email format."
+                    } else if !ValidationUtils.isValidPassword(password) {
+                        errorMessage = "Password must be at least 6 characters."
+                    } else {
+                        budgetfb.userRegister(email: email, password: password)
+                    }
                 }) {
                     ButtonView(buttontext: "Create an account")
                 }
