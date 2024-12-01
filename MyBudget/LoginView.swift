@@ -45,26 +45,15 @@ struct LoginView: View {
                 Button(action: {
                     budgetfb.userLogin(email: email, password: password)
                 }) {
-                    Text("Sign in")
-                        .font(.headline)
-                        .padding(10)
-                        .foregroundStyle(.white)
+                    ButtonView(buttontext: "Sign in")
                 }
-                .background(Color.blue)
-                .cornerRadius(5)
-                .padding(.vertical)
+               
                 
                 Button(action: {
                     budgetfb.userRegister(email: email, password: password)
-          
                 }) {
-                    Text("Create an account")
-                        .font(.headline)
-                        .padding(10)
-                        .foregroundStyle(.white)
+                    ButtonView(buttontext: "Create an account")
                 }
-                .background(Color.blue)
-                .cornerRadius(5)
                 
             }
             .padding(.bottom, 100)
