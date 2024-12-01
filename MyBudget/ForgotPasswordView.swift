@@ -14,6 +14,7 @@ struct ForgotPasswordView: View {
     @State var budgetfb = BudgetFB()
     
     @State var email = ""
+    @State var errorMessage = ""
     
     @Environment(\.presentationMode) var presentationMode
     
@@ -28,11 +29,27 @@ struct ForgotPasswordView: View {
             TextField("Email", text: $email)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding(.horizontal)
+                .onChange(of: email) {
+                    errorMessage = ""
+                }
+            
+            VStack (alignment: .leading) {
+                HStack {
+                    Text(errorMessage)
+                        .foregroundColor(.red)
+                        .multilineTextAlignment(.leading)
+                    Spacer() // Pushes the text to the left
+                }
+                .padding(.horizontal)
+            }
             
             HStack {
-                
                 Button(action: {
-                    budgetfb.forgotPassword(email: email)
+                    if let validationError = ValidationUtils.validateReset(email: email) {
+                        errorMessage = validationError
+                    } else {
+                        budgetfb.forgotPassword(email: email)
+                    }
                 }) {
                     ButtonView(buttontext: "Send reset link")
                 }
