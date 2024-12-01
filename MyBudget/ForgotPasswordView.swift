@@ -33,15 +33,19 @@ struct ForgotPasswordView: View {
                     errorMessage = ""
                 }
             
-            VStack (alignment: .leading) {
+            VStack(alignment: .leading) {
                 HStack {
                     Text(errorMessage)
                         .foregroundColor(.red)
-                        .multilineTextAlignment(.leading)
-                    Spacer() // Pushes the text to the left
+                        .multilineTextAlignment(.trailing)
+                        .frame(height: 20) // Fixed height to reserve space
+                        .opacity(errorMessage.isEmpty ? 0 : 1) // Fade out
+                        .offset(x: errorMessage.isEmpty ? 20 : 0) // Slide to the right when disappearing
+                        .animation(.easeInOut, value: errorMessage.isEmpty)
+                    Spacer()
                 }
-                .padding(.horizontal)
             }
+            .padding(.horizontal)
             
             HStack {
                 Button(action: {
