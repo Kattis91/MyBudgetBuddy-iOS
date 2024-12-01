@@ -6,10 +6,24 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct HomeView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        
+        VStack {
+            Button(action: {
+                do {
+                    try Auth.auth().signOut()
+                } catch {
+                    
+                }
+            }) {
+                Text("Sign Out")
+            }
+            Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+            
+        }
     }
 }
 
