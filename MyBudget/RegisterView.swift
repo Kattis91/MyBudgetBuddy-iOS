@@ -1,5 +1,5 @@
 //
-//  LoginView.swift
+//  RegisterView.swift
 //  MyBudget
 //
 //  Created by Katya Durneva Svedmark on 2024-12-01.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct LoginView: View {
+struct RegisterView: View {
     
     @State var budgetfb = BudgetFB()
     
@@ -19,19 +19,9 @@ struct LoginView: View {
         VStack {
            
             VStack {
-                Text("WELCOME back! Let's dive in!")
-                    .padding()
-                
-                VStack (alignment: .leading) {
-                    HStack {
-                        Text(errorMessage)
-                            .foregroundColor(.red)
-                            .multilineTextAlignment(.leading)
-                        Spacer() // Pushes the text to the left
-                    }
-                    .padding(.horizontal)
-                }
+                Text("Nice to have you here! Let's dive in!")
             
+                
                 TextField("Email", text: $email)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding(.horizontal)
@@ -43,7 +33,17 @@ struct LoginView: View {
                 SecureField("Password", text: $password)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding(.horizontal)
-                        
+                
+                VStack (alignment: .leading) {
+                    HStack {
+                        Text(errorMessage)
+                            .foregroundColor(.red)
+                            .multilineTextAlignment(.leading)
+                        Spacer() // Pushes the text to the left
+                    }
+                    .padding(.horizontal)
+                }
+                
                 Button(action: {
                     if let validationError = ValidationUtils.validateInputs(email: email, password: password) {
                         errorMessage = validationError
@@ -51,17 +51,15 @@ struct LoginView: View {
                         budgetfb.userLogin(email: email, password: password)
                     }
                 }) {
-                    ButtonView(buttontext: "Sign in")
+                    ButtonView(buttontext: "Create an account")
                 }
-                
             }
             .padding(.bottom, 100)
         }
         .padding()
     }
-    
 }
 
 #Preview {
-    LoginView()
+    RegisterView()
 }

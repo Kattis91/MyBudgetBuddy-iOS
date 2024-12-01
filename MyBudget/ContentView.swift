@@ -21,7 +21,7 @@ struct ContentView: View {
                 HomeView()
             }
             if isLoggedIn == false {
-                LoginView()
+                UnloggedView()
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
