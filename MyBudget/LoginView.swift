@@ -37,6 +37,9 @@ struct LoginView: View {
                     TextField("Email", text: $email)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding(.horizontal)
+                        .onChange(of: email) {
+                            errorMessage = ""
+                        }
                     
                     if budgetfb.loginerror != nil {
                         Text(budgetfb.loginerror!)
@@ -45,17 +48,21 @@ struct LoginView: View {
                     SecureField("Password", text: $password)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding(.horizontal)
+                        .onChange(of: password) {
+                            errorMessage = ""
+                        }
                     
                     HStack {
                         Spacer()
                         Button(action: {
+                            email = ""
+                            errorMessage = ""
                             showForgotPassword.toggle()
                         }) {
                             Text("Forgot password")
                         }
                     }
                     .padding(.horizontal)
-                    
                     
                     Button(action: {
                         if let validationError = ValidationUtils.validateInputs(email: email, password: password) {

@@ -21,10 +21,12 @@ struct RegisterView: View {
             VStack {
                 Text("Nice to have you here! Let's dive in!")
             
-                
                 TextField("Email", text: $email)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding(.horizontal)
+                    .onChange(of: email) {
+                        errorMessage = ""
+                    }
                 
                 if budgetfb.loginerror != nil {
                     Text(budgetfb.loginerror!)
@@ -33,6 +35,9 @@ struct RegisterView: View {
                 SecureField("Password", text: $password)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding(.horizontal)
+                    .onChange(of: password) {
+                        errorMessage = ""
+                    }
                 
                 VStack (alignment: .leading) {
                     HStack {
