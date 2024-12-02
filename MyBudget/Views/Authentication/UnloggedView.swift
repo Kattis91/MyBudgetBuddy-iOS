@@ -20,7 +20,7 @@ struct UnloggedView: View {
         NavigationStack {
             VStack {
                 VStack {
-                    Text("MyBudget")
+                    Text("BudgetBuddy")
                         .font(.largeTitle)
                         .padding(.top, 50)
                     Text("Simplify your budget, simplify your life.")
@@ -50,7 +50,8 @@ struct UnloggedView: View {
                 
                 Spacer()
             }
-            .padding()
+            .frame(maxWidth: .infinity)
+            .background(Color.orange.opacity(0.2))
         }
     }
     

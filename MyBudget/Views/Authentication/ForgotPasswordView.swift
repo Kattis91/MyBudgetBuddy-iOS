@@ -22,6 +22,20 @@ struct ForgotPasswordView: View {
         
         VStack {
             
+            HStack {
+                Spacer()
+                Button(action: {
+                    isPresented = false
+                }) {
+                    Text("x")
+                        .font(.title)
+                        .foregroundStyle(.red)
+                        .fontWeight(.bold)
+                }
+            }
+            .padding(.horizontal)
+            
+            
             Text("Reset Password")
                 .padding()
                 .font(.headline)
@@ -57,16 +71,10 @@ struct ForgotPasswordView: View {
                 }) {
                     ButtonView(buttontext: "Send reset link")
                 }
-                
-                Button(action: {
-                    isPresented = false
-                }) {
-                    Text("Back to Login")
-                }
             }
         }
         .frame(maxWidth: .infinity)
-        .frame(height: 200)
+        .frame(height: 250)
         .background(Color.yellow)
     }
 }

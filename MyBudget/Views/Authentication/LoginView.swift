@@ -37,7 +37,7 @@ struct LoginView: View {
                         }
                     }
                     .padding(.horizontal)
-    
+                    
                     TextField("Email", text: $email)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding(.horizontal)
