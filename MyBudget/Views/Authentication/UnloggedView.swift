@@ -45,11 +45,11 @@ struct UnloggedView: View {
                         .foregroundStyle(Color("TextColor"))
                     
                     NavigationLink(destination: LoginView()) {
-                        ButtonView(buttontext: "Sign in".uppercased())
+                        ButtonView(buttontext: "Sign in", maxWidth: 100)
                     }
                     
                     NavigationLink(destination: RegisterView()) {
-                        ButtonView(buttontext: "Create an account".uppercased())
+                        ButtonView(buttontext: "Create an account", maxWidth: 200)
                     }
                 }
                 .padding(.bottom, 100)

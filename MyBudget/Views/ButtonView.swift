@@ -9,13 +9,14 @@ import SwiftUI
 struct ButtonView: View {
     
     var buttontext : String
+    var maxWidth: CGFloat? = .infinity
     
     var body: some View {
-       
+    
         Text(buttontext)
             .font(.headline)
             .padding(10)
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: maxWidth)
             .frame(height: 45)
             .foregroundStyle(.white)
             .background(Color.buttonsBackground)
@@ -26,5 +27,5 @@ struct ButtonView: View {
     }
 
 #Preview {
-    ButtonView(buttontext: "Button")
+    ButtonView(buttontext: "Button", maxWidth: .infinity)
 }
