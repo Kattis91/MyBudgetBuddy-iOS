@@ -41,35 +41,18 @@ struct LoginView: View {
                     }
                     .padding(.horizontal)
                     
-                    TextField("Email", text: $email)
-                        .frame(height: 45)
-                        .textFieldStyle(PlainTextFieldStyle())
-                        .padding(.horizontal)
-                        .background(Color.white)
-                        .cornerRadius(12)
-                        .padding([.horizontal], 24)
-                        .padding(.bottom, 3)
-                        .onChange(of: email) {
+                    CustomTextFieldView(placeholder: "Email", text: $email, onChange: {
                             errorMessage = ""
-                        }
+                        })
+                        
+                    CustomTextFieldView(placeholder: "Password", text: $password, isSecure: true, onChange: {
+                        errorMessage = ""
+                    })
                     
                     if budgetfb.loginerror != nil {
                         Text(budgetfb.loginerror!)
                     }
-                    
-                    SecureField("Password", text: $password)
-                        .frame(height: 45)
-                        .textFieldStyle(PlainTextFieldStyle())
-                        .padding(.horizontal)
-                        .background(Color.white)
-                        .cornerRadius(12)
-                        .padding([.horizontal], 24)
-                        .padding(.bottom, 3)
-                        .onChange(of: password) {
-                            errorMessage = ""
-                        }
-                
-                    
+                 
                     HStack {
                         Spacer()
                         Button(action: {

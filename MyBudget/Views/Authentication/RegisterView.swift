@@ -13,6 +13,7 @@ struct RegisterView: View {
     
     @State var email = ""
     @State var password = ""
+    @State var confirmPassword = ""
     @State var errorMessage = ""
     
     var body: some View {
@@ -38,39 +39,19 @@ struct RegisterView: View {
                 }
                 .padding(.horizontal)
             
-                TextField("Email", text: $email)
-                    .frame(height: 45)
-                    .textFieldStyle(PlainTextFieldStyle())
-                    .padding(.horizontal)
-                    .background(Color.white)
-                    .cornerRadius(12)
-                    .padding([.horizontal], 24)
-                    .padding(.bottom, 3)
-                    .onChange(of: email) {
+                CustomTextFieldView(placeholder: "Email", text: $email, onChange: {
                         errorMessage = ""
-                    }
-                
-                if budgetfb.loginerror != nil {
-                    Text(budgetfb.loginerror!)
-                }
-                
-                SecureField("Password", text: $password)
-                    .frame(height: 45)
-                    .textFieldStyle(PlainTextFieldStyle())
-                    .padding(.horizontal)
-                    .background(Color.white)
-                    .cornerRadius(12)
-                    .padding([.horizontal], 24)
-                    .padding(.bottom, 3)
-                    .onChange(of: password) {
-                        errorMessage = ""
-                    }
+                    })
+                    
+                CustomTextFieldView(placeholder: "Password", text: $password, isSecure: true, onChange: {
+                    errorMessage = ""
+                })
                 
                 Button(action: {
                     if let validationError = ValidationUtils.validateInputs(email: email, password: password) {
                         errorMessage = validationError
                     } else {
-                        budgetfb.userLogin(email: email, password: password)
+                        budgetfb.userRegister(email: email, password: password)
                     }
                 }) {
                     ButtonView(buttontext: "Create an account")
