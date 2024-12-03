@@ -42,24 +42,12 @@ struct ForgotPasswordView: View {
             
             TextField("Email", text: $email)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding(.horizontal)
+                .padding(.horizontal, 24)
                 .onChange(of: email) {
                     errorMessage = ""
                 }
             
-            VStack(alignment: .leading) {
-                HStack {
-                    Text(errorMessage)
-                        .foregroundColor(.red)
-                        .multilineTextAlignment(.trailing)
-                        .frame(height: 20) // Fixed height to reserve space
-                        .opacity(errorMessage.isEmpty ? 0 : 1) // Fade out
-                        .offset(x: errorMessage.isEmpty ? 20 : 0) // Slide to the right when disappearing
-                        .animation(.easeInOut, value: errorMessage.isEmpty)
-                    Spacer()
-                }
-            }
-            .padding(.horizontal)
+            ErrorMessageView(errorMessage: errorMessage)
             
             HStack {
                 Button(action: {
