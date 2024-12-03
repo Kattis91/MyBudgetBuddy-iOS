@@ -44,7 +44,7 @@ struct LoginView: View {
                     CustomTextFieldView(placeholder: "Email", text: $email, onChange: {
                             errorMessage = ""
                         })
-                        
+                    
                     CustomTextFieldView(placeholder: "Password", text: $password, isSecure: true, onChange: {
                         errorMessage = ""
                     })
@@ -52,18 +52,6 @@ struct LoginView: View {
                     if budgetfb.loginerror != nil {
                         Text(budgetfb.loginerror!)
                     }
-                 
-                    HStack {
-                        Spacer()
-                        Button(action: {
-                            email = ""
-                            errorMessage = ""
-                            showForgotPassword.toggle()
-                        }) {
-                            Text("Forgot password?")
-                        }
-                    }
-                    .padding(.horizontal)
                     
                     Button(action: {
                         if let validationError = ValidationUtils.validateInputs(email: email, password: password) {
@@ -72,8 +60,27 @@ struct LoginView: View {
                             budgetfb.userLogin(email: email, password: password)
                         }
                     }) {
-                        ButtonView(buttontext: "Sign in")
+                        ButtonView(buttontext: "Sign in".uppercased())
                     }
+                    
+                    HStack {
+                    
+                        Button(action: {
+                            email = ""
+                            errorMessage = ""
+                            showForgotPassword.toggle()
+                        }) {
+                            Text("Forgot password?")
+                                .foregroundStyle(Color.buttonsBackground)
+                                .padding(.vertical, 10)
+                                .padding(.horizontal, 8)
+                                .background(Color.white)
+                                .cornerRadius(12)
+                                .fontWeight(.medium)
+                        }
+                    }
+                    .padding(.horizontal, 24)
+                    .padding(.top, 10)
                     
                 }
                 .padding(.bottom, 100)

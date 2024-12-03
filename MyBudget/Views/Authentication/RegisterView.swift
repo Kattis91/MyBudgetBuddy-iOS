@@ -58,7 +58,7 @@ struct RegisterView: View {
                         budgetfb.userRegister(email: email, password: password, confirmPassword: confirmPassword)
                     }
                 }) {
-                    ButtonView(buttontext: "Create an account")
+                    ButtonView(buttontext: "Create an account".uppercased())
                 }
             }
             .padding(.bottom, 100)

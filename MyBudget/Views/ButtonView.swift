@@ -15,10 +15,13 @@ struct ButtonView: View {
         Text(buttontext)
             .font(.headline)
             .padding(10)
+            .frame(maxWidth: .infinity)
+            .frame(height: 45)
             .foregroundStyle(.white)
             .background(Color.buttonsBackground)
-            .cornerRadius(5)
+            .cornerRadius(12)
             .padding(.top, 10)
+            .padding(.horizontal, 24)
         }
     }
 
