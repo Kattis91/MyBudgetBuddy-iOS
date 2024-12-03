@@ -20,6 +20,7 @@ struct RegisterView: View {
            
             VStack {
                 Text("Nice to have you here! Let's dive in!")
+                    .foregroundStyle(Color("TextColor"))
                 
                 VStack(alignment: .leading) {
                     HStack {
@@ -65,7 +66,8 @@ struct RegisterView: View {
             }
             .padding(.bottom, 100)
         }
-        .padding()
+        .frame(maxHeight: .infinity)
+        .background(Color.orange.opacity(0.2))
     }
 }
 

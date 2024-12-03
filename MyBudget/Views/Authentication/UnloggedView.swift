@@ -23,10 +23,15 @@ struct UnloggedView: View {
                     Text("BudgetBuddy")
                         .font(.largeTitle)
                         .padding(.top, 50)
-                    Text("Simplify your budget, simplify your life.")
+                        .foregroundStyle(Color("TextColor"))
+                    Text("Managing money shouldn’t be hard")
+                        .foregroundStyle(Color("TextColor"))
+                        .font(.title3)
+                        .multilineTextAlignment(.leading)
                     Image("Save")
                         .resizable() // Makes the image resizable
                         .frame(width: 200, height: 200)
+                        .padding()
                 }
                 
                 Spacer()
@@ -37,6 +42,7 @@ struct UnloggedView: View {
                         .font(.title2)
                         .fontWeight(.regular)
                         .padding()
+                        .foregroundStyle(Color("TextColor"))
                     
                     NavigationLink(destination: LoginView()) {
                         ButtonView(buttontext: "Sign in")

@@ -23,6 +23,8 @@ struct LoginView: View {
                 VStack {
                     Text("WELCOME back! Let's dive in!")
                         .padding()
+                        .foregroundStyle(Color("TextColor"))
+                        .font(.title3)
                     
                     VStack(alignment: .leading) {
                         HStack {
@@ -55,6 +57,7 @@ struct LoginView: View {
                         .onChange(of: password) {
                             errorMessage = ""
                         }
+                
                     
                     HStack {
                         Spacer()
@@ -63,7 +66,7 @@ struct LoginView: View {
                             errorMessage = ""
                             showForgotPassword.toggle()
                         }) {
-                            Text("Forgot password")
+                            Text("Forgot password?")
                         }
                     }
                     .padding(.horizontal)
@@ -83,12 +86,14 @@ struct LoginView: View {
             }
             if showForgotPassword {
                 ForgotPasswordView(isPresented: $showForgotPassword)
-                    .frame(width: 300, height: 200)
+                    .frame(width: 300, height: 250)
                     .background(Color.white)
                     .cornerRadius(12)
                     .shadow(radius: 10)
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.orange.opacity(0.2))
     }
 }
 

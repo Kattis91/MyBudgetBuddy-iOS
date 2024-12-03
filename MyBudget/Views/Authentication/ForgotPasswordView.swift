@@ -38,7 +38,7 @@ struct ForgotPasswordView: View {
             
             Text("Reset Password")
                 .padding()
-                .font(.headline)
+                .font(.title2)
             
             TextField("Email", text: $email)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -73,9 +73,10 @@ struct ForgotPasswordView: View {
                 }
             }
         }
+        .padding(.bottom, 10)
         .frame(maxWidth: .infinity)
-        .frame(height: 250)
-        .background(Color.yellow)
+        .frame(height: 260)
+        .background(Color.resetPasswordBox)
     }
 }
 

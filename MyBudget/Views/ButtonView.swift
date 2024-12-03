@@ -16,7 +16,7 @@ struct ButtonView: View {
             .font(.headline)
             .padding(10)
             .foregroundStyle(.white)
-            .background(Color.background)
+            .background(Color.buttonsBackground)
             .cornerRadius(5)
             .padding(.top, 10)
         }

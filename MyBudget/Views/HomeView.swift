@@ -21,6 +21,8 @@ struct HomeView: View {
                 Text("Sign Out")
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.orange.opacity(0.2))
     }
 }
 

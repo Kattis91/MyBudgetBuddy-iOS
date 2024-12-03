@@ -25,7 +25,6 @@ struct ContentView: View {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.orange.opacity(0.3))
         .onAppear() {
             Auth.auth().addStateDidChangeListener { auth, user in
                 print("USER CHANGE")
