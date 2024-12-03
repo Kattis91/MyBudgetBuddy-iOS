@@ -29,6 +29,7 @@ struct LoginView: View {
                     VStack(alignment: .leading) {
                         HStack {
                             Text(errorMessage)
+                                .padding(.horizontal)
                                 .foregroundColor(.red)
                                 .multilineTextAlignment(.trailing)
                                 .frame(height: 20) // Fixed height to reserve space
@@ -41,8 +42,13 @@ struct LoginView: View {
                     .padding(.horizontal)
                     
                     TextField("Email", text: $email)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .frame(height: 45)
+                        .textFieldStyle(PlainTextFieldStyle())
                         .padding(.horizontal)
+                        .background(Color.white)
+                        .cornerRadius(12)
+                        .padding([.horizontal], 24)
+                        .padding(.bottom, 3)
                         .onChange(of: email) {
                             errorMessage = ""
                         }
@@ -52,8 +58,13 @@ struct LoginView: View {
                     }
                     
                     SecureField("Password", text: $password)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .frame(height: 45)
+                        .textFieldStyle(PlainTextFieldStyle())
                         .padding(.horizontal)
+                        .background(Color.white)
+                        .cornerRadius(12)
+                        .padding([.horizontal], 24)
+                        .padding(.bottom, 3)
                         .onChange(of: password) {
                             errorMessage = ""
                         }

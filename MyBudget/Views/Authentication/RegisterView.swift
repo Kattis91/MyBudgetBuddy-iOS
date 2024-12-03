@@ -21,10 +21,12 @@ struct RegisterView: View {
             VStack {
                 Text("Nice to have you here! Let's dive in!")
                     .foregroundStyle(Color("TextColor"))
+                    .font(.title3)
                 
                 VStack(alignment: .leading) {
                     HStack {
                         Text(errorMessage)
+                            .padding(.horizontal)
                             .foregroundColor(.red)
                             .multilineTextAlignment(.trailing)
                             .frame(height: 20) // Fixed height to reserve space
@@ -37,8 +39,13 @@ struct RegisterView: View {
                 .padding(.horizontal)
             
                 TextField("Email", text: $email)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .frame(height: 45)
+                    .textFieldStyle(PlainTextFieldStyle())
                     .padding(.horizontal)
+                    .background(Color.white)
+                    .cornerRadius(12)
+                    .padding([.horizontal], 24)
+                    .padding(.bottom, 3)
                     .onChange(of: email) {
                         errorMessage = ""
                     }
@@ -48,8 +55,13 @@ struct RegisterView: View {
                 }
                 
                 SecureField("Password", text: $password)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .frame(height: 45)
+                    .textFieldStyle(PlainTextFieldStyle())
                     .padding(.horizontal)
+                    .background(Color.white)
+                    .cornerRadius(12)
+                    .padding([.horizontal], 24)
+                    .padding(.bottom, 3)
                     .onChange(of: password) {
                         errorMessage = ""
                     }
