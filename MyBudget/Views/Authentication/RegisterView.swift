@@ -47,11 +47,15 @@ struct RegisterView: View {
                     errorMessage = ""
                 })
                 
+                CustomTextFieldView(placeholder: "Confirm Password", text: $confirmPassword, isSecure: true, onChange: {
+                    errorMessage = ""
+                })
+                
                 Button(action: {
                     if let validationError = ValidationUtils.validateInputs(email: email, password: password) {
                         errorMessage = validationError
                     } else {
-                        budgetfb.userRegister(email: email, password: password)
+                        budgetfb.userRegister(email: email, password: password, confirmPassword: confirmPassword)
                     }
                 }) {
                     ButtonView(buttontext: "Create an account")

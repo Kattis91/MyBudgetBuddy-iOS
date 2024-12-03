@@ -24,7 +24,7 @@ import FirebaseAuth
         }
     }
     
-    func userRegister(email : String, password : String) {
+    func userRegister(email : String, password : String, confirmPassword : String) {
         Task {
             do {
                 let regResult = try await Auth.auth().createUser(withEmail: email, password: password)
