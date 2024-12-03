@@ -52,7 +52,7 @@ struct RegisterView: View {
                 })
                 
                 Button(action: {
-                    if let validationError = ValidationUtils.validateInputs(email: email, password: password) {
+                    if let validationError = ValidationUtils.validateInputs(email: email, password: password, confirmPassword: confirmPassword) {
                         errorMessage = validationError
                     } else {
                         budgetfb.userRegister(email: email, password: password, confirmPassword: confirmPassword)

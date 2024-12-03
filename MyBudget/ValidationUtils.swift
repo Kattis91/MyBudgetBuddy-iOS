@@ -21,6 +21,7 @@ struct ValidationUtils {
     static func isValidPassword(_ password: String) -> Bool {
         return password.count >= 6
     }
+
     
     // Check if a field is empty
     static func isNotEmpty(_ text: String) -> Bool {
@@ -28,13 +29,20 @@ struct ValidationUtils {
     }
     
     // General input validation for forms
-    static func validateInputs(email: String, password: String) -> String? {
+    static func validateInputs(email: String, password: String, confirmPassword: String? = nil) -> String? {
         if !isNotEmpty(email) {
             return "Email field cannot be empty."
         } else if !isValidEmail(email) {
             return "Invalid email format."
         } else if !isValidPassword(password) {
             return "Password must be at least 6 characters."
+        }
+        
+        // Only validate confirmPassword if it's provided
+        if let confirmPassword = confirmPassword {
+            if password != confirmPassword {
+                return "Passwords do not match."
+            }
         }
         return nil
     }
