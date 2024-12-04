@@ -51,22 +51,14 @@ struct LoginView: View {
                     }
                     
                     HStack {
-                    
                         Button(action: {
                             email = ""
                             errorMessage = ""
                             showForgotPassword.toggle()
                         }) {
-                            Text("Forgot password?")
-                                .foregroundStyle(Color.buttonsBackground)
-                                .padding(.vertical, 10)
-                                .padding(.horizontal, 8)
-                                .background(Color.white)
-                                .cornerRadius(12)
-                                .fontWeight(.medium)
+                            ButtonView(buttontext: "Forgot password?", maxWidth: 200, lightBackground: true)
                         }
                     }
-                    .padding(.horizontal, 24)
                     .padding(.top, 10)
                     
                 }
@@ -74,10 +66,13 @@ struct LoginView: View {
             }
             if showForgotPassword {
                 ForgotPasswordView(isPresented: $showForgotPassword)
-                    .frame(width: 300, height: 250)
+                    .navigationBarBackButtonHidden(true)
+                    .frame(height: 280)
                     .background(Color.white)
+                    .padding(.horizontal, 24)
                     .cornerRadius(12)
                     .shadow(radius: 10)
+                    .padding(.bottom, 100)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
