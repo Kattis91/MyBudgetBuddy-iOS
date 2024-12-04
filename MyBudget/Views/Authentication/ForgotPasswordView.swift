@@ -37,7 +37,7 @@ struct ForgotPasswordView: View {
             
             
             Text("Reset Password")
-                .padding()
+                .padding(.bottom, 35.0)
                 .font(.title2)
             
             TextField("Email", text: $email)
@@ -57,13 +57,13 @@ struct ForgotPasswordView: View {
                         budgetfb.forgotPassword(email: email)
                     }
                 }) {
-                    ButtonView(buttontext: "Send reset link")
+                    ButtonView(buttontext: "Send reset link", maxWidth: 180)
                 }
             }
         }
         .padding(.bottom, 10)
         .frame(maxWidth: .infinity)
-        .frame(height: 260)
+        .frame(height: 280)
         .background(Color.resetPasswordBox)
     }
 }
