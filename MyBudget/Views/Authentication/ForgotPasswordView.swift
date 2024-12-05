@@ -15,6 +15,7 @@ struct ForgotPasswordView: View {
     
     @State var email = ""
     @State var errorMessage = ""
+    @State var successMessage: String?
     
     @Environment(\.presentationMode) var presentationMode
     
@@ -47,14 +48,34 @@ struct ForgotPasswordView: View {
                     errorMessage = ""
                 }
             
-            ErrorMessageView(errorMessage: errorMessage)
+            VStack {
+                if errorMessage != "" {
+                    ErrorMessageView(errorMessage: errorMessage)
+                } else if let successMessage = successMessage {
+                    Text(successMessage)
+                        .foregroundColor(.blue)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal)
+                }
+            }
+            .frame(height: 50)
             
             HStack {
                 Button(action: {
                     if let validationError = ValidationUtils.validateReset(email: email) {
                         errorMessage = validationError
+                        successMessage = nil
                     } else {
-                        budgetfb.forgotPassword(email: email)
+                        budgetfb.forgotPassword(email: email) { firebaseError in
+                            if let firebaseError = firebaseError {
+                                errorMessage = firebaseError
+                                successMessage = nil
+                            } else {
+                                successMessage = "If the email you provided is registered, we've sent a reset link to your inbox."
+                                email = ""
+                                errorMessage = firebaseError ?? "" // Clear error on success
+                            }
+                        }
                     }
                 }) {
                     ButtonView(buttontext: "Send reset link", maxWidth: 180)

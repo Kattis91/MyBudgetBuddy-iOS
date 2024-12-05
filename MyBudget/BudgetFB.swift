@@ -46,14 +46,15 @@ import FirebaseAuth
         }
     }
     
-    func forgotPassword(email : String) {
+    func forgotPassword(email : String, completion: @escaping (String?) -> Void) {
         Task {
             do {
                 try await Auth.auth().sendPasswordReset(withEmail: email)
                 print("Sent!")
+                completion(nil)
             } catch {
-                print("Fel Forgot")
-                loginerror = "Error forgot"
+                print("Reset failed: \(error.localizedDescription)")
+                completion(error.localizedDescription)
             }
         }
     }
