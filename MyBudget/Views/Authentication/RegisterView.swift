@@ -18,18 +18,18 @@ struct RegisterView: View {
     
     var body: some View {
         VStack {
-           
+            
             VStack {
                 Text("Nice to have you here! Let's dive in!")
                     .foregroundStyle(Color("TextColor"))
                     .font(.title3)
                 
                 ErrorMessageView(errorMessage: errorMessage)
-            
+                
                 CustomTextFieldView(placeholder: "Email", text: $email, onChange: {
-                        errorMessage = ""
-                    })
-                    
+                    errorMessage = ""
+                })
+                
                 CustomTextFieldView(placeholder: "Password", text: $password, isSecure: true, onChange: {
                     errorMessage = ""
                 })
@@ -42,16 +42,18 @@ struct RegisterView: View {
                     if let validationError = ValidationUtils.validateInputs(email: email, password: password, confirmPassword: confirmPassword) {
                         errorMessage = validationError
                     } else {
-                        budgetfb.userRegister(email: email, password: password, confirmPassword: confirmPassword)
+                        budgetfb.userRegister(email: email, password: password) { firebaseError in
+                            errorMessage = firebaseError ?? "" // Default to empty string if no Firebase error
+                        }
                     }
                 }) {
                     ButtonView(buttontext: "Create an account".uppercased())
                 }
+                .padding(.bottom, 100)
             }
-            .padding(.bottom, 100)
+            .frame(maxHeight: .infinity)
+            .background(Color.orange.opacity(0.2))
         }
-        .frame(maxHeight: .infinity)
-        .background(Color.orange.opacity(0.2))
     }
 }
 

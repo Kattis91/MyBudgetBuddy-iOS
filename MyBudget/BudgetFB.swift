@@ -19,18 +19,21 @@ import FirebaseAuth
                 try await Auth.auth().signIn(withEmail: email, password: password)
             } catch {
                 print("Fel Login")
+                print(error.localizedDescription)
                 loginerror = "Error login"
             }
         }
     }
     
-    func userRegister(email : String, password : String, confirmPassword : String) {
+    func userRegister(email: String, password: String, completion: @escaping (String?) -> Void) {
         Task {
             do {
                 let regResult = try await Auth.auth().createUser(withEmail: email, password: password)
+                print("Registration successful for user: \(regResult.user.email ?? "Unknown")")
+                completion(nil)
             } catch {
-                print("Fel Reg")
-                loginerror = "Error reg"
+                print("Registration failed: \(error.localizedDescription)")
+                completion(error.localizedDescription) // Return Firebase error
             }
         }
     }
