@@ -15,14 +15,36 @@ struct HomeView: View {
     var body: some View {
         
         VStack {
+            
             Button(action: {
-              budgetfb.userLogout()
+                budgetfb.userLogout()
             }) {
-                Text("Sign Out")
+                Text("Sign out")
+            }
+            
+            
+            TabView {
+                Tab("Home", systemImage: "house") {
+                    HomeTabView()
+                }
+                
+                Tab("Incomes", systemImage: "plus.circle") {
+                    IncomesTabView()
+                }
+                
+                Tab("Expenses", systemImage: "minus.circle") {
+                    ExpensesTabView()
+                }
+                
+                Tab("Overview", systemImage: "chart.bar") {
+                    OverviewTabView()
+                }
+                
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.orange.opacity(0.2))
+        
     }
 }
 
