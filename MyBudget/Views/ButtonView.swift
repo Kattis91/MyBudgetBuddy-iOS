@@ -10,7 +10,8 @@ struct ButtonView: View {
     
     var buttontext : String
     var maxWidth: CGFloat? = .infinity
-    var lightBackground: Bool = false
+    var greenBackground: Bool = false
+    var height: CGFloat? = 45
     
     var body: some View {
         
@@ -18,9 +19,9 @@ struct ButtonView: View {
             .font(.headline)
             .padding(10)
             .frame(maxWidth: maxWidth)
-            .frame(height: 45)
-            .foregroundStyle(lightBackground ? Color.buttonsBackground : Color.white)
-            .background(lightBackground ? Color.white : Color.buttonsBackground)
+            .frame(height: height)
+            .foregroundStyle(.white)
+            .background(greenBackground ? Color.resetPasswordBox : Color.buttonsBackground)
             .cornerRadius(12)
             .padding(.top, 10)
             .padding(.horizontal, 24)
@@ -28,5 +29,5 @@ struct ButtonView: View {
 }
 
 #Preview {
-    ButtonView(buttontext: "Button", maxWidth: .infinity, lightBackground: false)
+    ButtonView(buttontext: "Button", maxWidth: .infinity, greenBackground: false)
 }
