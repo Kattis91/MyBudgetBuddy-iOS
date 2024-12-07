@@ -44,6 +44,7 @@ struct IncomesTabView: View {
             if selectedCategory == "Something else?" {
                 HStack {
                     CustomTextFieldView(placeholder: "New category", text: $newCategory, isSecure: false)
+                        .padding(.top, 11)
                     
                     Button(action: {
                         if !newCategory.isEmpty {
@@ -52,7 +53,7 @@ struct IncomesTabView: View {
                             newCategory = ""
                         }
                     }) {
-                        Text("Add category")
+                        ButtonView(buttontext: "Add", greenBackground: true)
                     }
                 }
             }
@@ -66,7 +67,7 @@ struct IncomesTabView: View {
                 }
                 
             }) {
-                ButtonView(buttontext: "Add income")
+                ButtonView(buttontext: "Add income", greenBackground: true)
             }
             
             List {
