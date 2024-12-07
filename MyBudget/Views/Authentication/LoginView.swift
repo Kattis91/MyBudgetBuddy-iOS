@@ -51,15 +51,17 @@ struct LoginView: View {
                     }
                     
                     HStack {
+                        Spacer()
                         Button(action: {
                             email = ""
                             errorMessage = ""
                             showForgotPassword.toggle()
                         }) {
-                            ButtonView(buttontext: "Forgot password?", maxWidth: 200, lightBackground: true)
+                            Text("Forgot password?")
                         }
                     }
                     .padding(.top, 10)
+                    .padding(.trailing, 24)
                     
                 }
                 .padding(.bottom, 100)
