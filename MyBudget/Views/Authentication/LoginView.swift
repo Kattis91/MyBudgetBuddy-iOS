@@ -44,7 +44,9 @@ struct LoginView: View {
                         if let validationError = ValidationUtils.validateInputs(email: email, password: password) {
                             errorMessage = validationError
                         } else {
-                            budgetfb.userLogin(email: email, password: password)
+                            budgetfb.userLogin(email: email, password: password) { firebaseError in
+                                errorMessage = firebaseError ?? "" // Default to empty string if no Firebase error
+                            }
                         }
                     }) {
                         ButtonView(buttontext: "Sign in".uppercased())

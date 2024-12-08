@@ -13,14 +13,15 @@ import FirebaseAuth
     
     var loginerror : String?
     
-    func userLogin(email : String, password : String) {
+    func userLogin(email : String, password : String, completion: @escaping (String?) -> Void) {
         Task {
             do {
                 try await Auth.auth().signIn(withEmail: email, password: password)
+                print("Successfully logged in")
+                completion(nil)
             } catch {
-                print("Fel Login")
-                print(error.localizedDescription)
-                loginerror = "Error login"
+                print("Login failed: \(error.localizedDescription)")
+                completion(error.localizedDescription) // Return Firebase error
             }
         }
     }
