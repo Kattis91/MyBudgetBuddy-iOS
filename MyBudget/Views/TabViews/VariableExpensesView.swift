@@ -17,6 +17,8 @@ struct VariableExpensesView: View {
     
     @State private var expenseList: [Expense] = []
     
+    @Binding var totalExpenses: Double
+    
     
     var body: some View {
         
@@ -53,6 +55,7 @@ struct VariableExpensesView: View {
             if let expense = Double(expenseAmount) {
                 let newExpense = Expense(amount: expense, category: selectedCategory)
                 expenseList.append(newExpense)
+                totalExpenses += expense
                 expenseAmount = ""
             }
         }) {
@@ -67,10 +70,29 @@ struct VariableExpensesView: View {
                     Text("- \(expense.amount, specifier: "%.2f")")
                 }
             }
+            .onDelete(perform: deleteItems)
         }
+    }
+    
+    func deleteItems(offsets: IndexSet) {
+        withAnimation {
+            for index in offsets {
+                totalExpenses -= expenseList[index].amount
+            }
+        }
+        expenseList.remove(atOffsets: offsets)
+    }
+}
+
+// Preview Wrapper
+struct VariableExpensesPreviewWrapper: View {
+    @Binding var totalExpenses: Double
+
+    var body: some View {
+        VariableExpensesView(totalExpenses: $totalExpenses)
     }
 }
 
 #Preview {
-    VariableExpensesView()
+    VariableExpensesPreviewWrapper(totalExpenses: .constant(100.0))
 }

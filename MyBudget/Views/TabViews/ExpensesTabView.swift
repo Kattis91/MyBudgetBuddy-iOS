@@ -41,9 +41,9 @@ struct ExpensesTabView: View {
         }
         // Display the selected view
        if selectedView == .fixed {
-           FixedExpensesView()
+           FixedExpensesPreviewWrapper(totalExpenses: $totalExpenses)
        } else {
-           VariableExpensesView()
+           VariableExpensesPreviewWrapper(totalExpenses: $totalExpenses)
        }
     }
 }
