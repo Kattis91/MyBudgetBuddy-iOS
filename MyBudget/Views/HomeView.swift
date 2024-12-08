@@ -16,13 +16,6 @@ struct HomeView: View {
         
         VStack {
             
-            Button(action: {
-                budgetfb.userLogout()
-            }) {
-                Text("Sign out")
-            }
-            
-            
             TabView {
                 Tab("Home", systemImage: "house") {
                     HomeTabView()

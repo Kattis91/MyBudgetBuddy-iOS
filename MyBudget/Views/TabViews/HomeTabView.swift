@@ -8,9 +8,28 @@
 import SwiftUI
 
 struct HomeTabView: View {
+    
+    @State var budgetfb = BudgetFB()
+    
     var body: some View {
-        Text("Here is a home page")
+        
+        NavigationStack {
+            VStack {
+                Text("Here is a home page")
+            }
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    
+                    Button(action: {
+                        budgetfb.userLogout()
+                    }) {
+                        Text("Sign out")
+                    }
+                }
+            }
+        }
     }
+    
 }
 
 #Preview {
