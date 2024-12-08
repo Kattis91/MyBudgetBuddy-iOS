@@ -9,15 +9,9 @@ import SwiftUI
 
 struct ExpensesTabView: View {
     
-    @State private var categories: [String] = ["Rent", "Food", "Transport", "Water", "Heat", "Electricity", "Insuranse", "Mobile", "Netflix", "WiFi", "Savings", "Something else?"]
-    @State private var selectedCategory: String = "Rent"
-    @State private var newCategory: String = ""
-    
-    @State private var expenseAmount: String = ""
     @State private var totalExpenses: Double = 0.0
     
-    @State private var expenseList: [Expense] = []
-    
+    @State private var selectedView: ExpenseViewType = .fixed
     
     var body: some View {
         
@@ -27,53 +21,30 @@ struct ExpensesTabView: View {
             .padding()
         
         HStack {
-            CustomTextFieldView(placeholder: "Expense amount", text: $expenseAmount, isSecure: false)
+            Button(action: {
+                selectedView = .fixed
+            }) {
+                Text("Fixed expenses")
+                    .background(selectedView == .fixed ? Color.yellow : Color.white)
+                    .padding(.horizontal, 24)
+            }
             
-            Picker("Category", selection: $selectedCategory) {
-                ForEach(categories, id: \.self) { category in
-                    Text(category)
-                }
-            }
-            .pickerStyle(MenuPickerStyle())
-            .padding(.bottom)
-        }
-        
-        if selectedCategory == "Something else?" {
-            HStack {
-                CustomTextFieldView(placeholder: "New category", text: $newCategory, isSecure: false)
-                    .padding(.top, 11)
-                
-                Button(action: {
-                    if !newCategory.isEmpty {
-                        categories.append(newCategory)
-                        selectedCategory = newCategory
-                        newCategory = ""
-                    }
-                }) {
-                    ButtonView(buttontext: "Add")
-                }
+            Spacer()
+            
+            Button(action: {
+                selectedView = .variable
+            }) {
+                Text("Variable expenses")
+                    .background(selectedView == .variable ? Color.yellow : Color.white)
+                    .padding(.horizontal, 24)
             }
         }
-        
-        Button(action: {
-            if let expense = Double(expenseAmount) {
-                let newExpense = Expense(amount: expense, category: selectedCategory)
-                expenseList.append(newExpense)
-                expenseAmount = ""
-            }
-        }) {
-            ButtonView(buttontext: "Add expense")
-        }
-        
-        List {
-            ForEach(expenseList) { expense in
-                HStack {
-                    Text(expense.category)
-                    Spacer()
-                    Text("- \(expense.amount, specifier: "%.2f")")
-                }
-            }
-        }
+        // Display the selected view
+       if selectedView == .fixed {
+           FixedExpensesView()
+       } else {
+           VariableExpensesView()
+       }
     }
 }
 

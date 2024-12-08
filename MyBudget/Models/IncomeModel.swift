@@ -1,5 +1,5 @@
 //
-//  ExpenseModel.swift
+//  IncomeModel.swift
 //  MyBudget
 //
 //  Created by Katya Durneva Svedmark on 2024-12-07.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Expense: Identifiable {
+struct Income: Identifiable {
     let id = UUID()
     let amount: Double
     let category: String
