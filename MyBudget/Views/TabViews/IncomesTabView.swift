@@ -77,10 +77,19 @@ struct IncomesTabView: View {
                         Spacer()
                         Text("\(income.amount, specifier: "%.2f")")
                     }
-                    
                 }
+                .onDelete(perform: deleteItems)
             }
         }
+    }
+    
+    func deleteItems(offsets: IndexSet) {
+        withAnimation {
+            for index in offsets {
+                totalIncome -= incomeList[index].amount
+            }
+        }
+        incomeList.remove(atOffsets: offsets)
     }
 }
 
