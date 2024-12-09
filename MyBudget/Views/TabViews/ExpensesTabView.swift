@@ -10,7 +10,6 @@ import SwiftUI
 struct ExpensesTabView: View {
     
     @State private var totalExpenses: Double = 0.0
-    
     @State private var selectedView: ExpenseViewType = .fixed
     
     var body: some View {
@@ -39,11 +38,19 @@ struct ExpensesTabView: View {
                     .padding(.horizontal, 24)
             }
         }
+        
         // Display the selected view
        if selectedView == .fixed {
-           FixedExpensesPreviewWrapper(totalExpenses: $totalExpenses)
+           ExpensesView(
+               categories: ["Rent", "Water", "Heat", "Electricity", "Insurance", "Mobile", "Netflix", "WiFi", "Something else?"],
+               selectedCategory: "Rent",
+               totalExpenses: $totalExpenses
+           )
        } else {
-           VariableExpensesPreviewWrapper(totalExpenses: $totalExpenses)
+           ExpensesView(
+               categories: ["Groceries","Dining Out",  "Shopping", "Entertainment", "Transport", "Savings", "Something else?"],
+               selectedCategory: "Groceries",
+               totalExpenses: $totalExpenses)
        }
     }
 }

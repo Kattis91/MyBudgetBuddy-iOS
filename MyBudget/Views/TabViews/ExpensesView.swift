@@ -1,23 +1,28 @@
 //
-//  FixedExpensesView.swift
+//  ExpensesView.swift
 //  MyBudget
 //
-//  Created by Katya Durneva Svedmark on 2024-12-07.
+//  Created by Katya Durneva Svedmark on 2024-12-09.
 //
 
 import SwiftUI
 
-struct FixedExpensesView: View {
+struct ExpensesView: View {
     
-    @State private var categories: [String] = ["Rent", "Water", "Heat", "Electricity", "Insuranse", "Mobile", "Netflix", "WiFi", "Something else?"]
-    @State private var selectedCategory: String = "Rent"
+    @State private var categories: [String]
+    @State private var selectedCategory: String
     @State private var newCategory: String = ""
     
     @State private var expenseAmount: String = ""
-    
     @State private var expenseList: [Expense] = []
-    
     @Binding var totalExpenses: Double
+    
+    // Custom initializer to avoid private issues
+    init(categories: [String], selectedCategory: String, totalExpenses: Binding<Double>) {
+        self.categories = categories
+        self._selectedCategory = State(initialValue: selectedCategory)
+        self._totalExpenses = totalExpenses
+    }
     
     var body: some View {
         
@@ -83,15 +88,10 @@ struct FixedExpensesView: View {
     }
 }
 
-// Preview Wrapper
-struct FixedExpensesPreviewWrapper: View {
-    @Binding var totalExpenses: Double
-    
-    var body: some View {
-        FixedExpensesView(totalExpenses: $totalExpenses)
-    }
-}
-
 #Preview {
-    FixedExpensesPreviewWrapper(totalExpenses: .constant(100.0))
+    ExpensesView(
+        categories: ["Rent", "Water", "Electricity"],
+        selectedCategory: "Rent",
+        totalExpenses: .constant(100.0)
+    )
 }
