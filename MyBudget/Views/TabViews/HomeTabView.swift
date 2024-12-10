@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct HomeTabView: View {
+    @ObservedObject var incomeData: IncomeData
     
     @State var budgetfb = BudgetFB()
     
@@ -16,6 +17,9 @@ struct HomeTabView: View {
         NavigationStack {
             VStack {
                 Text("Here is a home page")
+                Text("Total Income: \(incomeData.totalIncome, specifier: "%.2f")")
+                    .font(.title)
+                    .padding()
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -33,5 +37,5 @@ struct HomeTabView: View {
 }
 
 #Preview {
-    HomeTabView()
+    HomeTabView(incomeData: IncomeData())
 }

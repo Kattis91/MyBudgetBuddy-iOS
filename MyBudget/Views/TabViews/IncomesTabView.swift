@@ -9,23 +9,21 @@ import SwiftUI
 
 struct IncomesTabView: View {
     
+    @ObservedObject var incomeData: IncomeData
+    
     @State private var categories: [String] =
     ["Salary", "Study grunt", "Child benefit", "Housing insurance", "Sickness insurance", "Business", "Something else?"]
     @State private var selectedCategory: String = "Salary"
     @State private var newCategory: String = ""
     
     @State private var incomeAmount: String = ""
-    @State private var totalIncome: Double = 0.0
-    
-    @State private var incomeList: [Income] = []
-    
     @State var errorMessage = ""
     
     var body: some View {
         
         VStack {
             
-            Text("Total Income: \(totalIncome, specifier: "%.2f")")
+            Text("Total Income: \(incomeData.totalIncome, specifier: "%.2f")")
                 .font(.largeTitle)
                 .bold()
                 .padding()
@@ -65,9 +63,7 @@ struct IncomesTabView: View {
             Button(action: {
                 if let income = Double(incomeAmount) {
                     if income > 0.00 {
-                        let newIncome = Income(amount: income, category: selectedCategory)
-                        incomeList.append(newIncome)
-                        totalIncome += income
+                        incomeData.addIncome(amount: income, category: selectedCategory)
                         incomeAmount = ""
                     } else {
                         errorMessage = "Amount must be greater than zero."
@@ -82,28 +78,19 @@ struct IncomesTabView: View {
             ErrorMessageView(errorMessage: errorMessage, height: 20)
             
             List {
-                ForEach(incomeList) { income in
+                ForEach(incomeData.incomeList) { income in
                     HStack {
                         Text(income.category)
                         Spacer()
                         Text("\(income.amount, specifier: "%.2f")")
                     }
                 }
-                .onDelete(perform: deleteItems)
+                .onDelete(perform: incomeData.deleteIncome)
             }
         }
-    }
-    
-    func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                totalIncome -= incomeList[index].amount
-            }
-        }
-        incomeList.remove(atOffsets: offsets)
     }
 }
 
 #Preview {
-    IncomesTabView()
+    IncomesTabView(incomeData: IncomeData())
 }

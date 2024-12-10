@@ -11,6 +11,7 @@ import FirebaseAuth
 struct HomeView: View {
     
     @State var budgetfb = BudgetFB()
+    @StateObject private var incomeData = IncomeData()
     
     var body: some View {
         
@@ -18,11 +19,11 @@ struct HomeView: View {
             
             TabView {
                 Tab("Home", systemImage: "house") {
-                    HomeTabView()
+                    HomeTabView(incomeData: incomeData)
                 }
                 
                 Tab("Incomes", systemImage: "plus.circle") {
-                    IncomesTabView()
+                    IncomesTabView(incomeData: incomeData)
                 }
                 
                 Tab("Expenses", systemImage: "minus.circle") {
