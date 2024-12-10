@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HomeTabView: View {
     @ObservedObject var incomeData: IncomeData
+    @ObservedObject var expenseData: ExpenseData
     
     @State var budgetfb = BudgetFB()
     
@@ -18,6 +19,10 @@ struct HomeTabView: View {
             VStack {
                 Text("Here is a home page")
                 Text("Total Income: \(incomeData.totalIncome, specifier: "%.2f")")
+                    .font(.title)
+                    .padding()
+                
+                Text("Total Expense: \(expenseData.totalExpenses, specifier: "%.2f")")
                     .font(.title)
                     .padding()
             }
@@ -37,5 +42,5 @@ struct HomeTabView: View {
 }
 
 #Preview {
-    HomeTabView(incomeData: IncomeData())
+    HomeTabView(incomeData: IncomeData(), expenseData: ExpenseData())
 }

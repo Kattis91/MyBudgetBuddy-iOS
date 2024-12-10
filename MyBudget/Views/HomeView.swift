@@ -12,6 +12,7 @@ struct HomeView: View {
     
     @State var budgetfb = BudgetFB()
     @StateObject private var incomeData = IncomeData()
+    @StateObject private var expenseData = ExpenseData()
     
     var body: some View {
         
@@ -19,7 +20,7 @@ struct HomeView: View {
             
             TabView {
                 Tab("Home", systemImage: "house") {
-                    HomeTabView(incomeData: incomeData)
+                    HomeTabView(incomeData: incomeData, expenseData: expenseData)
                 }
                 
                 Tab("Incomes", systemImage: "plus.circle") {
@@ -27,7 +28,7 @@ struct HomeView: View {
                 }
                 
                 Tab("Expenses", systemImage: "minus.circle") {
-                    ExpensesTabView()
+                    ExpensesTabView(expenseData: expenseData)
                 }
                 
                 Tab("Overview", systemImage: "chart.bar") {
