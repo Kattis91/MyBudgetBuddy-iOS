@@ -14,6 +14,7 @@ struct ExpensesView: View {
     @State private var newCategory: String = ""
     
     @State private var expenseAmount: String = ""
+    @State var errorMessage = ""
     
     @Binding var totalExpenses: Double
     @Binding var expenseList: [Expense]
@@ -29,7 +30,9 @@ struct ExpensesView: View {
     var body: some View {
         
         HStack {
-            CustomTextFieldView(placeholder: "Expense amount", text: $expenseAmount, isSecure: false)
+            CustomTextFieldView(placeholder: "Expense amount", text: $expenseAmount, isSecure: false, onChange: {
+                errorMessage = ""
+            })
             
             Picker("Category", selection: $selectedCategory) {
                 ForEach(categories, id: \.self) { category in
@@ -59,14 +62,22 @@ struct ExpensesView: View {
         
         Button(action: {
             if let expense = Double(expenseAmount) {
-                let newExpense = Expense(amount: expense, category: selectedCategory)
-                expenseList.append(newExpense)
-                totalExpenses += expense
-                expenseAmount = ""
+                if expense > 0.00 {
+                    let newExpense = Expense(amount: expense, category: selectedCategory)
+                    expenseList.append(newExpense)
+                    totalExpenses += expense
+                    expenseAmount = ""
+                } else {
+                    errorMessage = "Amount must be greater than zero."
+                }
+            } else {
+                errorMessage = "Amount must be a number."
             }
         }) {
             ButtonView(buttontext: "Add expense")
         }
+        
+        ErrorMessageView(errorMessage: errorMessage, height: 20)
         
         List {
             ForEach(expenseList) { expense in

@@ -19,6 +19,8 @@ struct IncomesTabView: View {
     
     @State private var incomeList: [Income] = []
     
+    @State var errorMessage = ""
+    
     var body: some View {
         
         VStack {
@@ -30,7 +32,9 @@ struct IncomesTabView: View {
             
             HStack {
                
-                CustomTextFieldView(placeholder: "Enter Income", text: $incomeAmount, isSecure: false)
+                CustomTextFieldView(placeholder: "Enter Income", text: $incomeAmount, isSecure: false, onChange: {
+                    errorMessage = ""
+                })
                 
                 Picker("Select a Category", selection: $selectedCategory) {
                     ForEach(categories, id: \.self) { category in
@@ -59,16 +63,23 @@ struct IncomesTabView: View {
             }
             
             Button(action: {
-                if let income = Double(incomeAmount)  {
-                    let newIncome = Income(amount: income, category: selectedCategory)
-                    incomeList.append(newIncome)
-                    totalIncome += income
-                    incomeAmount = ""
+                if let income = Double(incomeAmount) {
+                    if income > 0.00 {
+                        let newIncome = Income(amount: income, category: selectedCategory)
+                        incomeList.append(newIncome)
+                        totalIncome += income
+                        incomeAmount = ""
+                    } else {
+                        errorMessage = "Amount must be greater than zero."
+                    }
+                } else {
+                    errorMessage = "Amount must be a number."
                 }
-                
             }) {
                 ButtonView(buttontext: "Add income", greenBackground: true)
             }
+            
+            ErrorMessageView(errorMessage: errorMessage, height: 20)
             
             List {
                 ForEach(incomeList) { income in
