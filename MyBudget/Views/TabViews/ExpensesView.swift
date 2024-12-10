@@ -14,13 +14,15 @@ struct ExpensesView: View {
     @State private var newCategory: String = ""
     
     @State private var expenseAmount: String = ""
-    @State private var expenseList: [Expense] = []
+    
     @Binding var totalExpenses: Double
+    @Binding var expenseList: [Expense]
     
     // Custom initializer to avoid private issues
-    init(categories: [String], selectedCategory: String, totalExpenses: Binding<Double>) {
+    init(categories: [String], selectedCategory: String, expenseList: Binding<[Expense]>, totalExpenses: Binding<Double>) {
         self.categories = categories
         self._selectedCategory = State(initialValue: selectedCategory)
+        self._expenseList = expenseList
         self._totalExpenses = totalExpenses
     }
     
@@ -92,6 +94,7 @@ struct ExpensesView: View {
     ExpensesView(
         categories: ["Rent", "Water", "Electricity"],
         selectedCategory: "Rent",
+        expenseList: .constant([]),
         totalExpenses: .constant(100.0)
     )
 }
