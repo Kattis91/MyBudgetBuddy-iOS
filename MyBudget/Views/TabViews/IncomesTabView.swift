@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct IncomesTabView: View {
     
@@ -61,10 +62,11 @@ struct IncomesTabView: View {
             }
             
             Button(action: {
-                if let income = Double(incomeAmount) {
+                if let income = Double(incomeAmount) { // Convert incomeAmount (String) to Double
                     if income > 0.00 {
                         incomeData.addIncome(amount: income, category: selectedCategory)
                         incomeAmount = ""
+                        saveIncomeData(amount: income, category: selectedCategory) // Pass the validated Double to saveIncomeData
                     } else {
                         errorMessage = "Amount must be greater than zero."
                     }
@@ -90,8 +92,70 @@ struct IncomesTabView: View {
             .background(Color.background)
             .scrollContentBackground(.hidden)
         }
+        .task {
+            // await getIncomeData()
+            await loadIncomeData()
+        }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.background)
+    }
+    
+    func loadIncomeData() async {
+        var ref: DatabaseReference!
+        
+        ref = Database.database().reference()
+        
+        do {
+            let incomedata = try await ref.child("incomes").getData()
+            print(incomedata.childrenCount)
+            
+            incomeData.incomeList = []
+            
+            for incomeitem in incomedata.children {
+                let incomesnap = incomeitem as! DataSnapshot
+                
+                // Access the "income data" child
+                guard let incomeDataDict = incomesnap.childSnapshot(forPath: "incomedata").value as? [String: Any]
+                else {
+                    print("Failed to get income data")
+                    continue
+                }
+                
+                print(incomeDataDict)
+                
+                let fetchedIncome = Income(
+                    amount: incomeDataDict["amount"] as? Double ?? 0.0,  // Default to 0.0 if not found
+                    category: incomeDataDict["category"] as? String ?? "Unknown"  // Default to "Unknown" if not found
+                )
+                incomeData.incomeList.append(fetchedIncome)
+            }
+            
+            // Calculate total income
+           let totalIncome = incomeData.incomeList.reduce(0.0) { (sum, income) in
+               return sum + income.amount
+           }
+
+           print("Total Income: \(totalIncome)")
+           incomeData.totalIncome = totalIncome
+        
+        } catch {
+            // Something went wrong
+            print("Something went wrong!")
+        }
+        
+    }
+    
+    func saveIncomeData(amount: Double, category: String) {
+        var ref: DatabaseReference!
+        
+        ref = Database.database().reference()
+        
+        let incomeEntry: [String: Any] = [
+            "amount": amount,
+            "category": category,
+            ]
+        
+        ref.child("incomes").childByAutoId().child("incomedata").setValue(incomeEntry)
     }
 }
 
