@@ -89,6 +89,8 @@ struct ExpensesView: View {
             }
             .onDelete(perform: deleteItems)
         }
+        .background(Color.background)
+        .scrollContentBackground(.hidden)
     }
     
     func deleteItems(offsets: IndexSet) {

@@ -17,7 +17,6 @@ struct HomeTabView: View {
         
         NavigationStack {
             VStack {
-                Text("Here is a home page")
                 Text("Total Income: \(incomeData.totalIncome, specifier: "%.2f")")
                     .font(.title)
                     .padding()
@@ -26,6 +25,8 @@ struct HomeTabView: View {
                     .font(.title)
                     .padding()
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color.orange.opacity(0.1))
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     

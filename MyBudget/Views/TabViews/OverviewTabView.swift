@@ -9,7 +9,12 @@ import SwiftUI
 
 struct OverviewTabView: View {
     var body: some View {
-        Text("OVERVIEW")
+        
+        VStack {
+            Text("OVERVIEW")
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.background)
     }
 }
 

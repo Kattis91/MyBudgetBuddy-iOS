@@ -52,7 +52,7 @@ struct RegisterView: View {
                 .padding(.bottom, 100)
             }
             .frame(maxHeight: .infinity)
-            .background(Color.orange.opacity(0.2))
+            .background(Color.orange.opacity(0.1))
         }
     }
 }

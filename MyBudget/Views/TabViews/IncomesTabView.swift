@@ -87,7 +87,11 @@ struct IncomesTabView: View {
                 }
                 .onDelete(perform: incomeData.deleteIncome)
             }
+            .background(Color.background)
+            .scrollContentBackground(.hidden)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.background)
     }
 }
 

@@ -57,7 +57,7 @@ struct UnloggedView: View {
                 Spacer()
             }
             .frame(maxWidth: .infinity)
-            .background(Color.orange.opacity(0.2))
+            .background(Color.orange.opacity(0.1))
         }
     }
     
