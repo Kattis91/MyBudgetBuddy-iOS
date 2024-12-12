@@ -11,4 +11,5 @@ struct Expense: Identifiable {
     let id = UUID()
     let amount: Double
     let category: String
+    let isfixed: Bool
 }

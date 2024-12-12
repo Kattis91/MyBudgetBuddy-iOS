@@ -12,9 +12,9 @@ class ExpenseData: ObservableObject {
     @Published var fixedExpenseList: [Expense] = []
     @Published var variableExpenseList: [Expense] = []
 
-    func addExpense(amount: Double, category: String, isFixed: Bool) {
-        let newExpense = Expense(amount: amount, category: category)
-        if isFixed {
+    func addExpense(amount: Double, category: String, isfixed: Bool) {
+        let newExpense = Expense(amount: amount, category: category, isfixed: isfixed)
+        if isfixed {
             fixedExpenseList.append(newExpense)
         } else {
             variableExpenseList.append(newExpense)
@@ -22,8 +22,8 @@ class ExpenseData: ObservableObject {
         totalExpenses += amount
     }
 
-    func deleteExpense(at offsets: IndexSet, isFixed: Bool) {
-        if isFixed {
+    func deleteExpense(at offsets: IndexSet, isfixed: Bool) {
+        if isfixed {
             for index in offsets {
                 totalExpenses -= fixedExpenseList[index].amount
             }
