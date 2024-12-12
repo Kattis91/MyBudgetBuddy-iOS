@@ -59,4 +59,31 @@ import FirebaseAuth
             }
         }
     }
+    
+    func saveIncomeData(amount: Double, category: String) {
+        var ref: DatabaseReference!
+        
+        ref = Database.database().reference()
+        
+        let incomeEntry: [String: Any] = [
+            "amount": amount,
+            "category": category,
+            ]
+        
+        ref.child("incomes").childByAutoId().child("incomedata").setValue(incomeEntry)
+    }
+    
+    func saveExpenseData(amount: Double, category: String, isfixed: Bool) {
+        var ref: DatabaseReference!
+        
+        ref = Database.database().reference()
+        
+        let expenseEntry: [String: Any] = [
+            "amount": amount,
+            "category": category,
+            "isfixed": isfixed
+            ]
+        
+        ref.child("expenses").childByAutoId().child("expensedata").setValue(expenseEntry)
+    }
 }

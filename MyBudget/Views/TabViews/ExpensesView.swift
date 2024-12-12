@@ -24,6 +24,8 @@ struct ExpensesView: View {
     
     @ObservedObject var expenseData: ExpenseData
     
+    @State var budgetfb = BudgetFB()
+    
    
     
     // Custom initializer to avoid private issues
@@ -73,7 +75,7 @@ struct ExpensesView: View {
             if let expense = Double(expenseAmount) {
                 if expense > 0.00 {
                     expenseData.addExpense(amount: expense, category: selectedCategory, isfixed: ( viewtype == .fixed ))
-                    saveExpenseData(amount: expense, category: selectedCategory, isfixed: ( viewtype == .fixed )) // Pass the validated Double to saveIncomeData
+                    budgetfb.saveExpenseData(amount: expense, category: selectedCategory, isfixed: ( viewtype == .fixed )) // Pass the validated Double to saveIncomeData
                     expenseAmount = ""
                 } else {
                     errorMessage = "Amount must be greater than zero."
@@ -100,20 +102,6 @@ struct ExpensesView: View {
         }
         .background(Color.background)
         .scrollContentBackground(.hidden)
-    }
-    
-    func saveExpenseData(amount: Double, category: String, isfixed: Bool) {
-        var ref: DatabaseReference!
-        
-        ref = Database.database().reference()
-        
-        let expenseEntry: [String: Any] = [
-            "amount": amount,
-            "category": category,
-            "isfixed": isfixed
-            ]
-        
-        ref.child("expenses").childByAutoId().child("expensedata").setValue(expenseEntry)
     }
 }
 

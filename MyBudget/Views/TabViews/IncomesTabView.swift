@@ -10,6 +10,8 @@ import Firebase
 
 struct IncomesTabView: View {
     
+    @State var budgetfb = BudgetFB()
+    
     @ObservedObject var incomeData: IncomeData
     
     @State private var categories: [String] =
@@ -66,7 +68,7 @@ struct IncomesTabView: View {
                     if income > 0.00 {
                         incomeData.addIncome(amount: income, category: selectedCategory)
                         incomeAmount = ""
-                        saveIncomeData(amount: income, category: selectedCategory) // Pass the validated Double to saveIncomeData
+                        budgetfb.saveIncomeData(amount: income, category: selectedCategory) // Pass the validated Double to saveIncomeData
                     } else {
                         errorMessage = "Amount must be greater than zero."
                     }
@@ -145,18 +147,7 @@ struct IncomesTabView: View {
         
     }
     
-    func saveIncomeData(amount: Double, category: String) {
-        var ref: DatabaseReference!
-        
-        ref = Database.database().reference()
-        
-        let incomeEntry: [String: Any] = [
-            "amount": amount,
-            "category": category,
-            ]
-        
-        ref.child("incomes").childByAutoId().child("incomedata").setValue(incomeEntry)
-    }
+    
 }
 
 #Preview {
