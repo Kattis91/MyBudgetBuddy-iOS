@@ -98,12 +98,11 @@ struct ExpensesTabView: View {
                     isfixed: expenseDataDict["isfixed"] as? Bool ?? false  // Default to "Unknown" if not found
                 )
                 
-                if selectedView == .fixed {
+                if fetchedExpense.isfixed {
                     expenseData.fixedExpenseList.append(fetchedExpense)
                 } else {
                     expenseData.variableExpenseList.append(fetchedExpense)
                 }
-                
             }
         
         } catch {

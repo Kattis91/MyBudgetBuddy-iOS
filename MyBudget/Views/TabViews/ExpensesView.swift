@@ -118,7 +118,7 @@ struct ExpensesView: View {
         let expenseEntry: [String: Any] = [
             "amount": amount,
             "category": category,
-            "fixed": isfixed
+            "isfixed": isfixed
             ]
         
         ref.child("expenses").childByAutoId().child("expensedata").setValue(expenseEntry)
