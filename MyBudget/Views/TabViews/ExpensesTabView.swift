@@ -49,7 +49,8 @@ struct ExpensesTabView: View {
                     categories: ["Rent", "Water", "Heat", "Electricity", "Insurance", "Mobile", "Netflix", "WiFi", "Something else?"],
                     selectedCategory: "Rent",
                     totalExpenses: $expenseData.totalExpenses,
-                    expenseList: $expenseData.fixedExpenseList
+                    expenseList: $expenseData.fixedExpenseList,
+                    expenseData: expenseData
                 )
             } else {
                 ExpensesView(
@@ -57,7 +58,8 @@ struct ExpensesTabView: View {
                     categories: ["Groceries","Dining Out",  "Shopping", "Entertainment", "Transport", "Savings", "Something else?"],
                     selectedCategory: "Groceries",
                     totalExpenses: $expenseData.totalExpenses,
-                    expenseList: $expenseData.variableExpenseList
+                    expenseList: $expenseData.variableExpenseList,
+                    expenseData: expenseData
                 )
             }
         }

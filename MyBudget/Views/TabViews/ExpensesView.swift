@@ -22,7 +22,9 @@ struct ExpensesView: View {
     @Binding var totalExpenses: Double
     @Binding var expenseList: [Expense]
     
-    @ObservedObject var expenseData = ExpenseData()
+    @ObservedObject var expenseData: ExpenseData
+    
+   
     
     // Custom initializer to avoid private issues
     /*
@@ -70,9 +72,7 @@ struct ExpensesView: View {
         Button(action: {
             if let expense = Double(expenseAmount) {
                 if expense > 0.00 {
-                    let newExpense = Expense(amount: expense, category: selectedCategory, isfixed: ( viewtype == .fixed ))
-                    expenseList.append(newExpense)
-                    totalExpenses += expense
+                    expenseData.addExpense(amount: expense, category: selectedCategory, isfixed: ( viewtype == .fixed ))
                     saveExpenseData(amount: expense, category: selectedCategory, isfixed: ( viewtype == .fixed )) // Pass the validated Double to saveIncomeData
                     expenseAmount = ""
                 } else {
@@ -95,19 +95,11 @@ struct ExpensesView: View {
                     Text("- \(expense.amount, specifier: "%.2f")")
                 }
             }
-            .onDelete(perform: deleteItems)
+            .onDelete { offsets in expenseData.deleteExpense(at: offsets, isfixed: ( viewtype == .fixed ))
+            }
         }
         .background(Color.background)
         .scrollContentBackground(.hidden)
-    }
-    
-    func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                totalExpenses -= expenseList[index].amount
-            }
-        }
-        expenseList.remove(atOffsets: offsets)
     }
     
     func saveExpenseData(amount: Double, category: String, isfixed: Bool) {
