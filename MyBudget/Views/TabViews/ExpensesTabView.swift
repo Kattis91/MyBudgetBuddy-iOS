@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct ExpensesTabView: View {
-   
+    
     @ObservedObject var expenseData: ExpenseData
     @State private var selectedView: ExpenseViewType = .fixed
 
@@ -44,21 +45,72 @@ struct ExpensesTabView: View {
             // Display the selected view
             if selectedView == .fixed {
                 ExpensesView(
+                    viewtype: .fixed,
                     categories: ["Rent", "Water", "Heat", "Electricity", "Insurance", "Mobile", "Netflix", "WiFi", "Something else?"],
                     selectedCategory: "Rent",
-                    expenseList: $expenseData.fixedExpenseList,
-                    totalExpenses: $expenseData.totalExpenses
+                    totalExpenses: $expenseData.totalExpenses,
+                    expenseList: $expenseData.fixedExpenseList
                 )
             } else {
                 ExpensesView(
+                    viewtype: .variable,
                     categories: ["Groceries","Dining Out",  "Shopping", "Entertainment", "Transport", "Savings", "Something else?"],
                     selectedCategory: "Groceries",
-                    expenseList: $expenseData.variableExpenseList,
-                    totalExpenses: $expenseData.totalExpenses)
+                    totalExpenses: $expenseData.totalExpenses,
+                    expenseList: $expenseData.variableExpenseList
+                )
             }
+        }
+        .task {
+            await loadExpenseData() // Ensure data is loaded when the view appears
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.background)
+    }
+    
+    func loadExpenseData() async {
+        var ref: DatabaseReference!
+        
+        ref = Database.database().reference()
+        
+        do {
+            let expensedata = try await ref.child("expenses").getData()
+            print(expensedata.childrenCount)
+            
+            expenseData.variableExpenseList = []
+            expenseData.fixedExpenseList = []
+            
+            for expenseitem in expensedata.children {
+                let expensesnap = expenseitem as! DataSnapshot
+                
+                // Access the "income data" child
+                guard let expenseDataDict = expensesnap.childSnapshot(forPath: "expensedata").value as? [String: Any]
+                else {
+                    print("Failed to get income data")
+                    continue
+                }
+                
+                print(expenseDataDict)
+                
+                let fetchedExpense = Expense(
+                    amount: expenseDataDict["amount"] as? Double ?? 0.0,  // Default to 0.0 if not found
+                    category: expenseDataDict["category"] as? String ?? "Unknown",
+                    isfixed: expenseDataDict["isfixed"] as? Bool ?? false  // Default to "Unknown" if not found
+                )
+                
+                if selectedView == .fixed {
+                    expenseData.fixedExpenseList.append(fetchedExpense)
+                } else {
+                    expenseData.variableExpenseList.append(fetchedExpense)
+                }
+                
+            }
+        
+        } catch {
+            // Something went wrong
+            print("Something went wrong!")
+        }
+        
     }
 }
 
