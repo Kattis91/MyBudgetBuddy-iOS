@@ -104,6 +104,19 @@ struct ExpensesTabView: View {
                     expenseData.variableExpenseList.append(fetchedExpense)
                 }
             }
+            
+            // Calculate total expense
+            
+            let FixedExpensesSum = expenseData.fixedExpenseList.reduce(0.0) { (sum, expense) in
+                 return sum + expense.amount
+            }
+             
+            let VariableExpensesSum = expenseData.variableExpenseList.reduce(0.0) { (sum, expense) in
+                 return sum + expense.amount
+            }
+             
+            let totalExpenses = FixedExpensesSum + VariableExpensesSum
+            expenseData.totalExpenses = totalExpenses
         
         } catch {
             // Something went wrong
