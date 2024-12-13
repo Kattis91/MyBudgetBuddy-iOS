@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Firebase
+import FirebaseAuth
 
 struct IncomesTabView: View {
     
@@ -103,12 +104,15 @@ struct IncomesTabView: View {
     }
     
     func loadIncomeData() async {
+        
+        guard let userid = Auth.auth().currentUser?.uid else { return }
+        
         var ref: DatabaseReference!
         
         ref = Database.database().reference()
         
         do {
-            let incomedata = try await ref.child("incomes").getData()
+            let incomedata = try await ref.child("incomes").child(userid).getData()
             print(incomedata.childrenCount)
             
             incomeData.incomeList = []

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Firebase
+import FirebaseAuth
 
 struct ExpensesTabView: View {
     
@@ -71,12 +72,15 @@ struct ExpensesTabView: View {
     }
     
     func loadExpenseData() async {
+        
+        guard let userid = Auth.auth().currentUser?.uid else { return }
+        
         var ref: DatabaseReference!
         
         ref = Database.database().reference()
         
         do {
-            let expensedata = try await ref.child("expenses").getData()
+            let expensedata = try await ref.child("expenses").child(userid).getData()
             print(expensedata.childrenCount)
             
             expenseData.variableExpenseList = []

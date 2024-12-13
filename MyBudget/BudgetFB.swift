@@ -65,12 +65,14 @@ import FirebaseAuth
         
         ref = Database.database().reference()
         
+        let userid = Auth.auth().currentUser!.uid
+        
         let incomeEntry: [String: Any] = [
             "amount": amount,
             "category": category,
             ]
         
-        ref.child("incomes").childByAutoId().child("incomedata").setValue(incomeEntry)
+        ref.child("incomes").child(userid).childByAutoId().child("incomedata").setValue(incomeEntry)
     }
     
     func saveExpenseData(amount: Double, category: String, isfixed: Bool) {
@@ -78,12 +80,14 @@ import FirebaseAuth
         
         ref = Database.database().reference()
         
+        let userid = Auth.auth().currentUser!.uid
+        
         let expenseEntry: [String: Any] = [
             "amount": amount,
             "category": category,
             "isfixed": isfixed
             ]
         
-        ref.child("expenses").childByAutoId().child("expensedata").setValue(expenseEntry)
+        ref.child("expenses").child(userid).childByAutoId().child("expensedata").setValue(expenseEntry)
     }
 }
