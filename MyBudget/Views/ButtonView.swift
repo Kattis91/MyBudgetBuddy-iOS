@@ -12,6 +12,8 @@ struct ButtonView: View {
     var maxWidth: CGFloat? = .infinity
     var greenBackground: Bool = false
     var height: CGFloat? = 45
+    var leadingPadding: CGFloat = 24
+    var trailingPadding: CGFloat = 24
     
     var body: some View {
         
@@ -24,7 +26,8 @@ struct ButtonView: View {
             .background(greenBackground ? Color.resetPasswordBox : Color.buttonsBackground)
             .cornerRadius(12)
             .padding(.top, 10)
-            .padding(.horizontal, 24)
+            .padding(.leading, leadingPadding)
+            .padding(.trailing, trailingPadding)
     }
 }
 

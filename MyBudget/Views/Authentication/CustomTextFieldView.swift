@@ -13,6 +13,8 @@ struct CustomTextFieldView: View {
     @Binding var text: String
     var isSecure: Bool = false
     var onChange: (() -> Void)? = nil
+    var leadingPadding: CGFloat = 24
+    var trailingPadding: CGFloat = 24
     
     var body: some View {
         Group {
@@ -27,7 +29,8 @@ struct CustomTextFieldView: View {
                         RoundedRectangle(cornerRadius: 12)
                             .stroke(Color.gray.opacity(0.7), lineWidth: 0.5) // Border with rounded corners
                     )
-                    .padding([.horizontal], 24)
+                    .padding(.leading, leadingPadding)
+                    .padding(.trailing, trailingPadding)
                     .padding(.bottom, 3)
                     .onChange(of: text) {
                         onChange?()
@@ -43,7 +46,8 @@ struct CustomTextFieldView: View {
                         RoundedRectangle(cornerRadius: 12)
                             .stroke(Color.gray.opacity(0.7), lineWidth: 0.5) // Border with rounded corners
                     )
-                    .padding([.horizontal], 24)
+                    .padding(.leading, leadingPadding)
+                    .padding(.trailing, trailingPadding)
                     .padding(.bottom, 3)
                     .onChange(of: text) {
                         onChange?()

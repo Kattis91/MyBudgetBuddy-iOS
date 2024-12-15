@@ -43,7 +43,7 @@ struct ExpensesView: View {
         HStack {
             CustomTextFieldView(placeholder: "Expense amount", text: $expenseAmount, isSecure: false, onChange: {
                 errorMessage = ""
-            })
+            }, trailingPadding: 5)
             
             Picker("Category", selection: $selectedCategory) {
                 ForEach(categories, id: \.self) { category in
@@ -56,7 +56,7 @@ struct ExpensesView: View {
         
         if selectedCategory == "Something else?" {
             HStack {
-                CustomTextFieldView(placeholder: "New category", text: $newCategory, isSecure: false)
+                CustomTextFieldView(placeholder: "New category", text: $newCategory, isSecure: false, trailingPadding: 0)
                     .padding(.top, 11)
                 
                 Button(action: {
@@ -66,7 +66,7 @@ struct ExpensesView: View {
                         newCategory = ""
                     }
                 }) {
-                    ButtonView(buttontext: "Add")
+                    ButtonView(buttontext: "Add", maxWidth: 80, leadingPadding: 10)
                 }
             }
         }

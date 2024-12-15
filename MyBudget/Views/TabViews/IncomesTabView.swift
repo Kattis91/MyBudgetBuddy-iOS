@@ -36,7 +36,7 @@ struct IncomesTabView: View {
                
                 CustomTextFieldView(placeholder: "Enter Income", text: $incomeAmount, isSecure: false, onChange: {
                     errorMessage = ""
-                })
+                }, trailingPadding: 5)
                 
                 Picker("Select a Category", selection: $selectedCategory) {
                     ForEach(categories, id: \.self) { category in
@@ -49,8 +49,8 @@ struct IncomesTabView: View {
             
             if selectedCategory == "Something else?" {
                 HStack {
-                    CustomTextFieldView(placeholder: "New category", text: $newCategory, isSecure: false)
-                        .padding(.top, 11)
+                    CustomTextFieldView(placeholder: "New category", text: $newCategory, isSecure: false, trailingPadding: 0)
+                        .padding(.top, 13)
                     
                     Button(action: {
                         if !newCategory.isEmpty {
@@ -59,7 +59,7 @@ struct IncomesTabView: View {
                             newCategory = ""
                         }
                     }) {
-                        ButtonView(buttontext: "Add", greenBackground: true)
+                        ButtonView(buttontext: "Add", maxWidth: 80, greenBackground: true, leadingPadding: 10)
                     }
                 }
             }
