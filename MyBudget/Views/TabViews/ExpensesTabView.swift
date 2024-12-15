@@ -28,8 +28,12 @@ struct ExpensesTabView: View {
                     selectedView = .fixed
                 }) {
                     Text("Fixed expenses")
-                        .background(selectedView == .fixed ? Color.yellow : Color.white)
+                        .padding(.vertical, 5)
+                        .padding(.horizontal, 10)
+                        .background(selectedView == .fixed ? Color.buttonsBackground : Color.background)
+                        .cornerRadius(10)
                         .padding(.horizontal, 24)
+                        .foregroundStyle(selectedView == .fixed ? Color.white : Color("TextColor"))
                 }
                 
                 Spacer()
@@ -38,10 +42,15 @@ struct ExpensesTabView: View {
                     selectedView = .variable
                 }) {
                     Text("Variable expenses")
-                        .background(selectedView == .variable ? Color.yellow : Color.white)
+                        .padding(.vertical, 5)
+                        .padding(.horizontal, 10)
+                        .background(selectedView == .variable ? Color.buttonsBackground : Color.background)
+                        .cornerRadius(10)
                         .padding(.horizontal, 24)
+                        .foregroundStyle(selectedView == .variable ? Color.white : Color("TextColor"))
                 }
             }
+            .padding(.bottom, 10)
             
             // Display the selected view
             if selectedView == .fixed {
