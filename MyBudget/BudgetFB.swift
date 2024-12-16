@@ -72,7 +72,9 @@ import FirebaseAuth
             "category": category,
             ]
         
-        ref.child("incomes").child(userid).childByAutoId().child("incomedata").setValue(incomeEntry)
+        ref.child("incomes").child(userid).childByAutoId().setValue(incomeEntry)
+        
+        
     }
     
     func saveExpenseData(amount: Double, category: String, isfixed: Bool) {

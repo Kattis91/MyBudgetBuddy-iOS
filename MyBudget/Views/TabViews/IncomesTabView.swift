@@ -33,7 +33,7 @@ struct IncomesTabView: View {
                 .padding()
             
             HStack {
-               
+                
                 CustomTextFieldView(placeholder: "Enter Income", text: $incomeAmount, isSecure: false, onChange: {
                     errorMessage = ""
                 }, trailingPadding: 5)
@@ -67,9 +67,11 @@ struct IncomesTabView: View {
             Button(action: {
                 if let income = Double(incomeAmount) { // Convert incomeAmount (String) to Double
                     if income > 0.00 {
-                        incomeData.addIncome(amount: income, category: selectedCategory)
                         incomeAmount = ""
-                        budgetfb.saveIncomeData(amount: income, category: selectedCategory) // Pass the validated Double to saveIncomeData
+                        budgetfb.saveIncomeData(amount: income, category: selectedCategory)
+                        Task {
+                            await loadIncomeData()
+                        }
                     } else {
                         errorMessage = "Amount must be greater than zero."
                     }
@@ -90,13 +92,12 @@ struct IncomesTabView: View {
                         Text("\(income.amount, specifier: "%.2f")")
                     }
                 }
-                .onDelete(perform: incomeData.deleteIncome)
+                .onDelete(perform: tododelete)
             }
             .background(Color.background)
             .scrollContentBackground(.hidden)
         }
         .task {
-            // await getIncomeData()
             await loadIncomeData()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -121,7 +122,7 @@ struct IncomesTabView: View {
                 let incomesnap = incomeitem as! DataSnapshot
                 
                 // Access the "income data" child
-                guard let incomeDataDict = incomesnap.childSnapshot(forPath: "incomedata").value as? [String: Any]
+                guard let incomeDataDict = incomesnap.value as? [String: Any]
                 else {
                     print("Failed to get income data")
                     continue
@@ -130,6 +131,7 @@ struct IncomesTabView: View {
                 print(incomeDataDict)
                 
                 let fetchedIncome = Income(
+                    id: incomesnap.key,
                     amount: incomeDataDict["amount"] as? Double ?? 0.0,  // Default to 0.0 if not found
                     category: incomeDataDict["category"] as? String ?? "Unknown"  // Default to "Unknown" if not found
                 )
@@ -137,13 +139,13 @@ struct IncomesTabView: View {
             }
             
             // Calculate total income
-           let totalIncome = incomeData.incomeList.reduce(0.0) { (sum, income) in
-               return sum + income.amount
-           }
-
-           print("Total Income: \(totalIncome)")
-           incomeData.totalIncome = totalIncome
-        
+            let totalIncome = incomeData.incomeList.reduce(0.0) { (sum, income) in
+                return sum + income.amount
+            }
+            
+            print("Total Income: \(totalIncome)")
+            incomeData.totalIncome = totalIncome
+            
         } catch {
             // Something went wrong
             print("Something went wrong!")
@@ -151,6 +153,28 @@ struct IncomesTabView: View {
         
     }
     
+    func tododelete(at offsets: IndexSet) {
+       let userid = Auth.auth().currentUser?.uid
+       guard let userid else { return }
+       
+       var ref: DatabaseReference!
+       ref = Database.database().reference()
+       
+       for offset in offsets {
+           print("DELETE \(offset)")
+           let incomeItem = incomeData.incomeList[offset]
+           print(incomeItem.id)
+           print(incomeItem.category)
+           ref.child("incomes").child(userid).child(incomeItem.id).removeValue()
+       }
+       
+       // Update local data
+       incomeData.incomeList.remove(atOffsets: offsets)
+       
+       // Recalculate total income
+       incomeData.totalIncome = incomeData.incomeList.reduce(0.0) { $0 + $1.amount }
+   }
+
     
 }
 

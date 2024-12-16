@@ -8,7 +8,7 @@
 import Foundation
 
 struct Income: Identifiable {
-    let id = UUID()
+    let id: String
     let amount: Double
     let category: String
 }
