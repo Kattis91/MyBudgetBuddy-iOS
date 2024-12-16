@@ -16,11 +16,4 @@ class IncomeData: ObservableObject {
         incomeList.append(newIncome)
         totalIncome += amount
     }
-    
-    func deleteIncome(at offsets: IndexSet) {
-        for index in offsets {
-            totalIncome -= incomeList[index].amount
-        }
-        incomeList.remove(atOffsets: offsets)
-    }
 }

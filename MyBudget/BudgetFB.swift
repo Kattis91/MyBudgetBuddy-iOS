@@ -92,4 +92,54 @@ import FirebaseAuth
         
         ref.child("expenses").child(userid).childByAutoId().setValue(expenseEntry)
     }
+
+    
+    func loadIncomeData(incomeData: IncomeData) async {
+        
+        guard let userid = Auth.auth().currentUser?.uid else { return }
+        
+        var ref: DatabaseReference!
+        
+        ref = Database.database().reference()
+        
+        do {
+            let incomedata = try await ref.child("incomes").child(userid).getData()
+            print(incomedata.childrenCount)
+            
+            incomeData.incomeList = []
+            
+            for incomeitem in incomedata.children {
+                let incomesnap = incomeitem as! DataSnapshot
+                
+                // Access the "income data" child
+                guard let incomeDataDict = incomesnap.value as? [String: Any]
+                else {
+                    print("Failed to get income data")
+                    continue
+                }
+                
+                print(incomeDataDict)
+                
+                let fetchedIncome = Income(
+                    id: incomesnap.key,
+                    amount: incomeDataDict["amount"] as? Double ?? 0.0,  // Default to 0.0 if not found
+                    category: incomeDataDict["category"] as? String ?? "Unknown"  // Default to "Unknown" if not found
+                )
+                incomeData.incomeList.append(fetchedIncome)
+            }
+            
+            // Calculate total income
+            let totalIncome = incomeData.incomeList.reduce(0.0) { (sum, income) in
+                return sum + income.amount
+            }
+            
+            print("Total Income: \(totalIncome)")
+            incomeData.totalIncome = totalIncome
+            
+        } catch {
+            // Something went wrong
+            print("Something went wrong!")
+        }
+        
+    }
 }

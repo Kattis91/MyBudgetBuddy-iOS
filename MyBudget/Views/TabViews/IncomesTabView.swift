@@ -70,7 +70,7 @@ struct IncomesTabView: View {
                         incomeAmount = ""
                         budgetfb.saveIncomeData(amount: income, category: selectedCategory)
                         Task {
-                            await loadIncomeData()
+                            await budgetfb.loadIncomeData(incomeData: incomeData)
                         }
                     } else {
                         errorMessage = "Amount must be greater than zero."
@@ -92,68 +92,19 @@ struct IncomesTabView: View {
                         Text("\(income.amount, specifier: "%.2f")")
                     }
                 }
-                .onDelete(perform: tododelete)
+                .onDelete(perform: deleteIncome)
             }
             .background(Color.background)
             .scrollContentBackground(.hidden)
         }
         .task {
-            await loadIncomeData()
+            await budgetfb.loadIncomeData(incomeData: incomeData)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.background)
     }
     
-    func loadIncomeData() async {
-        
-        guard let userid = Auth.auth().currentUser?.uid else { return }
-        
-        var ref: DatabaseReference!
-        
-        ref = Database.database().reference()
-        
-        do {
-            let incomedata = try await ref.child("incomes").child(userid).getData()
-            print(incomedata.childrenCount)
-            
-            incomeData.incomeList = []
-            
-            for incomeitem in incomedata.children {
-                let incomesnap = incomeitem as! DataSnapshot
-                
-                // Access the "income data" child
-                guard let incomeDataDict = incomesnap.value as? [String: Any]
-                else {
-                    print("Failed to get income data")
-                    continue
-                }
-                
-                print(incomeDataDict)
-                
-                let fetchedIncome = Income(
-                    id: incomesnap.key,
-                    amount: incomeDataDict["amount"] as? Double ?? 0.0,  // Default to 0.0 if not found
-                    category: incomeDataDict["category"] as? String ?? "Unknown"  // Default to "Unknown" if not found
-                )
-                incomeData.incomeList.append(fetchedIncome)
-            }
-            
-            // Calculate total income
-            let totalIncome = incomeData.incomeList.reduce(0.0) { (sum, income) in
-                return sum + income.amount
-            }
-            
-            print("Total Income: \(totalIncome)")
-            incomeData.totalIncome = totalIncome
-            
-        } catch {
-            // Something went wrong
-            print("Something went wrong!")
-        }
-        
-    }
-    
-    func tododelete(at offsets: IndexSet) {
+    func deleteIncome(at offsets: IndexSet) {
        let userid = Auth.auth().currentUser?.uid
        guard let userid else { return }
        
