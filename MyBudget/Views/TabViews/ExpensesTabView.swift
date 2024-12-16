@@ -99,7 +99,7 @@ struct ExpensesTabView: View {
                 let expensesnap = expenseitem as! DataSnapshot
                 
                 // Access the "income data" child
-                guard let expenseDataDict = expensesnap.childSnapshot(forPath: "expensedata").value as? [String: Any]
+                guard let expenseDataDict = expensesnap.value as? [String: Any]
                 else {
                     print("Failed to get income data")
                     continue

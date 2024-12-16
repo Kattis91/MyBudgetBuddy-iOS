@@ -90,6 +90,6 @@ import FirebaseAuth
             "isfixed": isfixed
             ]
         
-        ref.child("expenses").child(userid).childByAutoId().child("expensedata").setValue(expenseEntry)
+        ref.child("expenses").child(userid).childByAutoId().setValue(expenseEntry)
     }
 }
