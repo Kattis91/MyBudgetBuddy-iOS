@@ -16,7 +16,7 @@ struct IncomesTabView: View {
     @ObservedObject var incomeData: IncomeData
     
     @State private var categories: [String] =
-    ["Salary", "Study grunt", "Child benefit", "Housing insurance", "Sickness insurance", "Business", "Something else?"]
+    ["Salary", "Study grant", "Child benefit", "Housing insurance", "Sickness insurance", "Business", "Something else?"]
     @State private var selectedCategory: String = "Salary"
     @State private var newCategory: String = ""
     
