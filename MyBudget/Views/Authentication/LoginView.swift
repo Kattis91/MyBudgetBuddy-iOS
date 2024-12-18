@@ -30,11 +30,11 @@ struct LoginView: View {
                     
                     CustomTextFieldView(placeholder: "Email", text: $email, onChange: {
                             errorMessage = ""
-                        })
+                    }, systemName: "envelope")
                     
                     CustomTextFieldView(placeholder: "Password", text: $password, isSecure: true, onChange: {
                         errorMessage = ""
-                    })
+                    }, systemName: "lock")
                     
                     if budgetfb.loginerror != nil {
                         Text(budgetfb.loginerror!)

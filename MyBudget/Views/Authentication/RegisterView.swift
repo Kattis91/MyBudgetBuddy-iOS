@@ -28,15 +28,15 @@ struct RegisterView: View {
                 
                 CustomTextFieldView(placeholder: "Email", text: $email, onChange: {
                     errorMessage = ""
-                })
+                }, systemName: "envelope")
                 
                 CustomTextFieldView(placeholder: "Password", text: $password, isSecure: true, onChange: {
                     errorMessage = ""
-                })
+                }, systemName: "lock")
                 
                 CustomTextFieldView(placeholder: "Confirm Password", text: $confirmPassword, isSecure: true, onChange: {
                     errorMessage = ""
-                })
+                }, systemName: "lock")
                 
                 Button(action: {
                     if let validationError = ValidationUtils.validateInputs(email: email, password: password, confirmPassword: confirmPassword) {
