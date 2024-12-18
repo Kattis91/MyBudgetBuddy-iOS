@@ -37,14 +37,14 @@ struct CustomTextFieldView: View {
         .textFieldStyle(PlainTextFieldStyle())
         .padding(.horizontal)
         .background(Color.white)
-        .cornerRadius(12)
+        .cornerRadius(15)
         .overlay(
-            RoundedRectangle(cornerRadius: 12)
+            RoundedRectangle(cornerRadius: 15)
                 .stroke(Color.gray.opacity(0.7), lineWidth: 0.5) // Border with rounded corners
         )
         .padding(.leading, leadingPadding)
         .padding(.trailing, trailingPadding)
-        .padding(.bottom, 3)
+        .padding(.bottom, 6)
         .onChange(of: text) {
             onChange?()
         }

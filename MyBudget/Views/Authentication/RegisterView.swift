@@ -28,15 +28,15 @@ struct RegisterView: View {
                 
                 CustomTextFieldView(placeholder: "Email", text: $email, onChange: {
                     errorMessage = ""
-                }, systemName: "envelope")
+                }, leadingPadding: 45, trailingPadding: 45, systemName: "envelope")
                 
                 CustomTextFieldView(placeholder: "Password", text: $password, isSecure: true, onChange: {
                     errorMessage = ""
-                }, systemName: "lock")
+                }, leadingPadding: 45, trailingPadding: 45, systemName: "lock")
                 
                 CustomTextFieldView(placeholder: "Confirm Password", text: $confirmPassword, isSecure: true, onChange: {
                     errorMessage = ""
-                }, systemName: "lock")
+                }, leadingPadding: 45, trailingPadding: 45, systemName: "lock")
                 
                 Button(action: {
                     if let validationError = ValidationUtils.validateInputs(email: email, password: password, confirmPassword: confirmPassword) {
@@ -47,7 +47,7 @@ struct RegisterView: View {
                         }
                     }
                 }) {
-                    ButtonView(buttontext: "Create an account".uppercased())
+                    ButtonView(buttontext: "Sign Up".uppercased(), maxWidth: 150)
                 }
                 .padding(.bottom, 100)
             }

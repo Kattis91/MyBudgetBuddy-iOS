@@ -30,11 +30,11 @@ struct LoginView: View {
                     
                     CustomTextFieldView(placeholder: "Email", text: $email, onChange: {
                             errorMessage = ""
-                    }, systemName: "envelope")
+                    }, leadingPadding: 45, trailingPadding: 45, systemName: "envelope")
                     
                     CustomTextFieldView(placeholder: "Password", text: $password, isSecure: true, onChange: {
                         errorMessage = ""
-                    }, systemName: "lock")
+                    }, leadingPadding: 45, trailingPadding: 45, systemName: "lock")
                     
                     if budgetfb.loginerror != nil {
                         Text(budgetfb.loginerror!)
@@ -49,7 +49,7 @@ struct LoginView: View {
                             }
                         }
                     }) {
-                        ButtonView(buttontext: "Sign in".uppercased())
+                        ButtonView(buttontext: "Sign in".uppercased(), maxWidth: 150)
                     }
                     
                     HStack {
