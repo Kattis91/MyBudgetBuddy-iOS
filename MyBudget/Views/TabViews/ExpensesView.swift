@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Firebase
+import FirebaseAuth
 
 struct ExpensesView: View {
     
@@ -74,9 +75,14 @@ struct ExpensesView: View {
         Button(action: {
             if let expense = Double(expenseAmount) {
                 if expense > 0.00 {
+                    /*
                     expenseData.addExpense(amount: expense, category: selectedCategory, isfixed: ( viewtype == .fixed ))
+                    */
                     budgetfb.saveExpenseData(amount: expense, category: selectedCategory, isfixed: ( viewtype == .fixed )) // Pass the validated Double to saveIncomeData
                     expenseAmount = ""
+                    Task {
+                        await budgetfb.loadExpenseData(expenseData: expenseData)
+                    }
                 } else {
                     errorMessage = "Amount must be greater than zero."
                 }
@@ -89,20 +95,79 @@ struct ExpensesView: View {
         
         ErrorMessageView(errorMessage: errorMessage, height: 20)
         
-        List {
-            ForEach(expenseList) { expense in
-                HStack {
-                    Text(expense.category)
-                    Spacer()
-                    Text("- \(expense.amount, specifier: "%.2f")")
+        if viewtype == .fixed {
+            List {
+                ForEach(expenseData.fixedExpenseList) { expense in
+                    HStack {
+                        Text(expense.category)
+                        Spacer()
+                        Text("- \(expense.amount, specifier: "%.2f")")
+                    }
+                }
+                .onDelete { offsets in
+                    deleteExpense(from: "fixed", at: offsets, expenseData: expenseData)
                 }
             }
-            .onDelete { offsets in expenseData.deleteExpense(at: offsets, isfixed: ( viewtype == .fixed ))
+            .background(Color.background)
+            .scrollContentBackground(.hidden)
+        } else {
+            List {
+                ForEach(expenseData.variableExpenseList) { expense in
+                    HStack {
+                        Text(expense.category)
+                        Spacer()
+                        Text("- \(expense.amount, specifier: "%.2f")")
+                    }
+                }
+                .onDelete { offsets in
+                    deleteExpense(from: "variable", at: offsets, expenseData: expenseData)
+                }
             }
+            .background(Color.background)
+            .scrollContentBackground(.hidden)
         }
-        .background(Color.background)
-        .scrollContentBackground(.hidden)
     }
+    
+    func deleteExpense(from listType: String, at offsets: IndexSet, expenseData: ExpenseData) {
+        let userId = Auth.auth().currentUser?.uid
+        guard let userId else { return }
+
+        var ref: DatabaseReference!
+        ref = Database.database().reference()
+
+        var expenseList: [Expense] // Common array for handling expenses
+
+        // Determine which list to use based on `listType`
+        switch listType {
+        case "fixed":
+            expenseList = expenseData.fixedExpenseList
+        case "variable":
+            expenseList = expenseData.variableExpenseList
+        default:
+            print("Invalid list type")
+            return
+        }
+
+        for offset in offsets {
+            let expenseItem = expenseList[offset]
+            print("DELETE \(offset)")
+            print(expenseItem.id)
+            print(expenseItem.category)
+            ref.child("expenses").child(userId).child(expenseItem.id).removeValue()
+        }
+
+        // Update local data
+        if listType == "fixed" {
+            expenseData.fixedExpenseList.remove(atOffsets: offsets)
+        } else if listType == "variable" {
+            expenseData.variableExpenseList.remove(atOffsets: offsets)
+        }
+
+        // Recalculate total expenses
+        expenseData.totalExpenses = (expenseData.fixedExpenseList + expenseData.variableExpenseList)
+            .reduce(0.0) { $0 + $1.amount }
+    }
+
 }
 
 #Preview {

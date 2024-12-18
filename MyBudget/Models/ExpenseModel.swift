@@ -8,7 +8,7 @@
 import Foundation
 
 struct Expense: Identifiable {
-    let id = UUID()
+    let id: String
     let amount: Double
     let category: String
     let isfixed: Bool
