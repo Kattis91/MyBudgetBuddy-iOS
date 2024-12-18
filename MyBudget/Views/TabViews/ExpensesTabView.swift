@@ -13,6 +13,8 @@ struct ExpensesTabView: View {
     
     @ObservedObject var expenseData: ExpenseData
     @State private var selectedView: ExpenseViewType = .fixed
+    
+    @State var budgetfb = BudgetFB()
 
     var body: some View {
         
@@ -74,70 +76,10 @@ struct ExpensesTabView: View {
             }
         }
         .task {
-            await loadExpenseData() // Ensure data is loaded when the view appears
+            await budgetfb.loadExpenseData(expenseData: expenseData) // Ensure data is loaded when the view appears
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.background)
-    }
-    
-    func loadExpenseData() async {
-        
-        guard let userid = Auth.auth().currentUser?.uid else { return }
-        
-        var ref: DatabaseReference!
-        
-        ref = Database.database().reference()
-        
-        do {
-            let expensedata = try await ref.child("expenses").child(userid).getData()
-            print(expensedata.childrenCount)
-            
-            expenseData.variableExpenseList = []
-            expenseData.fixedExpenseList = []
-            
-            for expenseitem in expensedata.children {
-                let expensesnap = expenseitem as! DataSnapshot
-                
-                // Access the "income data" child
-                guard let expenseDataDict = expensesnap.value as? [String: Any]
-                else {
-                    print("Failed to get income data")
-                    continue
-                }
-                
-                print(expenseDataDict)
-                
-                let fetchedExpense = Expense(
-                    amount: expenseDataDict["amount"] as? Double ?? 0.0,  // Default to 0.0 if not found
-                    category: expenseDataDict["category"] as? String ?? "Unknown",
-                    isfixed: expenseDataDict["isfixed"] as? Bool ?? false  // Default to "Unknown" if not found
-                )
-                
-                if fetchedExpense.isfixed {
-                    expenseData.fixedExpenseList.append(fetchedExpense)
-                } else {
-                    expenseData.variableExpenseList.append(fetchedExpense)
-                }
-            }
-            
-            // Calculate total expense
-            
-            let FixedExpensesSum = expenseData.fixedExpenseList.reduce(0.0) { (sum, expense) in
-                 return sum + expense.amount
-            }
-             
-            let VariableExpensesSum = expenseData.variableExpenseList.reduce(0.0) { (sum, expense) in
-                 return sum + expense.amount
-            }
-             
-            let totalExpenses = FixedExpensesSum + VariableExpensesSum
-            expenseData.totalExpenses = totalExpenses
-        
-        } catch {
-            // Something went wrong
-            print("Something went wrong!")
-        }
-        
     }
 }
 
