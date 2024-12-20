@@ -23,7 +23,25 @@ struct ButtonView: View {
             .frame(maxWidth: maxWidth)
             .frame(height: height)
             .foregroundStyle(.white)
-            .background(greenBackground ? Color.resetPasswordBox : Color.buttonsBackground)
+            .background(greenBackground ?
+                  LinearGradient(
+                      gradient: Gradient(colors: [
+                        .addIncomeStart,   // Start color
+                        .addIncomeMiddle,  // Middle color
+                        .addIncomeEnd     // End color
+                      ]),
+                      startPoint: .topLeading,
+                      endPoint: .bottomTrailing
+                  ) : LinearGradient(
+                    gradient: Gradient(colors: [
+                        .gradientStart,   // Start color
+                        .gradientMiddle,  // Middle color
+                        .gradientEnd // End color
+                    ]),
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+            )
             .cornerRadius(12)
             .padding(.top, 10)
             .padding(.leading, leadingPadding)
