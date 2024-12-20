@@ -44,7 +44,7 @@ struct ExpensesView: View {
         HStack {
             CustomTextFieldView(placeholder: "Expense amount", text: $expenseAmount, isSecure: false, onChange: {
                 errorMessage = ""
-            }, trailingPadding: 5)
+            }, trailingPadding: 5, systemName: "minus.circle")
             
             Picker("Category", selection: $selectedCategory) {
                 ForEach(categories, id: \.self) { category in

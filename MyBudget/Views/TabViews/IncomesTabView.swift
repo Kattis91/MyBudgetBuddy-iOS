@@ -39,7 +39,7 @@ struct IncomesTabView: View {
                     
                     CustomTextFieldView(placeholder: "Enter Income", text: $incomeAmount, isSecure: false, onChange: {
                         errorMessage = ""
-                    }, trailingPadding: 5)
+                    }, trailingPadding: 5, systemName: "plus.circle")
                     
                     Picker("Select a Category", selection: $selectedCategory) {
                         ForEach(categories, id: \.self) { category in
