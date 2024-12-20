@@ -103,12 +103,20 @@ struct ExpensesView: View {
                         Spacer()
                         Text("- \(expense.amount, specifier: "%.2f")")
                     }
+                    .padding()
                 }
                 .onDelete { offsets in
                     deleteExpense(from: "fixed", at: offsets, expenseData: expenseData)
                 }
+                .background(
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(Color("TabColor"))
+                )
+                .listRowSeparator(.hidden)
+                .listRowInsets(EdgeInsets(top: 5, leading: 0, bottom: 5, trailing: 0))
             }
             .scrollContentBackground(.hidden)
+            .padding(.horizontal, 10)
         } else {
             List {
                 ForEach(expenseData.variableExpenseList) { expense in
@@ -117,12 +125,20 @@ struct ExpensesView: View {
                         Spacer()
                         Text("- \(expense.amount, specifier: "%.2f")")
                     }
+                    .padding()
                 }
                 .onDelete { offsets in
                     deleteExpense(from: "variable", at: offsets, expenseData: expenseData)
                 }
+                .background(
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(Color("TabColor"))
+                )
+                .listRowSeparator(.hidden)
+                .listRowInsets(EdgeInsets(top: 5, leading: 0, bottom: 5, trailing: 0))
             }
             .scrollContentBackground(.hidden)
+            .padding(.horizontal, 10)
         }
     }
     
