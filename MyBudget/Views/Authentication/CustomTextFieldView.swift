@@ -36,11 +36,11 @@ struct CustomTextFieldView: View {
         .frame(height: 45)
         .textFieldStyle(PlainTextFieldStyle())
         .padding(.horizontal)
-        .background(Color.white)
+        .background(Color("TabColor"))
         .cornerRadius(15)
         .overlay(
             RoundedRectangle(cornerRadius: 15)
-                .stroke(Color.gray.opacity(0.7), lineWidth: 0.5) // Border with rounded corners
+                .stroke(Color.black, lineWidth: 0.5) // Border with rounded corners
         )
         .padding(.leading, leadingPadding)
         .padding(.trailing, trailingPadding)
