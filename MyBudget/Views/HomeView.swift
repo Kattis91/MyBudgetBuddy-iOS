@@ -10,6 +10,15 @@ import FirebaseAuth
 
 struct HomeView: View {
     
+    init() {
+        let appearance = UITabBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = UIColor(Color("TabColor"))// Ange bakgrundsfärgen här
+        
+        UITabBar.appearance().standardAppearance = appearance
+        UITabBar.appearance().scrollEdgeAppearance = appearance
+    }
+    
     @State var budgetfb = BudgetFB()
     @StateObject private var incomeData = IncomeData()
     @StateObject private var expenseData = ExpenseData()
@@ -38,6 +47,7 @@ struct HomeView: View {
             }
         }
     }
+    
 }
 
 #Preview {
