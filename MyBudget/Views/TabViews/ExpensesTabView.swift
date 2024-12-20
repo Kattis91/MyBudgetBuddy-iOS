@@ -32,7 +32,7 @@ struct ExpensesTabView: View {
                     Text("Fixed expenses")
                         .padding(.vertical, 5)
                         .padding(.horizontal, 10)
-                        .background(selectedView == .fixed ? Color.buttonsBackground : Color.background)
+                        .background(selectedView == .fixed ? Color.buttonsBackground : Color.white)
                         .cornerRadius(10)
                         .padding(.horizontal, 24)
                         .foregroundStyle(selectedView == .fixed ? Color.white : Color("TextColor"))
@@ -46,7 +46,7 @@ struct ExpensesTabView: View {
                     Text("Variable expenses")
                         .padding(.vertical, 5)
                         .padding(.horizontal, 10)
-                        .background(selectedView == .variable ? Color.buttonsBackground : Color.background)
+                        .background(selectedView == .variable ? Color.buttonsBackground : Color.white)
                         .cornerRadius(10)
                         .padding(.horizontal, 24)
                         .foregroundStyle(selectedView == .variable ? Color.white : Color("TextColor"))
@@ -78,8 +78,6 @@ struct ExpensesTabView: View {
         .task {
             await budgetfb.loadExpenseData(expenseData: expenseData) // Ensure data is loaded when the view appears
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.background)
     }
 }
 

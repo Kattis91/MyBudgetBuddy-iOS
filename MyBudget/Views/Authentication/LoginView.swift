@@ -79,8 +79,6 @@ struct LoginView: View {
                     .padding(.bottom, 100)
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.orange.opacity(0.1))
     }
 }
 

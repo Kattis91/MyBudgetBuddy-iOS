@@ -13,8 +13,6 @@ struct OverviewTabView: View {
         VStack {
             Text("OVERVIEW")
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.background)
     }
 }
 

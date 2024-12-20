@@ -25,8 +25,6 @@ struct HomeTabView: View {
                     .font(.title)
                     .padding()
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.orange.opacity(0.1))
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     

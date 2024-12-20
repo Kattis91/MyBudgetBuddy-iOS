@@ -23,85 +23,98 @@ struct IncomesTabView: View {
     @State private var incomeAmount: String = ""
     @State var errorMessage = ""
     
+    @State var showSettings = false
+    
     var body: some View {
         
-        VStack {
-            
-            Text("Total Income: \(incomeData.totalIncome, specifier: "%.2f")")
-                .font(.largeTitle)
-                .bold()
-                .padding()
-            
-            HStack {
+        NavigationStack {
+            VStack {
                 
-                CustomTextFieldView(placeholder: "Enter Income", text: $incomeAmount, isSecure: false, onChange: {
-                    errorMessage = ""
-                }, trailingPadding: 5)
+                Text("Total Income: \(incomeData.totalIncome, specifier: "%.2f")")
+                    .font(.largeTitle)
+                    .bold()
+                    .padding()
                 
-                Picker("Select a Category", selection: $selectedCategory) {
-                    ForEach(categories, id: \.self) { category in
-                        Text(category)
-                    }
-                }
-                .pickerStyle(MenuPickerStyle())
-                .padding(.bottom)
-            }
-            
-            if selectedCategory == "Something else?" {
                 HStack {
-                    CustomTextFieldView(placeholder: "New category", text: $newCategory, isSecure: false, trailingPadding: 0)
-                        .padding(.top, 13)
                     
-                    Button(action: {
-                        if !newCategory.isEmpty {
-                            categories.append(newCategory)
-                            selectedCategory = newCategory
-                            newCategory = ""
+                    CustomTextFieldView(placeholder: "Enter Income", text: $incomeAmount, isSecure: false, onChange: {
+                        errorMessage = ""
+                    }, trailingPadding: 5)
+                    
+                    Picker("Select a Category", selection: $selectedCategory) {
+                        ForEach(categories, id: \.self) { category in
+                            Text(category)
                         }
-                    }) {
-                        ButtonView(buttontext: "Add", maxWidth: 80, greenBackground: true, leadingPadding: 10)
+                    }
+                    .pickerStyle(MenuPickerStyle())
+                    .padding(.bottom)
+                }
+                
+                if selectedCategory == "Something else?" {
+                    HStack {
+                        CustomTextFieldView(placeholder: "New category", text: $newCategory, isSecure: false, trailingPadding: 0)
+                            .padding(.top, 13)
+                        
+                        Button(action: {
+                            if !newCategory.isEmpty {
+                                categories.append(newCategory)
+                                selectedCategory = newCategory
+                                newCategory = ""
+                            }
+                        }) {
+                            ButtonView(buttontext: "Add", maxWidth: 80, greenBackground: true, leadingPadding: 10)
+                        }
                     }
                 }
-            }
-            
-            Button(action: {
-                if let income = Double(incomeAmount) { // Convert incomeAmount (String) to Double
-                    if income > 0.00 {
-                        incomeAmount = ""
-                        budgetfb.saveIncomeData(amount: income, category: selectedCategory)
-                        Task {
-                            await budgetfb.loadIncomeData(incomeData: incomeData)
+                
+                Button(action: {
+                    if let income = Double(incomeAmount) { // Convert incomeAmount (String) to Double
+                        if income > 0.00 {
+                            incomeAmount = ""
+                            budgetfb.saveIncomeData(amount: income, category: selectedCategory)
+                            Task {
+                                await budgetfb.loadIncomeData(incomeData: incomeData)
+                            }
+                        } else {
+                            errorMessage = "Amount must be greater than zero."
                         }
                     } else {
-                        errorMessage = "Amount must be greater than zero."
+                        errorMessage = "Amount must be a number."
                     }
-                } else {
-                    errorMessage = "Amount must be a number."
+                }) {
+                    ButtonView(buttontext: "Add income", greenBackground: true)
                 }
-            }) {
-                ButtonView(buttontext: "Add income", greenBackground: true)
-            }
-            
-            ErrorMessageView(errorMessage: errorMessage, height: 20)
-            
-            List {
-                ForEach(incomeData.incomeList) { income in
-                    HStack {
-                        Text(income.category)
-                        Spacer()
-                        Text("\(income.amount, specifier: "%.2f")")
+                
+                ErrorMessageView(errorMessage: errorMessage, height: 20)
+                
+                List {
+                    ForEach(incomeData.incomeList) { income in
+                        HStack {
+                            Text(income.category)
+                            Spacer()
+                            Text("\(income.amount, specifier: "%.2f")")
+                        }
                     }
+                    .onDelete(perform: deleteIncome)
                 }
-                .onDelete(perform: deleteIncome)
+                .scrollContentBackground(.hidden)
             }
-            .background(Color.background)
-            .scrollContentBackground(.hidden)
+            .task {
+                await budgetfb.loadIncomeData(incomeData: incomeData)
+            }
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: {
+                        showSettings.toggle()
+                    }) {
+                        Label("Open Settings", systemImage: "gearshape")
+                            .font(.title2)
+                            .foregroundColor(.purple)
+                    }
+                    .padding()
+                }
+            }
         }
-        .task {
-            await budgetfb.loadIncomeData(incomeData: incomeData)
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.background)
     }
     
     func deleteIncome(at offsets: IndexSet) {

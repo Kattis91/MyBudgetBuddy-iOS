@@ -108,7 +108,6 @@ struct ExpensesView: View {
                     deleteExpense(from: "fixed", at: offsets, expenseData: expenseData)
                 }
             }
-            .background(Color.background)
             .scrollContentBackground(.hidden)
         } else {
             List {
@@ -123,7 +122,6 @@ struct ExpensesView: View {
                     deleteExpense(from: "variable", at: offsets, expenseData: expenseData)
                 }
             }
-            .background(Color.background)
             .scrollContentBackground(.hidden)
         }
     }
