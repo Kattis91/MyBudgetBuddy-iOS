@@ -105,9 +105,7 @@ struct ExpensesView: View {
                     }
                     .padding()
                 }
-                .onDelete { offsets in
-                    deleteExpense(from: "fixed", at: offsets, expenseData: expenseData)
-                }
+                .onDelete(perform: deleteFixedExpense)
                 .background(
                     RoundedRectangle(cornerRadius: 16)
                         .fill(Color("TabColor"))
@@ -127,9 +125,7 @@ struct ExpensesView: View {
                     }
                     .padding()
                 }
-                .onDelete { offsets in
-                    deleteExpense(from: "variable", at: offsets, expenseData: expenseData)
-                }
+                .onDelete(perform: deleteVariableExpense)
                 .background(
                     RoundedRectangle(cornerRadius: 16)
                         .fill(Color("TabColor"))
@@ -142,46 +138,15 @@ struct ExpensesView: View {
         }
     }
     
-    func deleteExpense(from listType: String, at offsets: IndexSet, expenseData: ExpenseData) {
-        let userId = Auth.auth().currentUser?.uid
-        guard let userId else { return }
-
-        var ref: DatabaseReference!
-        ref = Database.database().reference()
-
-        var expenseList: [Expense] // Common array for handling expenses
-
-        // Determine which list to use based on `listType`
-        switch listType {
-        case "fixed":
-            expenseList = expenseData.fixedExpenseList
-        case "variable":
-            expenseList = expenseData.variableExpenseList
-        default:
-            print("Invalid list type")
-            return
-        }
-
-        for offset in offsets {
-            let expenseItem = expenseList[offset]
-            print("DELETE \(offset)")
-            print(expenseItem.id)
-            print(expenseItem.category)
-            ref.child("expenses").child(userId).child(expenseItem.id).removeValue()
-        }
-
-        // Update local data
-        if listType == "fixed" {
-            expenseData.fixedExpenseList.remove(atOffsets: offsets)
-        } else if listType == "variable" {
-            expenseData.variableExpenseList.remove(atOffsets: offsets)
-        }
-
-        // Recalculate total expenses
-        expenseData.totalExpenses = (expenseData.fixedExpenseList + expenseData.variableExpenseList)
-            .reduce(0.0) { $0 + $1.amount }
+    // Bridge function for Fixed
+    private func deleteFixedExpense(at offsets: IndexSet) {
+        budgetfb.deleteExpense(from: "fixed", at: offsets, expenseData: expenseData)
     }
-
+    
+    // Bridge function for Variable
+    private func deleteVariableExpense(at offsets: IndexSet) {
+        budgetfb.deleteExpense(from: "variable", at: offsets, expenseData: expenseData)
+    }
 }
 
 #Preview {

@@ -96,7 +96,7 @@ struct IncomesTabView: View {
                         }
                         .padding()
                     }
-                    .onDelete(perform: deleteIncome)
+                    .onDelete(perform: deleteIncomeItem)
                     .background(
                         RoundedRectangle(cornerRadius: 16)
                             .fill(Color("TabColor"))
@@ -124,30 +124,10 @@ struct IncomesTabView: View {
             }
         }
     }
-    
-    func deleteIncome(at offsets: IndexSet) {
-       let userid = Auth.auth().currentUser?.uid
-       guard let userid else { return }
-       
-       var ref: DatabaseReference!
-       ref = Database.database().reference()
-       
-       for offset in offsets {
-           print("DELETE \(offset)")
-           let incomeItem = incomeData.incomeList[offset]
-           print(incomeItem.id)
-           print(incomeItem.category)
-           ref.child("incomes").child(userid).child(incomeItem.id).removeValue()
-       }
-       
-       // Update local data
-       incomeData.incomeList.remove(atOffsets: offsets)
-       
-       // Recalculate total income
-       incomeData.totalIncome = incomeData.incomeList.reduce(0.0) { $0 + $1.amount }
-   }
-
-    
+    // Bridge function
+    private func deleteIncomeItem(at offsets: IndexSet) {
+        budgetfb.deleteIncome(at: offsets, incomeData: incomeData)
+    }
 }
 
 #Preview {
