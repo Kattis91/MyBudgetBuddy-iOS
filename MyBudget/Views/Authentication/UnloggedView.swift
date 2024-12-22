@@ -20,7 +20,7 @@ struct UnloggedView: View {
         NavigationStack {
             VStack {
                 VStack {
-                    Text("BudgetBuddy")
+                    Text("MyBudgetBuddy")
                         .font(.largeTitle)
                         .padding(.top, 50)
                         .foregroundStyle(Color("TextColor"))
