@@ -87,25 +87,13 @@ struct IncomesTabView: View {
                 
                 ErrorMessageView(errorMessage: errorMessage, height: 20)
                 
-                List {
-                    ForEach(incomeData.incomeList) { income in
-                        HStack {
-                            Text(income.category)
-                            Spacer()
-                            Text("\(income.amount, specifier: "%.2f")")
-                        }
-                        .padding()
-                    }
-                    .onDelete(perform: deleteIncomeItem)
-                    .background(
-                        RoundedRectangle(cornerRadius: 16)
-                            .fill(Color("TabColor"))
-                    )
-                    .listRowSeparator(.hidden)
-                    .listRowInsets(EdgeInsets(top: 5, leading: 0, bottom: 5, trailing: 0))
-                }
-                .scrollContentBackground(.hidden)
-                .padding(.horizontal, 10)
+                CustomListView(
+                    items: incomeData.incomeList,
+                    deleteAction: deleteIncomeItem,
+                    itemContent: { income in
+                        (category: income.category, amount: income.amount)
+                    }, showNegativeAmount: false
+                )
             }
             .task {
                 await budgetfb.loadIncomeData(incomeData: incomeData)

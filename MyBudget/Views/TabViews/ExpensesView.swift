@@ -96,45 +96,21 @@ struct ExpensesView: View {
         ErrorMessageView(errorMessage: errorMessage, height: 20)
         
         if viewtype == .fixed {
-            List {
-                ForEach(expenseData.fixedExpenseList) { expense in
-                    HStack {
-                        Text(expense.category)
-                        Spacer()
-                        Text("- \(expense.amount, specifier: "%.2f")")
-                    }
-                    .padding()
-                }
-                .onDelete(perform: deleteFixedExpense)
-                .background(
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(Color("TabColor"))
-                )
-                .listRowSeparator(.hidden)
-                .listRowInsets(EdgeInsets(top: 5, leading: 0, bottom: 5, trailing: 0))
-            }
-            .scrollContentBackground(.hidden)
-            .padding(.horizontal, 10)
+            CustomListView(
+                items: expenseData.fixedExpenseList,
+                deleteAction: deleteFixedExpense,
+                itemContent: { expense in
+                    (category: expense.category, amount: expense.amount)
+                }, showNegativeAmount: true
+            )
         } else {
-            List {
-                ForEach(expenseData.variableExpenseList) { expense in
-                    HStack {
-                        Text(expense.category)
-                        Spacer()
-                        Text("- \(expense.amount, specifier: "%.2f")")
-                    }
-                    .padding()
-                }
-                .onDelete(perform: deleteVariableExpense)
-                .background(
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(Color("TabColor"))
-                )
-                .listRowSeparator(.hidden)
-                .listRowInsets(EdgeInsets(top: 5, leading: 0, bottom: 5, trailing: 0))
-            }
-            .scrollContentBackground(.hidden)
-            .padding(.horizontal, 10)
+            CustomListView(
+                items: expenseData.variableExpenseList,
+                deleteAction: deleteVariableExpense,
+                itemContent: { expense in
+                    (category: expense.category, amount: expense.amount)
+                }, showNegativeAmount: true
+            )
         }
     }
     
