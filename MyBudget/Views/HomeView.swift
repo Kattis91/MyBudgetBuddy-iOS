@@ -46,6 +46,12 @@ struct HomeView: View {
                 
             }
         }
+        .onAppear {
+            Task {
+                await budgetfb.loadIncomeData(incomeData: incomeData)
+                await budgetfb.loadExpenseData(expenseData: expenseData)
+            }
+        }
     }
     
 }
