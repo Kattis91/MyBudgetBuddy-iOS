@@ -20,6 +20,12 @@ struct RegisterView: View {
         VStack {
             
             VStack {
+                
+                Image("Save")
+                    .resizable()
+                    .frame(width: 120, height: 120)
+                    .padding(.bottom, 30)
+                
                 Text("Nice to have you here! Let's dive in!")
                     .foregroundStyle(Color("TextColor"))
                     .font(.title3)

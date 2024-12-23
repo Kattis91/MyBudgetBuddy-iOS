@@ -21,6 +21,12 @@ struct LoginView: View {
         ZStack {
             if !showForgotPassword {
                 VStack {
+                    
+                    Image("Save")
+                        .resizable()
+                        .frame(width: 120, height: 120)
+                        .padding(.bottom, 30)
+                    
                     Text("WELCOME back! Let's dive in!")
                         .padding()
                         .foregroundStyle(Color("TextColor"))
@@ -40,6 +46,18 @@ struct LoginView: View {
                         Text(budgetfb.loginerror!)
                     }
                     
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            email = ""
+                            errorMessage = ""
+                            showForgotPassword.toggle()
+                        }) {
+                            Text("Forgot password?")
+                        }
+                    }
+                    .padding(.trailing, 45)
+                    
                     Button(action: {
                         if let validationError = ValidationUtils.validateInputs(email: email, password: password) {
                             errorMessage = validationError
@@ -51,19 +69,6 @@ struct LoginView: View {
                     }) {
                         ButtonView(buttontext: "Sign in".uppercased(), maxWidth: 150)
                     }
-                    
-                    HStack {
-                        Spacer()
-                        Button(action: {
-                            email = ""
-                            errorMessage = ""
-                            showForgotPassword.toggle()
-                        }) {
-                            Text("Forgot password?")
-                        }
-                    }
-                    .padding(.top, 10)
-                    .padding(.trailing, 24)
                     
                 }
                 .padding(.bottom, 100)
