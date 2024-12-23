@@ -13,9 +13,11 @@ import FirebaseAuth
     
     var loginerror : String?
     
-    
     var totalIncome: Double = 0.0
     var incomeList: [Income] = []
+    var totalExpenses: Double = 0.0
+    var fixedExpenseList: [Expense] = []
+    var variableExpenseList: [Expense] = []
     
     func userLogin(email : String, password : String, completion: @escaping (String?) -> Void) {
         Task {
@@ -172,7 +174,7 @@ import FirebaseAuth
        totalIncome = incomeList.reduce(0.0) { $0 + $1.amount }
    }
     
-    func loadExpenseData(expenseData: ExpenseData) async {
+    func loadExpenseData() async {
         
         guard let userid = Auth.auth().currentUser?.uid else { return }
         
@@ -184,8 +186,10 @@ import FirebaseAuth
             let expensedata = try await ref.child("expenses").child(userid).getData()
             print(expensedata.childrenCount)
             
-            expenseData.variableExpenseList = []
-            expenseData.fixedExpenseList = []
+            DispatchQueue.main.async {
+                self.variableExpenseList = []
+                self.fixedExpenseList = []
+            }
             
             for expenseitem in expensedata.children {
                 let expensesnap = expenseitem as! DataSnapshot
@@ -207,24 +211,24 @@ import FirebaseAuth
                 )
                 
                 if fetchedExpense.isfixed {
-                    expenseData.fixedExpenseList.append(fetchedExpense)
+                    fixedExpenseList.append(fetchedExpense)
                 } else {
-                    expenseData.variableExpenseList.append(fetchedExpense)
+                    variableExpenseList.append(fetchedExpense)
                 }
             }
             
             // Calculate total expense
             
-            let FixedExpensesSum = expenseData.fixedExpenseList.reduce(0.0) { (sum, expense) in
+            let FixedExpensesSum = fixedExpenseList.reduce(0.0) { (sum, expense) in
                  return sum + expense.amount
             }
              
-            let VariableExpensesSum = expenseData.variableExpenseList.reduce(0.0) { (sum, expense) in
+            let VariableExpensesSum = variableExpenseList.reduce(0.0) { (sum, expense) in
                  return sum + expense.amount
             }
              
-            let totalExpenses = FixedExpensesSum + VariableExpensesSum
-            expenseData.totalExpenses = totalExpenses
+            let totExpenses = FixedExpensesSum + VariableExpensesSum
+            totalExpenses = totExpenses
         
         } catch {
             // Something went wrong
@@ -232,7 +236,7 @@ import FirebaseAuth
         }
     }
     
-    func deleteExpense(from listType: String, at offsets: IndexSet, expenseData: ExpenseData) {
+    func deleteExpense(from listType: String, at offsets: IndexSet) {
         let userId = Auth.auth().currentUser?.uid
         guard let userId else { return }
 
@@ -244,9 +248,9 @@ import FirebaseAuth
         // Determine which list to use based on `listType`
         switch listType {
         case "fixed":
-            expenseList = expenseData.fixedExpenseList
+            expenseList = fixedExpenseList
         case "variable":
-            expenseList = expenseData.variableExpenseList
+            expenseList = variableExpenseList
         default:
             print("Invalid list type")
             return
@@ -262,13 +266,13 @@ import FirebaseAuth
 
         // Update local data
         if listType == "fixed" {
-            expenseData.fixedExpenseList.remove(atOffsets: offsets)
+            fixedExpenseList.remove(atOffsets: offsets)
         } else if listType == "variable" {
-            expenseData.variableExpenseList.remove(atOffsets: offsets)
+            variableExpenseList.remove(atOffsets: offsets)
         }
 
         // Recalculate total expenses
-        expenseData.totalExpenses = (expenseData.fixedExpenseList + expenseData.variableExpenseList)
+        totalExpenses = (fixedExpenseList + variableExpenseList)
             .reduce(0.0) { $0 + $1.amount }
     }
     

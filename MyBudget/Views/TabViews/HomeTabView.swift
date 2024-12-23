@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeTabView: View {
     //@ObservedObject var incomeData: IncomeData
-    @ObservedObject var expenseData: ExpenseData
+    //@ObservedObject var expenseData: ExpenseData
     
     @State var showingNewPeriod: Bool = false
     
@@ -23,10 +23,10 @@ struct HomeTabView: View {
                     .font(.title)
                     .padding()
                 
-                Text("Total Expense: \(expenseData.totalExpenses, specifier: "%.2f")")
+                Text("Total Expense: \(budgetfb.totalExpenses, specifier: "%.2f")")
                     .font(.title)
                 
-                Text("Total Outcome: \(budgetfb.totalIncome - expenseData.totalExpenses, specifier: "%.2f")")
+                Text("Total Outcome: \(budgetfb.totalIncome - budgetfb.totalExpenses, specifier: "%.2f")")
                     .font(.title)
                     .padding()
             }
@@ -49,5 +49,5 @@ struct HomeTabView: View {
 }
 
 #Preview {
-    HomeTabView(expenseData: ExpenseData())
+    HomeTabView()
 }

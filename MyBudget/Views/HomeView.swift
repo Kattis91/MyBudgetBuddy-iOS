@@ -29,7 +29,6 @@ struct HomeView: View {
     
     
     @State var budgetfb = BudgetFB()
-    @StateObject private var expenseData = ExpenseData()
     
     var body: some View {
         
@@ -37,7 +36,7 @@ struct HomeView: View {
             
             TabView {
                 Tab("Home", systemImage: "house") {
-                    HomeTabView(expenseData: expenseData, budgetfb: budgetfb)
+                    HomeTabView(budgetfb: budgetfb)
                 }
                 
                 Tab("Incomes", systemImage: "plus.circle") {
@@ -45,7 +44,7 @@ struct HomeView: View {
                 }
                 
                 Tab("Expenses", systemImage: "minus.circle") {
-                    ExpensesTabView(expenseData: expenseData)
+                    ExpensesTabView(budgetfb: budgetfb)
                 }
                 
                 Tab("Overview", systemImage: "chart.bar") {
@@ -57,7 +56,7 @@ struct HomeView: View {
         .onAppear {
             Task {
                 await budgetfb.loadIncomeData()
-                await budgetfb.loadExpenseData(expenseData: expenseData)
+                await budgetfb.loadExpenseData()
             }
         }
         .accentColor(Color("TextColor"))

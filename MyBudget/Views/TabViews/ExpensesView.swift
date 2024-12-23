@@ -23,7 +23,7 @@ struct ExpensesView: View {
     @Binding var totalExpenses: Double
     @Binding var expenseList: [Expense]
     
-    @ObservedObject var expenseData: ExpenseData
+    // @ObservedObject var expenseData: ExpenseData
     
     @State var budgetfb = BudgetFB()
     
@@ -81,7 +81,7 @@ struct ExpensesView: View {
                     budgetfb.saveExpenseData(amount: expense, category: selectedCategory, isfixed: ( viewtype == .fixed )) // Pass the validated Double to saveIncomeData
                     expenseAmount = ""
                     Task {
-                        await budgetfb.loadExpenseData(expenseData: expenseData)
+                        await budgetfb.loadExpenseData()
                     }
                 } else {
                     errorMessage = "Amount must be greater than zero."
@@ -97,7 +97,7 @@ struct ExpensesView: View {
         
         if viewtype == .fixed {
             CustomListView(
-                items: expenseData.fixedExpenseList,
+                items: budgetfb.fixedExpenseList,
                 deleteAction: deleteFixedExpense,
                 itemContent: { expense in
                     (category: expense.category, amount: expense.amount)
@@ -105,7 +105,7 @@ struct ExpensesView: View {
             )
         } else {
             CustomListView(
-                items: expenseData.variableExpenseList,
+                items: budgetfb.variableExpenseList,
                 deleteAction: deleteVariableExpense,
                 itemContent: { expense in
                     (category: expense.category, amount: expense.amount)
@@ -116,12 +116,12 @@ struct ExpensesView: View {
     
     // Bridge function for Fixed
     private func deleteFixedExpense(at offsets: IndexSet) {
-        budgetfb.deleteExpense(from: "fixed", at: offsets, expenseData: expenseData)
+        budgetfb.deleteExpense(from: "fixed", at: offsets)
     }
     
     // Bridge function for Variable
     private func deleteVariableExpense(at offsets: IndexSet) {
-        budgetfb.deleteExpense(from: "variable", at: offsets, expenseData: expenseData)
+        budgetfb.deleteExpense(from: "variable", at: offsets)
     }
 }
 
@@ -130,6 +130,6 @@ struct ExpensesView: View {
         viewtype: .fixed, categories: ["Rent", "Water", "Electricity"],
         selectedCategory: "Rent",
         totalExpenses: .constant(100.0), expenseList: .constant([]),
-        expenseData: ExpenseData()
+        budgetfb: BudgetFB()
     )
 }

@@ -11,7 +11,7 @@ import FirebaseAuth
 
 struct ExpensesTabView: View {
     
-    @ObservedObject var expenseData: ExpenseData
+   // @ObservedObject var expenseData: ExpenseData
     @State private var selectedView: ExpenseViewType = .fixed
     
     @State var budgetfb = BudgetFB()
@@ -20,7 +20,7 @@ struct ExpensesTabView: View {
         
         VStack {
             
-            Text("Total expenses: \(expenseData.totalExpenses,  specifier: "%.2f")")
+            Text("Total expenses: \(budgetfb.totalExpenses,  specifier: "%.2f")")
                 .font(.largeTitle)
                 .bold()
                 .padding()
@@ -60,27 +60,27 @@ struct ExpensesTabView: View {
                     viewtype: .fixed,
                     categories: ["Rent", "Water", "Heat", "Electricity", "Insurance", "Mobile", "Netflix", "WiFi", "Something else?"],
                     selectedCategory: "Rent",
-                    totalExpenses: $expenseData.totalExpenses,
-                    expenseList: $expenseData.fixedExpenseList,
-                    expenseData: expenseData
+                    totalExpenses: $budgetfb.totalExpenses,
+                    expenseList: $budgetfb.fixedExpenseList,
+                    budgetfb: budgetfb
                 )
             } else {
                 ExpensesView(
                     viewtype: .variable,
                     categories: ["Groceries","Dining Out",  "Shopping", "Entertainment", "Transport", "Savings", "Something else?"],
                     selectedCategory: "Groceries",
-                    totalExpenses: $expenseData.totalExpenses,
-                    expenseList: $expenseData.variableExpenseList,
-                    expenseData: expenseData
+                    totalExpenses: $budgetfb.totalExpenses,
+                    expenseList: $budgetfb.variableExpenseList,
+                    budgetfb: budgetfb
                 )
             }
         }
         .task {
-            await budgetfb.loadExpenseData(expenseData: expenseData) // Ensure data is loaded when the view appears
+            await budgetfb.loadExpenseData() // Ensure data is loaded when the view appears
         }
     }
 }
 
 #Preview {
-    ExpensesTabView(expenseData: ExpenseData())
+    ExpensesTabView(budgetfb: BudgetFB())
 }
