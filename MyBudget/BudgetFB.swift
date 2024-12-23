@@ -13,6 +13,10 @@ import FirebaseAuth
     
     var loginerror : String?
     
+    
+    var totalIncome: Double = 0.0
+    var incomeList: [Income] = []
+    
     func userLogin(email : String, password : String, completion: @escaping (String?) -> Void) {
         Task {
             do {
@@ -94,7 +98,7 @@ import FirebaseAuth
     }
 
     
-    func loadIncomeData(incomeData: IncomeData) async {
+    func loadIncomeData() async {
         
         guard let userid = Auth.auth().currentUser?.uid else { return }
         
@@ -106,7 +110,10 @@ import FirebaseAuth
             let incomedata = try await ref.child("incomes").child(userid).getData()
             print(incomedata.childrenCount)
             
-            incomeData.incomeList = []
+            DispatchQueue.main.async {
+                self.incomeList = []
+            }
+            
             
             for incomeitem in incomedata.children {
                 let incomesnap = incomeitem as! DataSnapshot
@@ -125,16 +132,16 @@ import FirebaseAuth
                     amount: incomeDataDict["amount"] as? Double ?? 0.0,  // Default to 0.0 if not found
                     category: incomeDataDict["category"] as? String ?? "Unknown"  // Default to "Unknown" if not found
                 )
-                incomeData.incomeList.append(fetchedIncome)
+                incomeList.append(fetchedIncome)
             }
             
             // Calculate total income
-            let totalIncome = incomeData.incomeList.reduce(0.0) { (sum, income) in
+            let totIncome = incomeList.reduce(0.0) { (sum, income) in
                 return sum + income.amount
             }
             
-            print("Total Income: \(totalIncome)")
-            incomeData.totalIncome = totalIncome
+            print("Total Income: \(totIncome)")
+            totalIncome = totIncome
             
         } catch {
             // Something went wrong
@@ -143,7 +150,7 @@ import FirebaseAuth
         
     }
     
-    func deleteIncome(at offsets: IndexSet, incomeData: IncomeData) {
+    func deleteIncome(at offsets: IndexSet) {
        let userid = Auth.auth().currentUser?.uid
        guard let userid else { return }
        
@@ -152,17 +159,17 @@ import FirebaseAuth
        
        for offset in offsets {
            print("DELETE \(offset)")
-           let incomeItem = incomeData.incomeList[offset]
+           let incomeItem = incomeList[offset]
            print(incomeItem.id)
            print(incomeItem.category)
            ref.child("incomes").child(userid).child(incomeItem.id).removeValue()
        }
        
        // Update local data
-       incomeData.incomeList.remove(atOffsets: offsets)
+       incomeList.remove(atOffsets: offsets)
        
        // Recalculate total income
-       incomeData.totalIncome = incomeData.incomeList.reduce(0.0) { $0 + $1.amount }
+       totalIncome = incomeList.reduce(0.0) { $0 + $1.amount }
    }
     
     func loadExpenseData(expenseData: ExpenseData) async {

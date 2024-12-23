@@ -11,9 +11,9 @@ import FirebaseAuth
 
 struct IncomesTabView: View {
     
-    @State var budgetfb = BudgetFB()
+    @State var budgetfb: BudgetFB
     
-    @ObservedObject var incomeData: IncomeData
+    //@ObservedObject var incomeData: IncomeData
     
     @State private var categories: [String] =
     ["Salary", "Study grant", "Child benefit", "Housing insurance", "Sickness insurance", "Business", "Something else?"]
@@ -30,7 +30,7 @@ struct IncomesTabView: View {
         NavigationStack {
             VStack {
                 
-                Text("Total Income: \(incomeData.totalIncome, specifier: "%.2f")")
+                Text("Total Income: \(budgetfb.totalIncome, specifier: "%.2f")")
                     .font(.largeTitle)
                     .bold()
                     .padding()
@@ -73,7 +73,7 @@ struct IncomesTabView: View {
                             incomeAmount = ""
                             budgetfb.saveIncomeData(amount: income, category: selectedCategory)
                             Task {
-                                await budgetfb.loadIncomeData(incomeData: incomeData)
+                                await budgetfb.loadIncomeData()
                             }
                         } else {
                             errorMessage = "Amount must be greater than zero."
@@ -88,7 +88,7 @@ struct IncomesTabView: View {
                 ErrorMessageView(errorMessage: errorMessage, height: 20)
                 
                 CustomListView(
-                    items: incomeData.incomeList,
+                    items: budgetfb.incomeList,
                     deleteAction: deleteIncomeItem,
                     itemContent: { income in
                         (category: income.category, amount: income.amount)
@@ -96,7 +96,7 @@ struct IncomesTabView: View {
                 )
             }
             .task {
-                await budgetfb.loadIncomeData(incomeData: incomeData)
+                await budgetfb.loadIncomeData()
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -114,10 +114,10 @@ struct IncomesTabView: View {
     }
     // Bridge function
     private func deleteIncomeItem(at offsets: IndexSet) {
-        budgetfb.deleteIncome(at: offsets, incomeData: incomeData)
+        budgetfb.deleteIncome(at: offsets)
     }
 }
 
 #Preview {
-    IncomesTabView(incomeData: IncomeData())
+    IncomesTabView(budgetfb: BudgetFB())
 }

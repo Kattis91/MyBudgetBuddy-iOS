@@ -29,7 +29,6 @@ struct HomeView: View {
     
     
     @State var budgetfb = BudgetFB()
-    @StateObject private var incomeData = IncomeData()
     @StateObject private var expenseData = ExpenseData()
     
     var body: some View {
@@ -38,11 +37,11 @@ struct HomeView: View {
             
             TabView {
                 Tab("Home", systemImage: "house") {
-                    HomeTabView(incomeData: incomeData, expenseData: expenseData)
+                    HomeTabView(expenseData: expenseData, budgetfb: budgetfb)
                 }
                 
                 Tab("Incomes", systemImage: "plus.circle") {
-                    IncomesTabView(incomeData: incomeData)
+                    IncomesTabView(budgetfb: budgetfb)
                 }
                 
                 Tab("Expenses", systemImage: "minus.circle") {
@@ -57,7 +56,7 @@ struct HomeView: View {
         }
         .onAppear {
             Task {
-                await budgetfb.loadIncomeData(incomeData: incomeData)
+                await budgetfb.loadIncomeData()
                 await budgetfb.loadExpenseData(expenseData: expenseData)
             }
         }
