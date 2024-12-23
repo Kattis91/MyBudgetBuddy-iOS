@@ -76,7 +76,7 @@ struct LoginView: View {
             if showForgotPassword {
                 ForgotPasswordView(isPresented: $showForgotPassword)
                     .navigationBarBackButtonHidden(true)
-                    .frame(height: 280)
+                    .frame(height: 330)
                     .background(Color.white)
                     .padding(.horizontal, 24)
                     .cornerRadius(12)

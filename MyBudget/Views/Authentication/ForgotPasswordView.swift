@@ -38,15 +38,7 @@ struct ForgotPasswordView: View {
             
             
             Text("Reset Password")
-                .padding(.bottom, 35.0)
                 .font(.title2)
-            
-            TextField("Email", text: $email)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding(.horizontal, 24)
-                .onChange(of: email) {
-                    errorMessage = ""
-                }
             
             VStack {
                 if errorMessage != "" {
@@ -59,6 +51,11 @@ struct ForgotPasswordView: View {
                 }
             }
             .frame(height: 50)
+            
+            CustomTextFieldView(placeholder: "Email", text: $email, onChange: {
+                errorMessage = ""
+            }, systemName: "envelope", forget: true)
+        
             
             HStack {
                 Button(action: {
@@ -81,11 +78,12 @@ struct ForgotPasswordView: View {
                     ButtonView(buttontext: "Send reset link", maxWidth: 180)
                 }
             }
+            .padding(.top, 25)
         }
-        .padding(.bottom, 10)
+        .padding(.bottom, 50)
         .frame(maxWidth: .infinity)
-        .frame(height: 280)
-        .background(Color.resetPasswordBox)
+        .frame(height: 330)
+        .background(Color("TabColor"))
     }
 }
 

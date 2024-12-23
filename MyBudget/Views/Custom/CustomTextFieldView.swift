@@ -16,6 +16,7 @@ struct CustomTextFieldView: View {
     var leadingPadding: CGFloat = 24
     var trailingPadding: CGFloat = 24
     var systemName: String?
+    var forget: Bool = false
     
     var body: some View {
         HStack {
@@ -36,7 +37,7 @@ struct CustomTextFieldView: View {
         .frame(height: 45)
         .textFieldStyle(PlainTextFieldStyle())
         .padding(.horizontal)
-        .background(Color("TabColor"))
+        .background(forget ? Color.white : Color("TabColor"))
         .cornerRadius(15)
         .overlay(
             RoundedRectangle(cornerRadius: 15)
