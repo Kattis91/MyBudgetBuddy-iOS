@@ -13,11 +13,20 @@ struct HomeView: View {
     init() {
         let appearance = UITabBarAppearance()
         appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = UIColor(Color("TabColor"))// Ange bakgrundsfärgen här
+        // Set the background color of the tab bar
+        appearance.backgroundColor = UIColor(Color("TabColor"))
+        
+        // Set the appearance for inactive tabs
+        appearance.stackedLayoutAppearance.normal.iconColor = UIColor(Color("ButtonsBackground"))
+        
+        appearance.stackedLayoutAppearance.normal.titleTextAttributes = [
+            .foregroundColor: UIColor(Color("ButtonsBackground"))
+        ]
         
         UITabBar.appearance().standardAppearance = appearance
         UITabBar.appearance().scrollEdgeAppearance = appearance
     }
+    
     
     @State var budgetfb = BudgetFB()
     @StateObject private var incomeData = IncomeData()
@@ -52,6 +61,7 @@ struct HomeView: View {
                 await budgetfb.loadExpenseData(expenseData: expenseData)
             }
         }
+        .accentColor(Color("TextColor"))
     }
     
 }
