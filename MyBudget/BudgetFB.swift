@@ -18,7 +18,8 @@ import FirebaseAuth
     var totalExpenses: Double = 0.0
     var fixedExpenseList: [Expense] = []
     var variableExpenseList: [Expense] = []
-    var groupedIncome: [String: Double] = [:] // Summerad inkomst per kategori
+    var groupedIncome: [String: Double] = [:]
+    var groupedExpense: [String: Double] = [:]
 
     
     func userLogin(email : String, password : String, completion: @escaping (String?) -> Void) {
@@ -67,23 +68,6 @@ import FirebaseAuth
             }
         }
     }
-    
-    func saveExpenseData(amount: Double, category: String, isfixed: Bool) {
-        var ref: DatabaseReference!
-        
-        ref = Database.database().reference()
-        
-        let userid = Auth.auth().currentUser!.uid
-        
-        let expenseEntry: [String: Any] = [
-            "amount": amount,
-            "category": category,
-            "isfixed": isfixed
-            ]
-        
-        ref.child("expenses").child(userid).childByAutoId().setValue(expenseEntry)
-    }
-
     
     func saveIncomeData(amount: Double, category: String) {
         guard let userId = Auth.auth().currentUser?.uid else { return }
@@ -189,6 +173,38 @@ import FirebaseAuth
        totalIncome = incomeList.reduce(0.0) { $0 + $1.amount }
    }
     
+    func saveExpenseData(amount: Double, category: String, isfixed: Bool) {
+        guard let userId = Auth.auth().currentUser?.uid else { return }
+        let ref = Database.database().reference()
+        let categoryRef = ref.child("expenses").child(userId).child(category)
+        
+        categoryRef.observeSingleEvent(of: .value) { [weak self] snapshot in
+            if let existingData = snapshot.value as? [String: Any],
+               let existingAmount = existingData["amount"] as? Double {
+                // Update sum
+                let updatedAmount = existingAmount + amount
+                categoryRef.setValue(["amount": updatedAmount, "category": category, "isfixed": isfixed]) { error, _ in
+                    if error == nil {
+                        // After successful save, reload data on main thread
+                        Task { @MainActor in
+                            await self?.loadExpenseData()
+                        }
+                    }
+                }
+            } else {
+                // Create new category if it doesn't exist
+                categoryRef.setValue(["amount": amount, "category": category, "isfixed": isfixed]) { error, _ in
+                    if error == nil {
+                        // After successful save, reload data on main thread
+                        Task { @MainActor in
+                            await self?.loadExpenseData()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     func loadExpenseData() async {
         
         guard let userid = Auth.auth().currentUser?.uid else { return }
@@ -201,10 +217,11 @@ import FirebaseAuth
             let expensedata = try await ref.child("expenses").child(userid).getData()
             print(expensedata.childrenCount)
             
-            DispatchQueue.main.async {
-                self.variableExpenseList = []
-                self.fixedExpenseList = []
-            }
+            // Create temporary arrays/dictionaries
+            var newFixedExpenseList: [Expense] = []
+            var newVariableExpenseList: [Expense] = []
+            var newGroupedExpense: [String: Double] = [:]
+            var newTotalExpense: Double = 0.0
             
             for expenseitem in expensedata.children {
                 let expensesnap = expenseitem as! DataSnapshot
@@ -215,9 +232,7 @@ import FirebaseAuth
                     print("Failed to get income data")
                     continue
                 }
-                
-                print(expenseDataDict)
-                
+              
                 let fetchedExpense = Expense(
                     id: expensesnap.key,
                     amount: expenseDataDict["amount"] as? Double ?? 0.0,  // Default to 0.0 if not found
@@ -226,24 +241,26 @@ import FirebaseAuth
                 )
                 
                 if fetchedExpense.isfixed {
-                    fixedExpenseList.append(fetchedExpense)
+                    newFixedExpenseList.append(fetchedExpense)
                 } else {
-                    variableExpenseList.append(fetchedExpense)
+                    newVariableExpenseList.append(fetchedExpense)
                 }
+                
+                // Group and sum by category
+                let category = fetchedExpense.category
+                newGroupedExpense[category] = (newGroupedExpense[category] ?? 0.0) + fetchedExpense.amount
             }
             
-            // Calculate total expense
+            // Calculate new total
+            newTotalExpense = newFixedExpenseList.reduce(0.0) { $0 + $1.amount } + newVariableExpenseList.reduce(0.0) { $0 + $1.amount }
             
-            let FixedExpensesSum = fixedExpenseList.reduce(0.0) { (sum, expense) in
-                 return sum + expense.amount
+            // Update all UI elements at once on the main thread
+            await MainActor.run {
+                self.fixedExpenseList = newFixedExpenseList
+                self.variableExpenseList = newVariableExpenseList
+                self.groupedExpense = newGroupedExpense
+                self.totalExpenses = newTotalExpense
             }
-             
-            let VariableExpensesSum = variableExpenseList.reduce(0.0) { (sum, expense) in
-                 return sum + expense.amount
-            }
-             
-            let totExpenses = FixedExpensesSum + VariableExpensesSum
-            totalExpenses = totExpenses
         
         } catch {
             // Something went wrong

@@ -75,14 +75,8 @@ struct ExpensesView: View {
         Button(action: {
             if let expense = Double(expenseAmount) {
                 if expense > 0.00 {
-                    /*
-                    expenseData.addExpense(amount: expense, category: selectedCategory, isfixed: ( viewtype == .fixed ))
-                    */
                     budgetfb.saveExpenseData(amount: expense, category: selectedCategory, isfixed: ( viewtype == .fixed )) // Pass the validated Double to saveIncomeData
                     expenseAmount = ""
-                    Task {
-                        await budgetfb.loadExpenseData()
-                    }
                 } else {
                     errorMessage = "Amount must be greater than zero."
                 }
