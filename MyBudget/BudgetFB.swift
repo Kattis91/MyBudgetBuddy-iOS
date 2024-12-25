@@ -18,6 +18,8 @@ import FirebaseAuth
     var totalExpenses: Double = 0.0
     var fixedExpenseList: [Expense] = []
     var variableExpenseList: [Expense] = []
+    var groupedIncome: [String: Double] = [:] // Summerad inkomst per kategori
+
     
     func userLogin(email : String, password : String, completion: @escaping (String?) -> Void) {
         Task {
@@ -66,23 +68,6 @@ import FirebaseAuth
         }
     }
     
-    func saveIncomeData(amount: Double, category: String) {
-        var ref: DatabaseReference!
-        
-        ref = Database.database().reference()
-        
-        let userid = Auth.auth().currentUser!.uid
-        
-        let incomeEntry: [String: Any] = [
-            "amount": amount,
-            "category": category,
-            ]
-        
-        ref.child("incomes").child(userid).childByAutoId().setValue(incomeEntry)
-        
-        
-    }
-    
     func saveExpenseData(amount: Double, category: String, isfixed: Bool) {
         var ref: DatabaseReference!
         
@@ -100,56 +85,86 @@ import FirebaseAuth
     }
 
     
+    func saveIncomeData(amount: Double, category: String) {
+        guard let userId = Auth.auth().currentUser?.uid else { return }
+        let ref = Database.database().reference()
+        let categoryRef = ref.child("incomes").child(userId).child(category)
+        
+        // First update the database
+        categoryRef.observeSingleEvent(of: .value) { [weak self] snapshot in
+            if let existingData = snapshot.value as? [String: Any],
+               let existingAmount = existingData["amount"] as? Double {
+                // Update sum
+                let updatedAmount = existingAmount + amount
+                categoryRef.setValue(["amount": updatedAmount, "category": category]) { error, _ in
+                    if error == nil {
+                        // After successful save, reload data on main thread
+                        Task { @MainActor in
+                            await self?.loadIncomeData()
+                        }
+                    }
+                }
+            } else {
+                // Create new category if it doesn't exist
+                categoryRef.setValue(["amount": amount, "category": category]) { error, _ in
+                    if error == nil {
+                        // After successful save, reload data on main thread
+                        Task { @MainActor in
+                            await self?.loadIncomeData()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     func loadIncomeData() async {
-        
         guard let userid = Auth.auth().currentUser?.uid else { return }
-        
-        var ref: DatabaseReference!
-        
-        ref = Database.database().reference()
+        let ref = Database.database().reference()
         
         do {
             let incomedata = try await ref.child("incomes").child(userid).getData()
-            print(incomedata.childrenCount)
             
-            DispatchQueue.main.async {
-                self.incomeList = []
-            }
+            // Create temporary arrays/dictionaries
+            var newIncomeList: [Income] = []
+            var newGroupedIncome: [String: Double] = [:]
+            var newTotalIncome: Double = 0.0
             
-            
+            // Process all income data
             for incomeitem in incomedata.children {
                 let incomesnap = incomeitem as! DataSnapshot
                 
-                // Access the "income data" child
-                guard let incomeDataDict = incomesnap.value as? [String: Any]
-                else {
+                guard let incomeDataDict = incomesnap.value as? [String: Any] else {
                     print("Failed to get income data")
                     continue
                 }
                 
-                print(incomeDataDict)
-                
                 let fetchedIncome = Income(
                     id: incomesnap.key,
-                    amount: incomeDataDict["amount"] as? Double ?? 0.0,  // Default to 0.0 if not found
-                    category: incomeDataDict["category"] as? String ?? "Unknown"  // Default to "Unknown" if not found
+                    amount: incomeDataDict["amount"] as? Double ?? 0.0,
+                    category: incomeDataDict["category"] as? String ?? "Unknown"
                 )
-                incomeList.append(fetchedIncome)
+                
+                newIncomeList.append(fetchedIncome)
+                
+                // Group and sum by category
+                let category = fetchedIncome.category
+                newGroupedIncome[category] = (newGroupedIncome[category] ?? 0.0) + fetchedIncome.amount
             }
             
-            // Calculate total income
-            let totIncome = incomeList.reduce(0.0) { (sum, income) in
-                return sum + income.amount
-            }
+            // Calculate new total
+            newTotalIncome = newIncomeList.reduce(0.0) { $0 + $1.amount }
             
-            print("Total Income: \(totIncome)")
-            totalIncome = totIncome
+            // Update all UI elements at once on the main thread
+            await MainActor.run {
+                self.incomeList = newIncomeList
+                self.groupedIncome = newGroupedIncome
+                self.totalIncome = newTotalIncome
+            }
             
         } catch {
-            // Something went wrong
-            print("Something went wrong!")
+            print("Error loading income data: \(error.localizedDescription)")
         }
-        
     }
     
     func deleteIncome(at offsets: IndexSet) {

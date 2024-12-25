@@ -72,9 +72,6 @@ struct IncomesTabView: View {
                         if income > 0.00 {
                             incomeAmount = ""
                             budgetfb.saveIncomeData(amount: income, category: selectedCategory)
-                            Task {
-                                await budgetfb.loadIncomeData()
-                            }
                         } else {
                             errorMessage = "Amount must be greater than zero."
                         }
