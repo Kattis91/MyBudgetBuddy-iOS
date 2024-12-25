@@ -10,8 +10,7 @@ import Firebase
 import FirebaseAuth
 
 struct ExpensesTabView: View {
-    
-   // @ObservedObject var expenseData: ExpenseData
+   
     @State private var selectedView: ExpenseViewType = .fixed
     
     @State var budgetfb = BudgetFB()

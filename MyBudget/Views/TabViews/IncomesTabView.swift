@@ -12,9 +12,7 @@ import FirebaseAuth
 struct IncomesTabView: View {
     
     @State var budgetfb: BudgetFB
-    
-    //@ObservedObject var incomeData: IncomeData
-    
+   
     @State private var categories: [String] =
     ["Salary", "Study grant", "Child benefit", "Housing insurance", "Sickness insurance", "Business"]
     @State private var selectedCategory: String = ""

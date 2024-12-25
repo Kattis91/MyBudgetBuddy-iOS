@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct HomeTabView: View {
-    //@ObservedObject var incomeData: IncomeData
-    //@ObservedObject var expenseData: ExpenseData
     
     @State var showingNewPeriod: Bool = false
     
@@ -29,9 +27,6 @@ struct HomeTabView: View {
                 Text("Total Outcome: \(budgetfb.totalIncome - budgetfb.totalExpenses, specifier: "%.2f")")
                     .font(.title)
                     .padding()
-            }
-            .sheet(isPresented: $showingNewPeriod) {
-                NewBudgetPeriodView()
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {

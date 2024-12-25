@@ -25,22 +25,8 @@ struct ExpensesView: View {
     
     @State var showNewCategoryField = false
     
-    // @ObservedObject var expenseData: ExpenseData
-    
     @State var budgetfb = BudgetFB()
-    
    
-    
-    // Custom initializer to avoid private issues
-    /*
-    init(categories: [String], selectedCategory: String, expenseList: Binding<[Expense]>, totalExpenses: Binding<Double>) {
-        self.categories = categories
-        self._selectedCategory = State(initialValue: selectedCategory)
-        self._expenseList = expenseList
-        self._totalExpenses = totalExpenses
-        self._expenseData = .init(initialValue: ExpenseData())
-    }
-    */
     var body: some View {
         
         VStack {
