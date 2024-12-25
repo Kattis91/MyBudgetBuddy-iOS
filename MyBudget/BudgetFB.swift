@@ -109,47 +109,51 @@ import FirebaseAuth
         do {
             let incomedata = try await ref.child("incomes").child(userid).getData()
             
-            // Create temporary arrays/dictionaries
-            var newIncomeList: [Income] = []
-            var newGroupedIncome: [String: Double] = [:]
-            var newTotalIncome: Double = 0.0
-            
-            // Process all income data
-            for incomeitem in incomedata.children {
-                let incomesnap = incomeitem as! DataSnapshot
-                
-                guard let incomeDataDict = incomesnap.value as? [String: Any] else {
-                    print("Failed to get income data")
-                    continue
-                }
-                
-                let fetchedIncome = Income(
-                    id: incomesnap.key,
-                    amount: incomeDataDict["amount"] as? Double ?? 0.0,
-                    category: incomeDataDict["category"] as? String ?? "Unknown"
-                )
-                
-                newIncomeList.append(fetchedIncome)
-                
-                // Group and sum by category
-                let category = fetchedIncome.category
-                newGroupedIncome[category] = (newGroupedIncome[category] ?? 0.0) + fetchedIncome.amount
-            }
-            
-            // Calculate new total
-            newTotalIncome = newIncomeList.reduce(0.0) { $0 + $1.amount }
+            // Process all income data and create the final arrays/dictionaries
+            let processedData = await processIncomeData(incomedata)
             
             // Update all UI elements at once on the main thread
             await MainActor.run {
-                self.incomeList = newIncomeList
-                self.groupedIncome = newGroupedIncome
-                self.totalIncome = newTotalIncome
+                self.incomeList = processedData.incomes
+                self.groupedIncome = processedData.grouped
+                self.totalIncome = processedData.total
             }
             
         } catch {
             print("Error loading income data: \(error.localizedDescription)")
         }
     }
+    
+    // Helper function to process income data
+    func processIncomeData(_ snapshot: DataSnapshot) async -> (incomes: [Income], grouped: [String: Double], total: Double) {
+        var incomeList: [Income] = []
+        var groupedIncome: [String: Double] = [:]
+        var totalIncome: Double = 0.0
+        
+        for incomeitem in snapshot.children {
+            guard let incomesnap = incomeitem as? DataSnapshot,
+                  let incomeDataDict = incomesnap.value as? [String: Any] else {
+                continue
+            }
+            
+            let fetchedIncome = Income(
+                id: incomesnap.key,
+                amount: incomeDataDict["amount"] as? Double ?? 0.0,
+                category: incomeDataDict["category"] as? String ?? "Unknown"
+            )
+            
+            incomeList.append(fetchedIncome)
+            
+            // Group and sum by category
+            let category = fetchedIncome.category
+            groupedIncome[category] = (groupedIncome[category] ?? 0.0) + fetchedIncome.amount
+        }
+        
+        totalIncome = incomeList.reduce(0.0) { $0 + $1.amount }
+                
+        return (incomeList, groupedIncome, totalIncome)
+    }
+    
     
     func deleteIncome(at offsets: IndexSet) {
        let userid = Auth.auth().currentUser?.uid
@@ -215,58 +219,60 @@ import FirebaseAuth
         
         do {
             let expensedata = try await ref.child("expenses").child(userid).getData()
-            print(expensedata.childrenCount)
             
-            // Create temporary arrays/dictionaries
-            var newFixedExpenseList: [Expense] = []
-            var newVariableExpenseList: [Expense] = []
-            var newGroupedExpense: [String: Double] = [:]
-            var newTotalExpense: Double = 0.0
-            
-            for expenseitem in expensedata.children {
-                let expensesnap = expenseitem as! DataSnapshot
-                
-                // Access the "income data" child
-                guard let expenseDataDict = expensesnap.value as? [String: Any]
-                else {
-                    print("Failed to get income data")
-                    continue
-                }
-              
-                let fetchedExpense = Expense(
-                    id: expensesnap.key,
-                    amount: expenseDataDict["amount"] as? Double ?? 0.0,  // Default to 0.0 if not found
-                    category: expenseDataDict["category"] as? String ?? "Unknown",
-                    isfixed: expenseDataDict["isfixed"] as? Bool ?? false  // Default to "Unknown" if not found
-                )
-                
-                if fetchedExpense.isfixed {
-                    newFixedExpenseList.append(fetchedExpense)
-                } else {
-                    newVariableExpenseList.append(fetchedExpense)
-                }
-                
-                // Group and sum by category
-                let category = fetchedExpense.category
-                newGroupedExpense[category] = (newGroupedExpense[category] ?? 0.0) + fetchedExpense.amount
-            }
-            
-            // Calculate new total
-            newTotalExpense = newFixedExpenseList.reduce(0.0) { $0 + $1.amount } + newVariableExpenseList.reduce(0.0) { $0 + $1.amount }
+            // Process all expense data and create the final arrays/dictionaries
+            let processedData = await processExpenseData(expensedata)
             
             // Update all UI elements at once on the main thread
             await MainActor.run {
-                self.fixedExpenseList = newFixedExpenseList
-                self.variableExpenseList = newVariableExpenseList
-                self.groupedExpense = newGroupedExpense
-                self.totalExpenses = newTotalExpense
+                self.fixedExpenseList = processedData.fixedExpenses
+                self.variableExpenseList = processedData.variableExpenses
+                self.groupedExpense = processedData.grouped
+                self.totalExpenses = processedData.total
             }
-        
         } catch {
             // Something went wrong
-            print("Something went wrong!")
+            print("Error loading income data: \(error.localizedDescription)")
         }
     }
+    
+    // Helper function to process expense data
+    func processExpenseData(_ snapshot: DataSnapshot) async -> (fixedExpenses: [Expense], variableExpenses: [Expense], grouped: [String: Double], total: Double) {
+        var fixedExpenseList: [Expense] = []
+        var variableExpenseList: [Expense] = []
+        var groupedExpense: [String: Double] = [:]
+        var totalExpenses: Double = 0.0
+        
+        for expenseitem in snapshot.children {
+            guard let expensesnap = expenseitem as? DataSnapshot,
+                  let expenseDataDict = expensesnap.value as? [String: Any] else {
+                continue
+            }
+    
+            let fetchedExpense = Expense(
+                id: expensesnap.key,
+                amount: expenseDataDict["amount"] as? Double ?? 0.0,  // Default to 0.0 if not found
+                category: expenseDataDict["category"] as? String ?? "Unknown",
+                isfixed: expenseDataDict["isfixed"] as? Bool ?? false  // Default to "Unknown" if not found
+            )
+            
+            if fetchedExpense.isfixed {
+                fixedExpenseList.append(fetchedExpense)
+            } else {
+                variableExpenseList.append(fetchedExpense)
+            }
+            
+            // Group and sum by category
+            let category = fetchedExpense.category
+            groupedExpense[category] = (groupedExpense[category] ?? 0.0) + fetchedExpense.amount
+        }
+    
+        // Calculate new total
+        totalExpenses = fixedExpenseList.reduce(0.0) { $0 + $1.amount } + variableExpenseList.reduce(0.0) { $0 + $1.amount }
+                
+        return (fixedExpenseList, variableExpenseList, groupedExpense, totalExpenses)
+    }
+    
     
     func deleteExpense(from listType: String, at offsets: IndexSet) {
         let userId = Auth.auth().currentUser?.uid
