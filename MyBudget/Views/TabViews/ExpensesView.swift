@@ -23,6 +23,8 @@ struct ExpensesView: View {
     @Binding var totalExpenses: Double
     @Binding var expenseList: [Expense]
     
+    @State var showNewCategoryField = false
+    
     // @ObservedObject var expenseData: ExpenseData
     
     @State var budgetfb = BudgetFB()
@@ -41,42 +43,67 @@ struct ExpensesView: View {
     */
     var body: some View {
         
-        HStack {
+        VStack {
             CustomTextFieldView(placeholder: "Expense amount", text: $expenseAmount, isSecure: false, onChange: {
                 errorMessage = ""
-            }, trailingPadding: 5, systemName: "minus.circle")
+            }, leadingPadding: 33, trailingPadding: 33, systemName: "minus.circle")
             
-            Picker("Category", selection: $selectedCategory) {
-                ForEach(categories, id: \.self) { category in
-                    Text(category)
-                }
-            }
-            .pickerStyle(MenuPickerStyle())
-            .padding(.bottom)
-        }
-        
-        if selectedCategory == "Something else?" {
-            HStack {
-                CustomTextFieldView(placeholder: "New category", text: $newCategory, isSecure: false, trailingPadding: 0)
-                    .padding(.top, 11)
-                
-                Button(action: {
-                    if !newCategory.isEmpty {
-                        categories.append(newCategory)
-                        selectedCategory = newCategory
-                        newCategory = ""
+            if showNewCategoryField {
+                CustomTextFieldView(placeholder: "New category", text: $newCategory, isSecure: false, leadingPadding: 55, trailingPadding: 55, systemName: "square.grid.2x2")
+            } else {
+                Menu {
+                    ForEach(categories, id: \.self) { category in
+                        Button(category) {
+                            selectedCategory = category
+                        }
                     }
-                }) {
-                    ButtonView(buttontext: "Add", maxWidth: 80, leadingPadding: 10)
+                    Button("+ Add new category") {
+                        selectedCategory = "new"
+                        showNewCategoryField = true
+                    }
+                } label: {
+                    HStack {
+                        Text(selectedCategory.isEmpty ? "Category" : selectedCategory)
+                            .foregroundColor(selectedCategory.isEmpty ? .gray : .primary)
+                        Spacer()
+                        Image(systemName: "chevron.down")
+                            .foregroundColor(.gray)
+                    }
+                    .padding()
+                    .background(Color(.systemGray6))
+                    .cornerRadius(16)
                 }
+                .padding(.bottom)
+                .padding(.horizontal, 33)
             }
         }
         
+        ErrorMessageView(errorMessage: errorMessage, height: 15)
+    
         Button(action: {
             if let expense = Double(expenseAmount) {
                 if expense > 0.00 {
-                    budgetfb.saveExpenseData(amount: expense, category: selectedCategory, isfixed: ( viewtype == .fixed )) // Pass the validated Double to saveIncomeData
-                    expenseAmount = ""
+                    if showNewCategoryField {
+                        if !newCategory.isEmpty {
+                            categories.append(newCategory)
+                            let categoryToUse = newCategory
+                            expenseAmount = ""
+                            budgetfb.saveExpenseData(amount: expense, category: categoryToUse, isfixed: ( viewtype == .fixed ))
+                            showNewCategoryField = false
+                            selectedCategory = ""
+                        } else {
+                            errorMessage = "Please add a category"
+                        }
+                    } else {
+                        if !selectedCategory.isEmpty {
+                            let categoryToUse = selectedCategory
+                            expenseAmount = ""
+                            budgetfb.saveExpenseData(amount: expense, category: categoryToUse, isfixed: ( viewtype == .fixed )) 
+                            selectedCategory = ""
+                        } else {
+                            errorMessage = "Please select a category."
+                        }
+                    }
                 } else {
                     errorMessage = "Amount must be greater than zero."
                 }
@@ -84,10 +111,8 @@ struct ExpensesView: View {
                 errorMessage = "Amount must be a number."
             }
         }) {
-            ButtonView(buttontext: "Add expense")
+            ButtonView(buttontext: "Add expense", leadingPadding: 33, trailingPadding: 33)
         }
-        
-        ErrorMessageView(errorMessage: errorMessage, height: 20)
         
         if viewtype == .fixed {
             CustomListView(

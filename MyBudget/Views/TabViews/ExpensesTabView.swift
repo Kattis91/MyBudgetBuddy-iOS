@@ -34,7 +34,7 @@ struct ExpensesTabView: View {
                         .padding(.horizontal, 10)
                         .background(selectedView == .fixed ? Color.buttonsBackground : Color.white)
                         .cornerRadius(10)
-                        .padding(.horizontal, 24)
+                        .padding(.leading, 33)
                         .foregroundStyle(selectedView == .fixed ? Color.white : Color("TextColor"))
                 }
                 
@@ -48,7 +48,7 @@ struct ExpensesTabView: View {
                         .padding(.horizontal, 10)
                         .background(selectedView == .variable ? Color.buttonsBackground : Color.white)
                         .cornerRadius(10)
-                        .padding(.horizontal, 24)
+                        .padding(.trailing, 33)
                         .foregroundStyle(selectedView == .variable ? Color.white : Color("TextColor"))
                 }
             }
@@ -58,8 +58,8 @@ struct ExpensesTabView: View {
             if selectedView == .fixed {
                 ExpensesView(
                     viewtype: .fixed,
-                    categories: ["Rent", "Water", "Heat", "Electricity", "Insurance", "Mobile", "Netflix", "WiFi", "Something else?"],
-                    selectedCategory: "Rent",
+                    categories: ["Rent", "Water", "Heat", "Electricity", "Insurance", "Mobile", "Netflix", "WiFi"],
+                    selectedCategory: "",
                     totalExpenses: $budgetfb.totalExpenses,
                     expenseList: $budgetfb.fixedExpenseList,
                     budgetfb: budgetfb
@@ -67,8 +67,8 @@ struct ExpensesTabView: View {
             } else {
                 ExpensesView(
                     viewtype: .variable,
-                    categories: ["Groceries","Dining Out",  "Shopping", "Entertainment", "Transport", "Savings", "Something else?"],
-                    selectedCategory: "Groceries",
+                    categories: ["Groceries","Dining Out",  "Shopping", "Entertainment", "Transport", "Savings"],
+                    selectedCategory: "",
                     totalExpenses: $budgetfb.totalExpenses,
                     expenseList: $budgetfb.variableExpenseList,
                     budgetfb: budgetfb

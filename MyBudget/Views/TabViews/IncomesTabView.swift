@@ -16,14 +16,19 @@ struct IncomesTabView: View {
     //@ObservedObject var incomeData: IncomeData
     
     @State private var categories: [String] =
-    ["Salary", "Study grant", "Child benefit", "Housing insurance", "Sickness insurance", "Business", "Something else?"]
-    @State private var selectedCategory: String = "Salary"
+    ["Salary", "Study grant", "Child benefit", "Housing insurance", "Sickness insurance", "Business"]
+    @State private var selectedCategory: String = ""
     @State private var newCategory: String = ""
+    
+    @State private var isPickerOpen: Bool = false
+    @State private var isIncomeAdded: Bool = false
     
     @State private var incomeAmount: String = ""
     @State var errorMessage = ""
     
     @State var showSettings = false
+    
+    @State var showNewCategoryField = false
     
     var body: some View {
         
@@ -35,43 +40,68 @@ struct IncomesTabView: View {
                     .bold()
                     .padding()
                 
-                HStack {
+                VStack {
                     
                     CustomTextFieldView(placeholder: "Enter Income", text: $incomeAmount, isSecure: false, onChange: {
                         errorMessage = ""
-                    }, trailingPadding: 5, systemName: "plus.circle")
+                    }, leadingPadding: 33, trailingPadding: 33, systemName: "plus.circle")
                     
-                    Picker("Select a Category", selection: $selectedCategory) {
-                        ForEach(categories, id: \.self) { category in
-                            Text(category)
+                    if showNewCategoryField {
+                        CustomTextFieldView(placeholder: "New category", text: $newCategory, isSecure: false, leadingPadding: 55, trailingPadding: 55, systemName: "square.grid.2x2")
+                    } else {
+                        Menu {
+                            ForEach(categories, id: \.self) { category in
+                                Button(category) {
+                                    selectedCategory = category
+                                }
+                            }
+                            Button("+ Add new category") {
+                                selectedCategory = "new"
+                                showNewCategoryField = true
+                            }
+                        } label: {
+                            HStack {
+                                Text(selectedCategory.isEmpty ? "Category" : selectedCategory)
+                                    .foregroundColor(selectedCategory.isEmpty ? .gray : .primary)
+                                Spacer()
+                                Image(systemName: "chevron.down")
+                                    .foregroundColor(.gray)
+                            }
+                            .padding()
+                            .background(Color(.systemGray6))
+                            .cornerRadius(16)
                         }
+                        .padding(.bottom)
+                        .padding(.horizontal, 33)
                     }
-                    .pickerStyle(MenuPickerStyle())
-                    .padding(.bottom)
                 }
                 
-                if selectedCategory == "Something else?" {
-                    HStack {
-                        CustomTextFieldView(placeholder: "New category", text: $newCategory, isSecure: false, trailingPadding: 0)
-                            .padding(.top, 13)
-                        
-                        Button(action: {
-                            if !newCategory.isEmpty {
-                                categories.append(newCategory)
-                                selectedCategory = newCategory
-                                newCategory = ""
-                            }
-                        }) {
-                            ButtonView(buttontext: "Add", maxWidth: 80, greenBackground: true, leadingPadding: 10)
-                        }
-                    }
-                }
+                ErrorMessageView(errorMessage: errorMessage, height: 15)
                 
                 Button(action: {
                     if let income = Double(incomeAmount) { // Convert incomeAmount (String) to Double
                         if income > 0.00 {
-                            incomeAmount = ""
-                            budgetfb.saveIncomeData(amount: income, category: selectedCategory)
+                            if showNewCategoryField {
+                                if !newCategory.isEmpty {
+                                    categories.append(newCategory)
+                                    let categoryToUse = newCategory
+                                    incomeAmount = ""
+                                    budgetfb.saveIncomeData(amount: income, category: categoryToUse)
+                                    showNewCategoryField = false
+                                    selectedCategory = ""
+                                } else {
+                                    errorMessage = "Please add a category"
+                                }
+                            } else {
+                                if !selectedCategory.isEmpty {
+                                    let categoryToUse = selectedCategory
+                                    incomeAmount = ""
+                                    budgetfb.saveIncomeData(amount: income, category: categoryToUse)
+                                    selectedCategory = ""
+                                } else {
+                                    errorMessage = "Please select a category."
+                                }
+                            }
                         } else {
                             errorMessage = "Amount must be greater than zero."
                         }
@@ -79,10 +109,8 @@ struct IncomesTabView: View {
                         errorMessage = "Amount must be a number."
                     }
                 }) {
-                    ButtonView(buttontext: "Add income", greenBackground: true)
+                    ButtonView(buttontext: "Add income", greenBackground: true, leadingPadding: 33, trailingPadding: 33)
                 }
-                
-                ErrorMessageView(errorMessage: errorMessage, height: 20)
                 
                 CustomListView(
                     items: budgetfb.incomeList,
