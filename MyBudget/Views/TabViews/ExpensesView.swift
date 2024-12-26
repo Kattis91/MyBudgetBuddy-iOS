@@ -35,7 +35,20 @@ struct ExpensesView: View {
             }, leadingPadding: 33, trailingPadding: 33, systemName: "minus.circle")
             
             if showNewCategoryField {
-                CustomTextFieldView(placeholder: "New category", text: $newCategory, isSecure: false, leadingPadding: 55, trailingPadding: 55, systemName: "square.grid.2x2")
+                HStack {
+                    CustomTextFieldView(placeholder: "New category", text: $newCategory, isSecure: false, leadingPadding: 33, systemName: "square.grid.2x2")
+                    Button(action: {
+                        showNewCategoryField = false
+                        selectedCategory = ""
+                        newCategory = ""
+                    }) {
+                        Image(systemName: "arrow.uturn.backward")
+                            .foregroundColor(.blue)
+                            .padding(.trailing, 33)
+                            .padding(.bottom, 8)
+                    }
+                }
+                .padding(.top, 10)
             } else {
                 Menu {
                     ForEach(categories, id: \.self) { category in
