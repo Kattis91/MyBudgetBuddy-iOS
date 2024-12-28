@@ -9,33 +9,52 @@ import SwiftUI
 
 struct HomeTabView: View {
     
-    @State var showingNewPeriod: Bool = false
+    @State var showingNewPeriod = false
     
     var budgetfb = BudgetFB()
     
     var body: some View {
         
-        NavigationStack {
-            VStack {
-                Text("Total Income: \(budgetfb.totalIncome, specifier: "%.2f")")
-                    .font(.title)
-                    .padding()
-                
-                Text("Total Expense: \(budgetfb.totalExpenses, specifier: "%.2f")")
-                    .font(.title)
-                
-                Text("Total Outcome: \(budgetfb.totalIncome - budgetfb.totalExpenses, specifier: "%.2f")")
-                    .font(.title)
-                    .padding()
-            }
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    
-                    Button(action: {
-                        budgetfb.userLogout()
-                    }) {
-                        Text("Sign out")
+        ZStack {
+            NavigationStack {
+                if !showingNewPeriod {
+                    VStack {
+                        Text("Total Income: \(budgetfb.totalIncome, specifier: "%.2f")")
+                            .font(.title)
+                            .padding()
+                        
+                        Text("Total Expense: \(budgetfb.totalExpenses, specifier: "%.2f")")
+                            .font(.title)
+                        
+                        Text("Total Outcome: \(budgetfb.totalIncome - budgetfb.totalExpenses, specifier: "%.2f")")
+                            .font(.title)
+                            .padding()
+                        
+                        Button(action: {
+                            showingNewPeriod.toggle()
+                        }) {
+                            ButtonView(buttontext: "Add new period", leadingPadding: 100, trailingPadding: 100)
+                        }
                     }
+                    .toolbar {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            
+                            Button(action: {
+                                budgetfb.userLogout()
+                            }) {
+                                Text("Sign out")
+                            }
+                        }
+                    }
+                }
+                if showingNewPeriod {
+                    NewBudgetPeriodView(isPresented: $showingNewPeriod)
+                        .navigationBarBackButtonHidden(true)
+                        .frame(height: 250)
+                        .background(Color.white)
+                        .padding(.horizontal, 24)
+                        .cornerRadius(12)
+                        .shadow(radius: 10)
                 }
             }
         }
