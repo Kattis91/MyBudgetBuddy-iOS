@@ -13,3 +13,14 @@ struct Expense: Identifiable {
     let category: String
     let isfixed: Bool
 }
+
+extension Expense {
+    func toDictionary() -> [String: Any] {
+        return [
+            "id": id,
+            "amount": amount,
+            "category": category,
+            "isfixed": isfixed
+        ]
+    }
+}

@@ -12,3 +12,13 @@ struct Income: Identifiable {
     let amount: Double
     let category: String
 }
+
+extension Income {
+    func toDictionary() -> [String: Any] {
+        return [
+            "id": id,
+            "amount": amount,
+            "category": category
+        ]
+    }
+}

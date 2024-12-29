@@ -6,24 +6,15 @@
 //
 
 import Foundation
+import Firebase
+import FirebaseAuth
 
 class BudgetManager: ObservableObject {
     
     var budgetfb = BudgetFB()
     
-    // Keep track of all historical data per period
-    struct PeriodHistory: Identifiable {
-        let id = UUID()
-        let startDate: Date
-        let endDate: Date
-        let allIncomes: [Income]
-        let allFixedExpenses: [Expense]
-        let totalIncome: Double
-        let totalFixedExpenses: Double
-    }
-    
     @Published var currentPeriod: BudgetPeriod
-    @Published var historicalPeriods: [PeriodHistory] = []
+    @Published var historicalPeriods: [BudgetPeriod] = []
     
     @Published var incomeList: [Income] = []
     @Published var groupedIncome: [String: Double] = [:]
@@ -33,12 +24,21 @@ class BudgetManager: ObservableObject {
     @Published var variableExpenseList: [Expense] = []
     @Published var groupedExpense: [String: Double] = [:]
     @Published var totalExpenses: Double = 0.0
+    
+    init() {
+        // Initialize with first period
+        self.currentPeriod = BudgetPeriod(
+            startDate: Date(),
+            endDate: Calendar.current.date(byAdding: .month, value: 1, to: Date())!
+        )
+    }
 
    func loadData() async {
-       await budgetfb.loadIncomeData()    // Hämta inkomster
-       await budgetfb.loadExpenseData()   // Hämta utgifter
+       await budgetfb.loadIncomeData()
+       await budgetfb.loadExpenseData()
        
        await MainActor.run {
+           // Load all data from Firebase
            self.incomeList = budgetfb.incomeList
            self.groupedIncome = budgetfb.groupedIncome
            self.totalIncome = budgetfb.totalIncome
@@ -49,27 +49,22 @@ class BudgetManager: ObservableObject {
            self.totalExpenses = budgetfb.totalExpenses
            
            // Update current period with loaded data
-           self.currentPeriod.incomes = self.incomeList
-           self.currentPeriod.fixedExpenses = self.fixedExpenseList
+           self.currentPeriod = BudgetPeriod(
+               startDate: self.currentPeriod.startDate,
+               endDate: self.currentPeriod.endDate,
+               incomes: self.incomeList,
+               fixedExpenses: self.fixedExpenseList,
+               variableExpenses: self.variableExpenseList
+           )
        }
    }
-    
-    init() {
-        // Start with first period
-        self.currentPeriod = BudgetPeriod(
-            startDate: Date(),
-            endDate: Calendar.current.date(byAdding: .month, value: 1, to: Date())!,
-            incomes: [],
-            fixedExpenses: []
-        )
-    }
     
     func startNewPeriod(
             startDate: Date,
             endDate: Date,
             includeIncomes: Bool,
             includeFixedExpenses: Bool
-        ) {
+        ) -> BudgetPeriod {
             
         print("Starting new period...")
         print("Start date: \(startDate)")
@@ -77,16 +72,7 @@ class BudgetManager: ObservableObject {
         print("Include incomes: \(includeIncomes)")
         print("Include expenses: \(includeFixedExpenses)")
             
-        // Save current period's complete data to history
-        let historicalPeriod = PeriodHistory(
-            startDate: currentPeriod.startDate,
-            endDate: currentPeriod.endDate,
-            allIncomes: incomeList,
-            allFixedExpenses: fixedExpenseList,
-            totalIncome: totalIncome,
-            totalFixedExpenses: fixedExpenseList.reduce(0) { $0 + $1.amount }
-        )
-        historicalPeriods.append(historicalPeriod)
+        historicalPeriods.append(currentPeriod)
             
         // Create new period with only selected data
         let newIncomes = includeIncomes ? incomeList : []
@@ -106,6 +92,8 @@ class BudgetManager: ObservableObject {
         
         print("New period created with start date: \(newPeriod.startDate) and end date: \(newPeriod.endDate)")
         print("Total historical periods: \(historicalPeriods.count)")
+            
+        return newPeriod
     }
 
 }
