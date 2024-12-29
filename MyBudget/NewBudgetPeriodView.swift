@@ -18,6 +18,8 @@ struct NewBudgetPeriodView: View {
     
     @Environment(\.presentationMode) var presentationMode
     
+    @State var budgetfb = BudgetFB()
+    
     // Add state variables for dates
     @State private var startDate = Date()
     @State private var endDate = Calendar.current.date(byAdding: .month, value: 1, to: Date())!
@@ -101,10 +103,16 @@ struct NewBudgetPeriodView: View {
             
             
             Button(action: {
-                budgetManager.startNewPeriod(startDate: startDate, endDate: endDate,
+                // First create the new period
+                let newPeriod = budgetManager.startNewPeriod(
+                    startDate: startDate,
+                    endDate: endDate,
                     includeIncomes: includeIncomes,
                     includeFixedExpenses: includeFixedExpenses
                 )
+                
+                // Then save that specific period
+                budgetfb.saveBudgetPeriod(newPeriod)
                 showConfirmation = true
                 isPresented = false
             }) {

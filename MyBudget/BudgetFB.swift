@@ -314,4 +314,19 @@ import FirebaseAuth
             .reduce(0.0) { $0 + $1.amount }
     }
     
+    func saveBudgetPeriod(_ budgetPeriod: BudgetPeriod) {
+        guard let userId = Auth.auth().currentUser?.uid else { return }
+        let ref = Database.database().reference()
+        let budgetRef = ref.child("budgetPeriods").child(userId).child(budgetPeriod.id)
+
+        budgetRef.setValue(budgetPeriod.toDictionary()) { error, _ in
+            if let error = error {
+                print("Failed to save budget period: \(error.localizedDescription)")
+            } else {
+                print("Successfully saved budget period")
+            }
+        }
+    }
+    
 }
+
