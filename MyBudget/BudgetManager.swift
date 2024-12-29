@@ -36,6 +36,10 @@ class BudgetManager: ObservableObject {
            self.variableExpenseList = budgetfb.variableExpenseList
            self.groupedExpense = budgetfb.groupedExpense
            self.totalExpenses = budgetfb.totalExpenses
+           
+           // Update current period with loaded data
+           self.currentPeriod.incomes = self.incomeList
+           self.currentPeriod.fixedExpenses = self.fixedExpenseList
        }
    }
     
@@ -64,8 +68,9 @@ class BudgetManager: ObservableObject {
         print("Include incomes: \(includeIncomes)")
         print("Include expenses: \(includeFixedExpenses)")
             
-        let newIncomes = includeIncomes ? currentPeriod.incomes : []
-        let newFixedExpenses = includeFixedExpenses ? currentPeriod.fixedExpenses : []
+        // Use the actual loaded data instead of current period
+        let newIncomes = includeIncomes ? self.incomeList : []
+        let newFixedExpenses = includeFixedExpenses ? self.fixedExpenseList : []
             
         print("Number of incomes to transfer: \(newIncomes.count)")
         print("Number of expenses to transfer: \(newFixedExpenses.count)")
