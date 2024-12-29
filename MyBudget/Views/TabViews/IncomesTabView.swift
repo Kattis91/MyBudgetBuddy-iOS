@@ -12,6 +12,7 @@ import FirebaseAuth
 struct IncomesTabView: View {
     
     @State var budgetfb: BudgetFB
+    @EnvironmentObject var budgetManager: BudgetManager
    
     @State private var categories: [String] =
     ["Salary", "Study grant", "Child benefit", "Housing insurance", "Sickness insurance", "Business"]
@@ -32,6 +33,10 @@ struct IncomesTabView: View {
         
         NavigationStack {
             VStack {
+                
+                Text("Current Period: \(formatDate(budgetManager.currentPeriod.startDate)) - \(formatDate(budgetManager.currentPeriod.endDate))")
+                                .font(.headline)
+                                .padding()
                 
                 Text("Total Income: \(budgetfb.totalIncome, specifier: "%.2f")")
                     .font(.largeTitle)
@@ -153,8 +158,17 @@ struct IncomesTabView: View {
     private func deleteIncomeItem(at offsets: IndexSet) {
         budgetfb.deleteIncome(at: offsets)
     }
+    
+    private func formatDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        return formatter.string(from: date)
+    }
 }
 
-#Preview {
-    IncomesTabView(budgetfb: BudgetFB())
+struct IncomesTabView_Previews: PreviewProvider {
+    static var previews: some View {
+        IncomesTabView(budgetfb: BudgetFB())
+            .environmentObject(BudgetManager()) // Lägg till BudgetManager här
+    }
 }

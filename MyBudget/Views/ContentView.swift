@@ -12,6 +12,7 @@ import FirebaseAuth
 
 struct ContentView: View {
     
+    @EnvironmentObject var budgetManager: BudgetManager 
     @State var isLoggedIn : Bool?
     
     var body: some View {
@@ -41,4 +42,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        .environmentObject(BudgetManager())
 }

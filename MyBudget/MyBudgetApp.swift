@@ -18,12 +18,14 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
 @main
 struct MyBudgetApp: App {
+    @StateObject private var budgetManager = BudgetManager()
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(budgetManager)
         }
     }
 }

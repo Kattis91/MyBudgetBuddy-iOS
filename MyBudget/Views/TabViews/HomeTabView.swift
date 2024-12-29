@@ -12,6 +12,7 @@ struct HomeTabView: View {
     @State var showingNewPeriod = false
     
     var budgetfb = BudgetFB()
+    @EnvironmentObject var budgetManager: BudgetManager
     
     var body: some View {
         
@@ -19,6 +20,10 @@ struct HomeTabView: View {
             NavigationStack {
                 if !showingNewPeriod {
                     VStack {
+                        
+                        Text("Current Period: \(formatDate(budgetManager.currentPeriod.startDate)) - \(formatDate(budgetManager.currentPeriod.endDate))")
+                                .font(.headline)
+                                .padding()
                         Text("Total Income: \(budgetfb.totalIncome, specifier: "%.2f")")
                             .font(.title)
                             .padding()
@@ -50,7 +55,7 @@ struct HomeTabView: View {
                 if showingNewPeriod {
                     NewBudgetPeriodView(isPresented: $showingNewPeriod)
                         .navigationBarBackButtonHidden(true)
-                        .frame(height: 250)
+                        .frame(height: 500)
                         .background(Color.white)
                         .padding(.horizontal, 24)
                         .cornerRadius(12)
@@ -58,10 +63,21 @@ struct HomeTabView: View {
                 }
             }
         }
+        .task {
+            // Load data when view appears
+            await budgetManager.loadData()
+        }
+    }
+    
+    private func formatDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        return formatter.string(from: date)
     }
     
 }
 
 #Preview {
     HomeTabView()
+        .environmentObject(BudgetManager())
 }

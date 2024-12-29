@@ -27,7 +27,7 @@ struct HomeView: View {
         UITabBar.appearance().scrollEdgeAppearance = appearance
     }
     
-    
+    @EnvironmentObject var budgetManager: BudgetManager
     @State var budgetfb = BudgetFB()
     
     var body: some View {
@@ -59,6 +59,10 @@ struct HomeView: View {
                 await budgetfb.loadExpenseData()
             }
         }
+        .task {
+            // Load data when view appears
+            await budgetManager.loadData()
+        }
         .accentColor(Color("TextColor"))
     }
     
@@ -66,4 +70,5 @@ struct HomeView: View {
 
 #Preview {
     HomeView()
+        .environmentObject(BudgetManager())
 }
