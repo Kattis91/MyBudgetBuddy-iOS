@@ -11,8 +11,19 @@ class BudgetManager: ObservableObject {
     
     var budgetfb = BudgetFB()
     
+    // Keep track of all historical data per period
+    struct PeriodHistory: Identifiable {
+        let id = UUID()
+        let startDate: Date
+        let endDate: Date
+        let allIncomes: [Income]
+        let allFixedExpenses: [Expense]
+        let totalIncome: Double
+        let totalFixedExpenses: Double
+    }
+    
     @Published var currentPeriod: BudgetPeriod
-    @Published var periods: [BudgetPeriod] = []
+    @Published var historicalPeriods: [PeriodHistory] = []
     
     @Published var incomeList: [Income] = []
     @Published var groupedIncome: [String: Double] = [:]
@@ -44,15 +55,13 @@ class BudgetManager: ObservableObject {
    }
     
     init() {
-        // Exempel: Starta med en första period
+        // Start with first period
         self.currentPeriod = BudgetPeriod(
             startDate: Date(),
             endDate: Calendar.current.date(byAdding: .month, value: 1, to: Date())!,
             incomes: [],
             fixedExpenses: []
         )
-        
-        periods.append(currentPeriod)
     }
     
     func startNewPeriod(
@@ -68,9 +77,20 @@ class BudgetManager: ObservableObject {
         print("Include incomes: \(includeIncomes)")
         print("Include expenses: \(includeFixedExpenses)")
             
-        // Use the actual loaded data instead of current period
-        let newIncomes = includeIncomes ? self.incomeList : []
-        let newFixedExpenses = includeFixedExpenses ? self.fixedExpenseList : []
+        // Save current period's complete data to history
+        let historicalPeriod = PeriodHistory(
+            startDate: currentPeriod.startDate,
+            endDate: currentPeriod.endDate,
+            allIncomes: incomeList,
+            allFixedExpenses: fixedExpenseList,
+            totalIncome: totalIncome,
+            totalFixedExpenses: fixedExpenseList.reduce(0) { $0 + $1.amount }
+        )
+        historicalPeriods.append(historicalPeriod)
+            
+        // Create new period with only selected data
+        let newIncomes = includeIncomes ? incomeList : []
+        let newFixedExpenses = includeFixedExpenses ? fixedExpenseList : []
             
         print("Number of incomes to transfer: \(newIncomes.count)")
         print("Number of expenses to transfer: \(newFixedExpenses.count)")
@@ -83,10 +103,9 @@ class BudgetManager: ObservableObject {
         )
 
         currentPeriod = newPeriod
-        periods.append(newPeriod)
         
         print("New period created with start date: \(newPeriod.startDate) and end date: \(newPeriod.endDate)")
-        print("Total periods: \(periods.count)")
+        print("Total historical periods: \(historicalPeriods.count)")
     }
 
 }
