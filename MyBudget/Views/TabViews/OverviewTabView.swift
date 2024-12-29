@@ -8,49 +8,51 @@
 import SwiftUI
 
 struct OverviewTabView: View {
-    
     @State var showingNewPeriod = false
     @EnvironmentObject var budgetManager: BudgetManager
     
     var body: some View {
         NavigationView {
             List {
-                ForEach(budgetManager.historicalPeriods) { historicalPeriod in
-                    VStack(alignment: .leading) {
-                        Text("Period: \(formatDate(historicalPeriod.startDate)) - \(formatDate(historicalPeriod.endDate))")
-                            .font(.headline)
-                        Text("Incomes: \(historicalPeriod.allIncomes.count) | Fixed Expenses: \(historicalPeriod.allFixedExpenses.count)")
-                            .font(.subheadline)
-                                                
-                        // Add this to see the actual values
-                        VStack(alignment: .leading) {
-                            Text("Total Income: \(historicalPeriod.totalIncome, specifier: "%.2f")")
-                            Text("Total Fixed Expenses: \(historicalPeriod.totalFixedExpenses, specifier: "%.2f")")
-                        }
-                        .font(.caption)
+                Section("Current Period") {
+                    PeriodRowView(period: budgetManager.currentPeriod, isCurrent: true)
+                }
+                
+                Section("Historical Periods") {
+                    ForEach(budgetManager.historicalPeriods.reversed()) { period in
+                        PeriodRowView(period: period, isCurrent: false)
                     }
                 }
-                // Add current period section
-                    Section("Current Period") {
-                        VStack(alignment: .leading) {
-                            Text("Period: \(formatDate(budgetManager.currentPeriod.startDate)) - \(formatDate(budgetManager.currentPeriod.endDate))")
-                                .font(.headline)
-                            Text("Incomes: \(budgetManager.currentPeriod.incomes.count) | Fixed Expenses: \(budgetManager.currentPeriod.fixedExpenses.count)")
-                                .font(.subheadline)
-                            
-                            let currentTotalIncome = budgetManager.currentPeriod.incomes.reduce(0) { $0 + $1.amount }
-                            let currentTotalExpenses = budgetManager.currentPeriod.fixedExpenses.reduce(0) { $0 + $1.amount }
-                            
-                            VStack(alignment: .leading) {
-                                Text("Total Income: \(currentTotalIncome, specifier: "%.2f")")
-                                Text("Total Fixed Expenses: \(currentTotalExpenses, specifier: "%.2f")")
-                            }
-                            .font(.caption)
-                        }
-                    }
             }
             .navigationTitle("Budget Periods")
+            .toolbar {
+                Button("New Period") {
+                    showingNewPeriod = true
+                }
+            }
         }
+    }
+}
+
+struct PeriodRowView: View {
+    let period: BudgetPeriod
+    let isCurrent: Bool
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text("\(isCurrent ? "Current Period" : "Period"): \(formatDate(period.startDate)) - \(formatDate(period.endDate))")
+                .font(.headline)
+            Text("Incomes: \(period.incomes.count) | Fixed Expenses: \(period.fixedExpenses.count) | Variable Expenses: \(period.variableExpenses.count)")
+                .font(.subheadline)
+            
+            VStack(alignment: .leading) {
+                Text("Total Income: \(period.totalIncome, specifier: "%.2f")")
+                Text("Total Fixed Expenses: \(period.totalFixedExpenses, specifier: "%.2f")")
+                Text("Total Variable Expenses: \(period.totalVariableExpenses, specifier: "%.2f")")
+            }
+            .font(.caption)
+        }
+        .padding(.vertical, 4)
     }
     
     private func formatDate(_ date: Date) -> String {
