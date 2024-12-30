@@ -54,6 +54,13 @@ struct HomeView: View {
             }
         }
         .onAppear {
+            budgetfb.loadCurrentBudgetPeriod { loadedPeriod in
+                if let loadedPeriod = loadedPeriod {
+                    DispatchQueue.main.async {
+                        budgetManager.currentPeriod = loadedPeriod
+                    }
+                }
+            }
             Task {
                 await budgetfb.loadIncomeData()
                 await budgetfb.loadExpenseData()

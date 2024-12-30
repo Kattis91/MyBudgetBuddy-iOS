@@ -328,5 +328,47 @@ import FirebaseAuth
         }
     }
     
+    func saveBudgetPeriod(_ budgetPeriod: BudgetPeriod, completion: @escaping (Bool) -> Void) {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            completion(false)
+            return
+        }
+        let ref = Database.database().reference()
+        let budgetRef = ref.child("budgetPeriods").child(userId).child(budgetPeriod.id)
+
+        budgetRef.setValue(budgetPeriod.toDictionary()) { error, _ in
+            if let error = error {
+                print("Failed to save budget period: \(error.localizedDescription)")
+                completion(false)
+            } else {
+                print("Successfully saved budget period")
+                completion(true)
+            }
+        }
+    }
+    
+    func loadCurrentBudgetPeriod(completion: @escaping (BudgetPeriod?) -> Void) {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            completion(nil)
+            return
+        }
+        let ref = Database.database().reference()
+        let budgetPeriodsRef = ref.child("budgetPeriods").child(userId)
+        
+        budgetPeriodsRef.queryOrdered(byChild: "startDate")
+                        .queryLimited(toLast: 1)
+                        .observeSingleEvent(of: .value) { snapshot in
+            guard let periodData = snapshot.children.allObjects.first as? DataSnapshot,
+                  let dict = periodData.value as? [String: Any],
+                  let budgetPeriod = BudgetPeriod(dict: dict) else {
+                print("Failed to load budget period")
+                completion(nil)
+                return
+            }
+            
+            completion(budgetPeriod)
+        }
+    }
+    
 }
 

@@ -111,10 +111,20 @@ struct NewBudgetPeriodView: View {
                     includeFixedExpenses: includeFixedExpenses
                 )
                 
-                // Then save that specific period
-                budgetfb.saveBudgetPeriod(newPeriod)
-                showConfirmation = true
-                isPresented = false
+                budgetfb.saveBudgetPeriod(newPeriod) { success in
+                    if success {
+                        budgetfb.loadCurrentBudgetPeriod { loadedPeriod in
+                            if let loadedPeriod = loadedPeriod {
+                                // Update the current period in your BudgetManager
+                                DispatchQueue.main.async {
+                                    budgetManager.currentPeriod = loadedPeriod
+                                }
+                            }
+                        }
+                        showConfirmation = true
+                        isPresented = false
+                    }
+                }
             }) {
                 ButtonView(buttontext: "Start New Period", maxWidth: 180)
             }
