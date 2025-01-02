@@ -35,94 +35,130 @@ struct BudgetPeriod: Identifiable {
     }
 }
 
+// Firebase Dictionary Conversion
 extension BudgetPeriod {
     init?(dict: [String: Any]) {
-        guard
-            let startDateTimestamp = dict["startDate"] as? TimeInterval,
-            let endDateTimestamp = dict["endDate"] as? TimeInterval,
-            let incomesData = dict["incomes"] as? [[String: Any]],
-            let fixedExpensesData = dict["fixedExpenses"] as? [[String: Any]],
-            let variableExpensesData = dict["fixedExpenses"] as? [[String: Any]]
-        else { return nil }
+        // Log the incoming dictionary for debugging
+        print("Initializing BudgetPeriod with dictionary:", dict)
         
-        // Konvertera start- och slutdatum
+        guard let startDateTimestamp = dict["startDate"] as? TimeInterval,
+              let endDateTimestamp = dict["endDate"] as? TimeInterval
+        else {
+            print("Failed to get required date timestamps")
+            return nil
+        }
+        
+        // Convert dates
         self.startDate = Date(timeIntervalSince1970: startDateTimestamp)
         self.endDate = Date(timeIntervalSince1970: endDateTimestamp)
         
-        // Konvertera inkomster manuellt
-        var tempIncomes: [Income] = []
-        for incomeDict in incomesData {
-            if let category = incomeDict["category"] as? String,
-               let amount = incomeDict["amount"] as? Double {
-                tempIncomes.append(Income(id: id, amount: amount, category: category))
-            } else {
-                print("Skipping invalid income: \(incomeDict)")
-            }
-        }
-        self.incomes = tempIncomes
-        
-        // Konvertera fasta utgifter manuellt
-        var tempFixedExpenses: [Expense] = []
-        for expenseDict in fixedExpensesData {
-            if let category = expenseDict["category"] as? String,
-               let amount = expenseDict["amount"] as? Double,
-               let isfixed = expenseDict["isfixed"] as? Bool {
-                tempFixedExpenses.append(Expense(id: id, amount: amount, category: category, isfixed: isfixed))
-            } else {
-                print("Skipping invalid expense: \(expenseDict)")
-            }
-        }
-        self.fixedExpenses = tempFixedExpenses
-        
-        // Konvertera rörliga utgifter manuellt
-        var tempVariableExpenses: [Expense] = []
-        for expenseDict in variableExpensesData {
-            if let category = expenseDict["category"] as? String,
-               let amount = expenseDict["amount"] as? Double,
-               let isfixed = expenseDict["isfixed"] as? Bool {
-                tempFixedExpenses.append(Expense(id: id, amount: amount, category: category, isfixed: isfixed))
-            } else {
-                print("Skipping invalid expense: \(expenseDict)")
-            }
-        }
-        self.variableExpenses = tempVariableExpenses
-        
-        // Beräkna totaler
-        self.totalIncome = self.incomes.reduce(0) { $0 + $1.amount }
-        self.totalFixedExpenses = self.fixedExpenses.reduce(0) { $0 + $1.amount }
-        self.totalVariableExpenses = self.variableExpenses.reduce(0) { $0 + $1.amount }
-        
+        // Set ID (use existing or create new)
         self.id = dict["id"] as? String ?? UUID().uuidString
+        
+        // Initialize arrays as empty
+        self.incomes = []
+        self.fixedExpenses = []
+        self.variableExpenses = []
+        
+        // Convert incomes if present
+        if let incomesData = dict["incomes"] as? [[String: Any]] {
+            self.incomes = incomesData.compactMap { incomeDict in
+                guard let category = incomeDict["category"] as? String,
+                      let amount = incomeDict["amount"] as? Double else {
+                    print("Skipping invalid income:", incomeDict)
+                    return nil
+                }
+                return Income(
+                    id: incomeDict["id"] as? String ?? UUID().uuidString,
+                    amount: amount,
+                    category: category
+                )
+            }
+        }
+        
+        // Convert fixed expenses if present
+        if let fixedExpensesData = dict["fixedExpenses"] as? [[String: Any]] {
+            self.fixedExpenses = fixedExpensesData.compactMap { expenseDict in
+                guard let category = expenseDict["category"] as? String,
+                      let amount = expenseDict["amount"] as? Double else {
+                    print("Skipping invalid fixed expense:", expenseDict)
+                    return nil
+                }
+                return Expense(
+                    id: expenseDict["id"] as? String ?? UUID().uuidString,
+                    amount: amount,
+                    category: category,
+                    isfixed: true
+                )
+            }
+        }
+        
+        // Convert variable expenses if present
+        if let variableExpensesData = dict["variableExpenses"] as? [[String: Any]] {
+            self.variableExpenses = variableExpensesData.compactMap { expenseDict in
+                guard let category = expenseDict["category"] as? String,
+                      let amount = expenseDict["amount"] as? Double else {
+                    print("Skipping invalid variable expense:", expenseDict)
+                    return nil
+                }
+                return Expense(
+                    id: expenseDict["id"] as? String ?? UUID().uuidString,
+                    amount: amount,
+                    category: category,
+                    isfixed: false
+                )
+            }
+        }
+        
+        // Set totals from dictionary if present, otherwise calculate
+        self.totalIncome = dict["totalIncome"] as? Double ?? self.incomes.reduce(0) { $0 + $1.amount }
+        self.totalFixedExpenses = dict["totalFixedExpenses"] as? Double ?? self.fixedExpenses.reduce(0) { $0 + $1.amount }
+        self.totalVariableExpenses = dict["totalVariableExpenses"] as? Double ?? self.variableExpenses.reduce(0) { $0 + $1.amount }
     }
-}
-
-extension BudgetPeriod {
+    
     func toDictionary() -> [String: Any] {
-        return [
+        var dict: [String: Any] = [
             "id": id,
             "startDate": startDate.timeIntervalSince1970,
             "endDate": endDate.timeIntervalSince1970,
-            "incomes": incomes.map { [
-                "id": $0.id,
-                "amount": $0.amount,
-                "category": $0.category
-            ] },
-            "fixedExpenses": fixedExpenses.map { [
-                "id": $0.id,
-                "amount": $0.amount,
-                "category": $0.category,
-                "isfixed": $0.isfixed
-            ] },
-            "variableExpenses": variableExpenses.map { [
-                "id": $0.id,
-                "amount": $0.amount,
-                "category": $0.category,
-                "isfixed": $0.isfixed
-            ] },
             "totalIncome": totalIncome,
             "totalFixedExpenses": totalFixedExpenses,
             "totalVariableExpenses": totalVariableExpenses
         ]
+        
+        // Only include arrays if they're not empty
+        if !incomes.isEmpty {
+            dict["incomes"] = incomes.map { income in
+                [
+                    "id": income.id,
+                    "amount": income.amount,
+                    "category": income.category
+                ]
+            }
+        }
+        
+        if !fixedExpenses.isEmpty {
+            dict["fixedExpenses"] = fixedExpenses.map { expense in
+                [
+                    "id": expense.id,
+                    "amount": expense.amount,
+                    "category": expense.category,
+                    "isfixed": expense.isfixed
+                ]
+            }
+        }
+        
+        if !variableExpenses.isEmpty {
+            dict["variableExpenses"] = variableExpenses.map { expense in
+                [
+                    "id": expense.id,
+                    "amount": expense.amount,
+                    "category": expense.category,
+                    "isfixed": expense.isfixed
+                ]
+            }
+        }
+        
+        return dict
     }
 }
-

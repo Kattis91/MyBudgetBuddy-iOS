@@ -330,42 +330,76 @@ import FirebaseAuth
     
     func saveBudgetPeriod(_ budgetPeriod: BudgetPeriod, completion: @escaping (Bool) -> Void) {
         guard let userId = Auth.auth().currentUser?.uid else {
+            print("Failed to save budget period: No user ID")
             completion(false)
             return
         }
+        
         let ref = Database.database().reference()
         let budgetRef = ref.child("budgetPeriods").child(userId).child(budgetPeriod.id)
+        
+        // Log the dictionary being saved
+        let dict = budgetPeriod.toDictionary()
+        print("Saving budget period with data:", dict)
 
-        budgetRef.setValue(budgetPeriod.toDictionary()) { error, _ in
+        budgetRef.setValue(dict) { error, _ in
             if let error = error {
                 print("Failed to save budget period: \(error.localizedDescription)")
                 completion(false)
             } else {
-                print("Successfully saved budget period")
+                print("Successfully saved budget period with ID: \(budgetPeriod.id)")
                 completion(true)
             }
         }
     }
-    
+
     func loadCurrentBudgetPeriod(completion: @escaping (BudgetPeriod?) -> Void) {
         guard let userId = Auth.auth().currentUser?.uid else {
+            print("Failed to load budget period: No user ID")
             completion(nil)
             return
         }
+        
         let ref = Database.database().reference()
         let budgetPeriodsRef = ref.child("budgetPeriods").child(userId)
+        
+        print("Attempting to load budget period for user:", userId)
         
         budgetPeriodsRef.queryOrdered(byChild: "startDate")
                         .queryLimited(toLast: 1)
                         .observeSingleEvent(of: .value) { snapshot in
-            guard let periodData = snapshot.children.allObjects.first as? DataSnapshot,
-                  let dict = periodData.value as? [String: Any],
-                  let budgetPeriod = BudgetPeriod(dict: dict) else {
-                print("Failed to load budget period")
+            // Log the raw snapshot value
+            print("Raw snapshot value:", snapshot.value ?? "nil")
+            
+            guard snapshot.exists() else {
+                print("No budget periods found")
                 completion(nil)
                 return
             }
             
+            guard let periodData = snapshot.children.allObjects.first as? DataSnapshot else {
+                print("Failed to get first period from snapshot")
+                completion(nil)
+                return
+            }
+            
+            print("Period data key:", periodData.key)
+            
+            guard let dict = periodData.value as? [String: Any] else {
+                print("Failed to convert period data to dictionary")
+                completion(nil)
+                return
+            }
+            
+            print("Period dictionary:", dict)
+            
+            guard let budgetPeriod = BudgetPeriod(dict: dict) else {
+                print("Failed to create BudgetPeriod from dictionary")
+                completion(nil)
+                return
+            }
+            
+            print("Successfully loaded budget period with ID:", budgetPeriod.id)
             completion(budgetPeriod)
         }
     }
