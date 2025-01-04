@@ -111,7 +111,10 @@ struct NewBudgetPeriodView: View {
                     includeFixedExpenses: includeFixedExpenses
                 )
                 
-                budgetfb.saveBudgetPeriod(newPeriod) { success in
+                budgetfb.saveBudgetPeriod(newPeriod, transferData: (
+                    incomes: includeIncomes,
+                    expenses: includeFixedExpenses
+                )) { success in
                     if success {
                         budgetfb.loadCurrentBudgetPeriod { loadedPeriod in
                             if let loadedPeriod = loadedPeriod {
