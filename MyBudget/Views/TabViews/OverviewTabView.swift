@@ -31,6 +31,9 @@ struct OverviewTabView: View {
                 }
             }
         }
+        .task {
+            await budgetManager.loadData()
+        }
     }
 }
 
