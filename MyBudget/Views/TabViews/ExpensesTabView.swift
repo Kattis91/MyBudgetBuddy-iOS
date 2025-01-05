@@ -75,7 +75,8 @@ struct ExpensesTabView: View {
             }
         }
         .task {
-            await budgetfb.loadExpenseData() // Ensure data is loaded when the view appears
+            await budgetfb.loadExpenseData(isfixed: true)
+            await budgetfb.loadExpenseData(isfixed: false)// Ensure data is loaded when the view appears
         }
     }
 }

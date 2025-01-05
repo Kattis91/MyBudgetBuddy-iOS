@@ -35,7 +35,8 @@ class BudgetManager: ObservableObject {
 
    func loadData() async {
        await budgetfb.loadIncomeData()
-       await budgetfb.loadExpenseData()
+       await budgetfb.loadExpenseData(isfixed: true)
+       await budgetfb.loadExpenseData(isfixed: false)
        
        await MainActor.run {
            // Load all data from Firebase

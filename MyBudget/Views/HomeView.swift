@@ -63,7 +63,8 @@ struct HomeView: View {
             }
             Task {
                 await budgetfb.loadIncomeData()
-                await budgetfb.loadExpenseData()
+                await budgetfb.loadExpenseData(isfixed: true) 
+                await budgetfb.loadExpenseData(isfixed: false)
             }
         }
         .task {

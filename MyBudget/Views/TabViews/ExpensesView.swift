@@ -134,12 +134,12 @@ struct ExpensesView: View {
     
     // Bridge function for Fixed
     private func deleteFixedExpense(at offsets: IndexSet) {
-        budgetfb.deleteExpense(from: "fixed", at: offsets)
+        budgetfb.deleteExpense(isfixed: true, from: "fixed", at: offsets)
     }
     
     // Bridge function for Variable
     private func deleteVariableExpense(at offsets: IndexSet) {
-        budgetfb.deleteExpense(from: "variable", at: offsets)
+        budgetfb.deleteExpense(isfixed: false, from: "variable", at: offsets)
     }
 }
 

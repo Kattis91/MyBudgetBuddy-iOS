@@ -133,20 +133,20 @@ import FirebaseAuth
                     return
                 }
                 
-                // Load incomes for current period
-                ref.child("budgetPeriods").child(userId)
-                    .child(budgetPeriod.id).child("incomes")
-                    .getData { [weak self] error, snapshot in
-                        if let snapshot = snapshot {
-                            Task { @MainActor in
-                                let processedData = await self?.processIncomeData(snapshot)
-                                self?.incomeList = processedData?.incomes ?? []
-                                self?.groupedIncome = processedData?.grouped ?? [:]
-                                self?.totalIncome = processedData?.total ?? 0
-                            }
+            // Load incomes for current period
+            ref.child("budgetPeriods").child(userId)
+                .child(budgetPeriod.id).child("incomes")
+                .getData { [weak self] error, snapshot in
+                    if let snapshot = snapshot {
+                        Task { @MainActor in
+                            let processedData = await self?.processIncomeData(snapshot)
+                            self?.incomeList = processedData?.incomes ?? []
+                            self?.groupedIncome = processedData?.grouped ?? [:]
+                            self?.totalIncome = processedData?.total ?? 0
                         }
-                        continuation.resume()
                     }
+                    continuation.resume()
+                }
             }
         }
     }
@@ -233,7 +233,7 @@ import FirebaseAuth
         }
     }
      */
-    
+    /*
     func saveExpenseData(amount: Double, category: String, isfixed: Bool) {
         guard let userId = Auth.auth().currentUser?.uid else { return }
         let ref = Database.database().reference()
@@ -246,29 +246,85 @@ import FirebaseAuth
             let categoryRef = ref.child("budgetPeriods")
                 .child(userId)
                 .child(budgetPeriod.id)
-                .child("expenses")
+                .child(isfixed ? "fixedExpenses" : "variableExpenses")
                 .child(category)
             
             // Check if the category already exists
             categoryRef.observeSingleEvent(of: .value) { [weak self] snapshot in
-                if let existingData = snapshot.value as? [String: Any],
+                guard let self = self else { return } // Säkerställ att self fortfarande existerar
+                if snapshot.exists(),
+                   let existingData = snapshot.value as? [String: Any],
                    let existingAmount = existingData["amount"] as? Double {
-                    // Update the existing amount
+                    // Kategori finns, uppdatera summan
                     let updatedAmount = existingAmount + amount
                     categoryRef.setValue(["amount": updatedAmount, "category": category, "isfixed": isfixed]) { error, _ in
                         if error == nil {
                             Task { @MainActor in
-                                await self?.loadExpenseData()
+                                await self.loadExpenseData(isfixed: isfixed)
                             }
                         }
                     }
                 } else {
-                    // Create a new category if it doesn't exist
+                    // Kategori finns inte, skapa en ny
                     categoryRef.setValue(["amount": amount, "category": category, "isfixed": isfixed]) { error, _ in
                         if error == nil {
                             Task { @MainActor in
-                                await self?.loadExpenseData()
+                                await self.loadExpenseData(isfixed: isfixed)
                             }
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+     */
+    
+    func saveExpenseData(amount: Double, category: String, isfixed: Bool) {
+        guard let userId = Auth.auth().currentUser?.uid else { return }
+        let ref = Database.database().reference()
+        
+        // First get current budget period
+        loadCurrentBudgetPeriod { [weak self] budgetPeriod in
+            guard let budgetPeriod = budgetPeriod else { return }
+            
+            // Reference to the incomes array in the current budget period
+            let expensesRef = ref.child("budgetPeriods")
+                .child(userId)
+                .child(budgetPeriod.id)
+                .child(isfixed ? "fixedExpenses" : "variableExpenses")
+            
+            // First fetch all existing expenses
+            expensesRef.observeSingleEvent(of: .value) { [weak self] snapshot in
+                var expenses: [[String: Any]] = []
+                
+                // Convert existing incomes to array if they exist
+                if let existingExpenses = snapshot.value as? [[String: Any]] {
+                    expenses = existingExpenses
+                }
+                
+                // Check if we already have an income with this category
+                if let existingIndex = expenses.firstIndex(where: { ($0["category"] as? String) == category }) {
+                    // Update existing category amount
+                    let existingAmount = expenses[existingIndex]["amount"] as? Double ?? 0
+                    expenses[existingIndex]["amount"] = existingAmount + amount
+                } else {
+                    // Add new income entry
+                    let newExpense: [String: Any] = [
+                        "id": UUID().uuidString,
+                        "amount": amount,
+                        "category": category,
+                        "isfixed": isfixed
+                    ]
+                    expenses.append(newExpense)
+                }
+                
+                // Save the updated incomes array
+                expensesRef.setValue(expenses) { error, _ in
+                    if error == nil {
+                        Task { @MainActor in
+                            await self?.loadExpenseData(isfixed: true)
+                            await self?.loadExpenseData(isfixed: false)
                         }
                     }
                 }
@@ -276,37 +332,46 @@ import FirebaseAuth
         }
     }
     
-    func loadExpenseData() async {
-        
+    func loadExpenseData(isfixed: Bool) async {
         guard let userId = Auth.auth().currentUser?.uid else { return }
+        let ref = Database.database().reference()
         
-        var ref: DatabaseReference!
-        
-        ref = Database.database().reference()
-        
-        // Get current budget period first
         return await withCheckedContinuation { continuation in
-            loadCurrentBudgetPeriod { budgetPeriod in
-                guard let budgetPeriod = budgetPeriod else {
+            loadCurrentBudgetPeriod { [weak self] budgetPeriod in
+                guard let self = self,
+                      let budgetPeriod = budgetPeriod else {
                     continuation.resume()
                     return
                 }
                 
-                // Load incomes for current period
                 ref.child("budgetPeriods").child(userId)
-                    .child(budgetPeriod.id).child("expenses")
-                    .getData { [weak self] error, snapshot in
-                        if let snapshot = snapshot {
-                            Task { @MainActor in
-                                let processedData = await self?.processExpenseData(snapshot)
-                                self?.fixedExpenseList = processedData?.fixedExpenses ?? []
-                                self?.variableExpenseList = processedData?.variableExpenses ?? []
-                                self?.groupedExpense = processedData?.grouped ?? [:]
-                                self?.totalExpenses = processedData?.total ?? 0
-                            }
+                    .child(budgetPeriod.id)
+                    .child(isfixed ? "fixedExpenses" : "variableExpenses")
+                    .getData { error, snapshot in
+                        guard let snapshot = snapshot else {
+                            continuation.resume()
+                            return
                         }
+                        
+                    Task { @MainActor in
+                        let processedData = await self.processExpenseData(snapshot)
+                        
+                        // Update only the relevant list based on isfixed
+                        if isfixed {
+                            self.fixedExpenseList = processedData.fixedExpenses
+                        } else {
+                            self.variableExpenseList = processedData.variableExpenses
+                        }
+                        
+                        self.groupedExpense = processedData.grouped
+                        
+                        // Calculate total from both lists
+                        self.totalExpenses = (self.fixedExpenseList.reduce(0) { $0 + $1.amount }) +
+                                           (self.variableExpenseList.reduce(0) { $0 + $1.amount })
+                        
                         continuation.resume()
                     }
+                }
             }
         }
     }
@@ -349,7 +414,7 @@ import FirebaseAuth
     }
     
     
-    func deleteExpense(from listType: String, at offsets: IndexSet) {
+    func deleteExpense(isfixed: Bool, from listType: String, at offsets: IndexSet) {
         let userId = Auth.auth().currentUser?.uid
         guard let userId else { return }
 
@@ -375,7 +440,7 @@ import FirebaseAuth
             
             for offset in offsets {
                 let expenseItem = expenseList[offset]
-                ref.child("budgetPeriods").child(userId).child(budgetPeriod.id).child("expenses").child(expenseItem.id).removeValue()
+                ref.child("budgetPeriods").child(userId).child(budgetPeriod.id).child(isfixed ? "fixedExpenses" : "variableExpenses").child(expenseItem.id).removeValue()
             }
             
             // Update local data
@@ -405,7 +470,7 @@ import FirebaseAuth
         }
     }
     
-    func saveBudgetPeriod(_ budgetPeriod: BudgetPeriod, transferData: (incomes: Bool, expenses: Bool), completion: @escaping (Bool) -> Void) {
+    func saveBudgetPeriod(_ budgetPeriod: BudgetPeriod, transferData: (incomes: Bool, expenses: Bool), isfixed: Bool, completion: @escaping (Bool) -> Void) {
         guard let userId = Auth.auth().currentUser?.uid else {
             completion(false)
             return
@@ -449,9 +514,9 @@ import FirebaseAuth
                 
                 if transferData.expenses {
                     group.enter()
-                    currentRef.child("expenses").getData { error, snapshot in
+                    currentRef.child(isfixed ? "fixedExpenses" : "variableExpenses").getData { error, snapshot in
                         if let value = snapshot?.value {
-                            newBudgetRef.child("expenses").setValue(value) { _, _ in
+                            newBudgetRef.child(isfixed ? "fixedExpenses" : "variableExpenses").setValue(value) { _, _ in
                                 group.leave()
                             }
                         } else {
@@ -492,6 +557,12 @@ import FirebaseAuth
             budgetPeriod.id = periodData.key
             completion(budgetPeriod)
         }
+    }
+    
+    func refreshData() async {
+        await loadIncomeData()
+        await loadExpenseData(isfixed: true)
+        await loadExpenseData(isfixed: false)
     }
     
 }
