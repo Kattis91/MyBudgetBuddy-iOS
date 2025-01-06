@@ -13,7 +13,14 @@ class BudgetManager: ObservableObject {
     
     var budgetfb = BudgetFB()
     
-    @Published var currentPeriod: BudgetPeriod
+    @Published var currentPeriod: BudgetPeriod = BudgetPeriod(
+        startDate: Date(),
+        endDate: Date(),
+        incomes: [],
+        fixedExpenses: [],
+        variableExpenses: []
+    )
+        
     @Published var historicalPeriods: [BudgetPeriod] = []
     
     @Published var incomeList: [Income] = []
@@ -38,6 +45,12 @@ class BudgetManager: ObservableObject {
        await budgetfb.loadExpenseData(isfixed: true)
        await budgetfb.loadExpenseData(isfixed: false)
        
+       // Load historical periods
+       let historicalPeriods = await budgetfb.loadHistoricalPeriods()
+       await MainActor.run {
+           self.historicalPeriods = historicalPeriods
+       }
+
        await MainActor.run {
            // Load all data from Firebase
            self.incomeList = budgetfb.incomeList
@@ -73,28 +86,77 @@ class BudgetManager: ObservableObject {
         print("Include incomes: \(includeIncomes)")
         print("Include expenses: \(includeFixedExpenses)")
             
-        historicalPeriods.append(currentPeriod)
+        // First, save the current period to historical periods
+        let historicalPeriod = BudgetPeriod(
+            startDate: currentPeriod.startDate,
+            endDate: currentPeriod.endDate,
+            incomes: currentPeriod.incomes,
+            fixedExpenses: currentPeriod.fixedExpenses,
+            variableExpenses: currentPeriod.variableExpenses
+        )
+        
+        // Only add to historical periods if it's not empty and has a valid date range
+        if !historicalPeriod.incomes.isEmpty || !historicalPeriod.fixedExpenses.isEmpty || !historicalPeriod.variableExpenses.isEmpty {
+            historicalPeriods.append(historicalPeriod)
             
-        // Create new period with only selected data
-        let newIncomes = includeIncomes ? incomeList : []
-        let newFixedExpenses = includeFixedExpenses ? fixedExpenseList : []
-            
-        print("Number of incomes to transfer: \(newIncomes.count)")
-        print("Number of expenses to transfer: \(newFixedExpenses.count)")
-
+            // Save to Firebase
+            Task {
+                budgetfb.saveHistoricalPeriods(historicalPeriod)
+            }
+        }
+        
+        // Create transferred data for new period
+        let transferredIncomes = includeIncomes ? incomeList.map { Income(
+            id: UUID().uuidString, // Generate new IDs for the new period
+            amount: $0.amount,
+            category: $0.category
+        ) } : []
+        
+        let transferredFixedExpenses = includeFixedExpenses ? fixedExpenseList.map { Expense(
+            id: UUID().uuidString, // Generate new IDs for the new period
+            amount: $0.amount,
+            category: $0.category,
+            isfixed: $0.isfixed
+        ) } : []
+        
+        // Create new period
         let newPeriod = BudgetPeriod(
             startDate: startDate,
             endDate: endDate,
-            incomes: newIncomes,
-            fixedExpenses: newFixedExpenses
+            incomes: transferredIncomes,
+            fixedExpenses: transferredFixedExpenses,
+            variableExpenses: []
         )
-
+        
         currentPeriod = newPeriod
         
-        print("New period created with start date: \(newPeriod.startDate) and end date: \(newPeriod.endDate)")
-        print("Total historical periods: \(historicalPeriods.count)")
-            
+        // Clear current lists and update with transferred data
+        incomeList = transferredIncomes
+        fixedExpenseList = transferredFixedExpenses
+        variableExpenseList = []
+        
+        // Update grouped data and totals
+        updateGroupedData()
+        
         return newPeriod
+    }
+    
+    // Add this helper method to BudgetManager
+    private func updateGroupedData() {
+        // Update income grouping and total
+        groupedIncome = Dictionary(grouping: incomeList) { $0.category }
+            .mapValues { incomes in
+                incomes.reduce(0) { $0 + $1.amount }
+            }
+        totalIncome = incomeList.reduce(0) { $0 + $1.amount }
+        
+        // Update expense grouping and total
+        let allExpenses = fixedExpenseList + variableExpenseList
+        groupedExpense = Dictionary(grouping: allExpenses) { $0.category }
+            .mapValues { expenses in
+                expenses.reduce(0) { $0 + $1.amount }
+            }
+        totalExpenses = allExpenses.reduce(0) { $0 + $1.amount }
     }
 
 }

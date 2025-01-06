@@ -10,6 +10,7 @@ import SwiftUI
 struct OverviewTabView: View {
     @State var showingNewPeriod = false
     @EnvironmentObject var budgetManager: BudgetManager
+    @State var budgetfb = BudgetFB()
     
     var body: some View {
         NavigationView {
@@ -22,6 +23,11 @@ struct OverviewTabView: View {
                     ForEach(budgetManager.historicalPeriods.reversed()) { period in
                         PeriodRowView(period: period, isCurrent: false)
                     }
+                }
+            }
+            .onAppear {
+                Task {
+                    await budgetfb.loadHistoricalPeriods()
                 }
             }
             .navigationTitle("Budget Periods")
