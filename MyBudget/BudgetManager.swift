@@ -9,6 +9,10 @@ import Foundation
 import Firebase
 import FirebaseAuth
 
+extension Notification.Name {
+    static let periodUpdated = Notification.Name("periodUpdated")
+}
+
 class BudgetManager: ObservableObject {
     
     var budgetfb = BudgetFB()
@@ -72,6 +76,17 @@ class BudgetManager: ObservableObject {
            )
        }
    }
+    
+    func updateCurrentPeriodData(_ period: BudgetPeriod) async {
+        await MainActor.run {
+            self.currentPeriod = period
+            self.incomeList = period.incomes
+            self.fixedExpenseList = period.fixedExpenses
+            self.variableExpenseList = period.variableExpenses
+            updateGroupedData()
+            NotificationCenter.default.post(name: .periodUpdated, object: nil)
+        }
+    }
     
     func startNewPeriod(
             startDate: Date,

@@ -116,16 +116,11 @@ struct NewBudgetPeriodView: View {
                     expenses: includeFixedExpenses
                 ),  isfixed: includeFixedExpenses) { success in
                     if success {
-                        budgetfb.loadCurrentBudgetPeriod { loadedPeriod in
-                            if let loadedPeriod = loadedPeriod {
-                                // Update the current period in your BudgetManager
-                                DispatchQueue.main.async {
-                                    budgetManager.currentPeriod = loadedPeriod
-                                }
-                            }
+                        Task {
+                            await budgetManager.updateCurrentPeriodData(newPeriod)
+                            showConfirmation = true
+                            isPresented = false
                         }
-                        showConfirmation = true
-                        isPresented = false
                     }
                 }
             }) {

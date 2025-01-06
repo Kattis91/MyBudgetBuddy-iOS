@@ -53,6 +53,13 @@ struct HomeView: View {
                 
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: .periodUpdated)) { _ in
+            Task {
+                await budgetfb.loadIncomeData()
+                await budgetfb.loadExpenseData(isfixed: true)
+                await budgetfb.loadExpenseData(isfixed: false)
+            }
+        }
         .onAppear {
             budgetfb.loadCurrentBudgetPeriod { loadedPeriod in
                 if let loadedPeriod = loadedPeriod {
