@@ -112,6 +112,17 @@ import FirebaseAuth
                 // Save the updated incomes array
                 incomesRef.setValue(incomes) { error, _ in
                     if error == nil {
+                        
+                        // Calculate new total
+                        let newTotal = incomes.reduce(0) { $0 + ($1["amount"] as? Double ?? 0) }
+                        
+                        // Update the total in Firebase
+                        ref.child("budgetPeriods")
+                           .child(userId)
+                           .child(budgetPeriod.id)
+                           .child("totalIncome")
+                           .setValue(newTotal)
+                        
                         Task { @MainActor in
                             await self?.loadIncomeData()
                         }
@@ -323,6 +334,17 @@ import FirebaseAuth
                 // Save the updated incomes array
                 expensesRef.setValue(expenses) { error, _ in
                     if error == nil {
+                        
+                        // Calculate new total
+                        let newTotal = expenses.reduce(0) { $0 + ($1["amount"] as? Double ?? 0) }
+                        
+                        // Update the total in Firebase
+                        ref.child("budgetPeriods")
+                           .child(userId)
+                           .child(budgetPeriod.id)
+                           .child(isfixed ? "totalFixedExpenses" : "totalVariableExpenses")
+                           .setValue(newTotal)
+                        
                         Task { @MainActor in
                             await self?.loadExpenseData(isfixed: true)
                             await self?.loadExpenseData(isfixed: false)
