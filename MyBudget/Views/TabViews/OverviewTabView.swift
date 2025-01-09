@@ -11,6 +11,7 @@ struct OverviewTabView: View {
     @State var showingNewPeriod = false
     @EnvironmentObject var budgetManager: BudgetManager
     @State var budgetfb = BudgetFB()
+
     
     var body: some View {
         NavigationView {
@@ -19,9 +20,14 @@ struct OverviewTabView: View {
                     PeriodRowView(period: budgetManager.currentPeriod, isCurrent: true)
                 }
                 
-                Section("Historical Periods") {
-                    ForEach(budgetManager.historicalPeriods.reversed()) { period in
-                        PeriodRowView(period: period, isCurrent: false)
+                if !budgetManager.historicalPeriods.isEmpty {
+                    Section("Historical Periods") {
+                        ForEach(budgetManager.historicalPeriods.reversed()) { period in
+                            PeriodRowView(period: period, isCurrent: false)
+                        }
+                        .onDelete { offsets in
+                            budgetfb.deleteHistoricalPeriod(at: offsets, from: budgetManager.historicalPeriods)
+                        }
                     }
                 }
             }
@@ -74,6 +80,6 @@ struct PeriodRowView: View {
 struct OverviewTabView_Previews: PreviewProvider {
     static var previews: some View {
         OverviewTabView()
-            .environmentObject(BudgetManager()) // Lägg till BudgetManager här
+            .environmentObject(BudgetManager())
     }
 }
