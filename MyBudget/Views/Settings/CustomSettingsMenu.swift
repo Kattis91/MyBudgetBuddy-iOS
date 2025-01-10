@@ -10,6 +10,7 @@ import SwiftUI
 struct CustomSettingsMenu: View {
     @State private var showMenu = false
     @State private var showSettings = false
+    @State var budgetfb: BudgetFB
     
     var body: some View {
         ZStack {
@@ -48,11 +49,11 @@ struct CustomSettingsMenu: View {
             }
         }
         .sheet(isPresented: $showSettings) {
-            SettingsView()
+            SettingsView(budgetfb: budgetfb)
         }
     }
 }
 
 #Preview {
-    CustomSettingsMenu()
+    CustomSettingsMenu(budgetfb: BudgetFB())
 }

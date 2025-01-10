@@ -10,12 +10,13 @@ import SwiftUI
 struct SettingsView: View {
     
     @Environment(\.dismiss) var dismiss
+    @State var budgetfb: BudgetFB
     
     var body: some View {
         NavigationStack {
             List {
                 Section {
-                    NavigationLink(destination: CategoryManagementView()) {
+                    NavigationLink(destination: CategoryManagementView(budgetfb: budgetfb)) {
                         HStack {
                             Image(systemName: "folder")
                                 .foregroundColor(.purple)
@@ -40,5 +41,5 @@ struct SettingsView: View {
 }
 
 #Preview {
-    SettingsView()
+    SettingsView(budgetfb: BudgetFB())
 }
