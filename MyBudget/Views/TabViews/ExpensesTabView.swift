@@ -57,7 +57,6 @@ struct ExpensesTabView: View {
             if selectedView == .fixed {
                 ExpensesView(
                     viewtype: .fixed,
-                    categories: ["Rent", "Water", "Heat", "Electricity", "Insurance", "Mobile", "Netflix", "WiFi"],
                     selectedCategory: "",
                     totalExpenses: $budgetfb.totalExpenses,
                     expenseList: $budgetfb.fixedExpenseList,
@@ -66,7 +65,6 @@ struct ExpensesTabView: View {
             } else {
                 ExpensesView(
                     viewtype: .variable,
-                    categories: ["Groceries","Dining Out",  "Shopping", "Entertainment", "Transport", "Savings"],
                     selectedCategory: "",
                     totalExpenses: $budgetfb.totalExpenses,
                     expenseList: $budgetfb.variableExpenseList,

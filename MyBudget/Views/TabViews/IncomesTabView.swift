@@ -14,8 +14,7 @@ struct IncomesTabView: View {
     @State var budgetfb: BudgetFB
     @EnvironmentObject var budgetManager: BudgetManager
    
-    @State private var categories: [String] =
-    ["Salary", "Study grant", "Child benefit", "Housing insurance", "Sickness insurance", "Business"]
+    @State private var categories: [String] = []
     @State private var selectedCategory: String = ""
     @State private var newCategory: String = ""
     
@@ -100,12 +99,24 @@ struct IncomesTabView: View {
                         if income > 0.00 {
                             if showNewCategoryField {
                                 if !newCategory.isEmpty {
-                                    categories.append(newCategory)
-                                    let categoryToUse = newCategory
-                                    incomeAmount = ""
-                                    budgetfb.saveIncomeData(amount: income, category: categoryToUse)
-                                    showNewCategoryField = false
-                                    selectedCategory = ""
+                                    Task {
+                                        let success = await budgetfb.addCategory(name: newCategory, type: .income)
+                                        if success {
+                                            // Update UI on main thread
+                                            await MainActor.run {
+                                                categories.append(newCategory)
+                                                let categoryToUse = newCategory
+                                                incomeAmount = ""
+                                                budgetfb.saveIncomeData(amount: income, category: categoryToUse)
+                                                showNewCategoryField = false
+                                                selectedCategory = ""
+                                            }
+                                        } else {
+                                            await MainActor.run {
+                                                errorMessage = "Failed to add category"
+                                            }
+                                        }
+                                    }
                                 } else {
                                     errorMessage = "Please add a category"
                                 }
@@ -138,7 +149,7 @@ struct IncomesTabView: View {
                 )
             }
             .task {
-                await budgetfb.loadIncomeData()
+                await loadInitialData()
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -154,6 +165,16 @@ struct IncomesTabView: View {
             }
         }
     }
+    
+    private func loadInitialData() async {
+        // Load income data
+        await budgetfb.loadIncomeData()
+        
+        // Load categories and update the state
+        let loadedCategories = await budgetfb.loadCategories(type: .income)
+        categories = loadedCategories
+    }
+    
     // Bridge function
     private func deleteIncomeItem(at offsets: IndexSet) {
         budgetfb.deleteIncome(at: offsets)

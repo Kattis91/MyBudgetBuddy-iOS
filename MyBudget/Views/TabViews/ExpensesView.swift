@@ -13,7 +13,7 @@ struct ExpensesView: View {
     
     var viewtype : ExpenseViewType
     
-    @State var categories: [String]
+    @State private var categories: [String] = []
     @State var selectedCategory: String
     @State var newCategory: String = ""
     
@@ -84,12 +84,24 @@ struct ExpensesView: View {
                 if expense > 0.00 {
                     if showNewCategoryField {
                         if !newCategory.isEmpty {
-                            categories.append(newCategory)
-                            let categoryToUse = newCategory
-                            expenseAmount = ""
-                            budgetfb.saveExpenseData(amount: expense, category: categoryToUse, isfixed: ( viewtype == .fixed ))
-                            showNewCategoryField = false
-                            selectedCategory = ""
+                            Task {
+                                let categoryType: CategoryType = viewtype == .fixed ? .fixedExpense : .variableExpense
+                                let success = await budgetfb.addCategory(name: newCategory, type: categoryType)
+                                if success {
+                                    await MainActor.run {
+                                        categories.append(newCategory)
+                                        let categoryToUse = newCategory
+                                        expenseAmount = ""
+                                        budgetfb.saveExpenseData(amount: expense, category: categoryToUse, isfixed: ( viewtype == .fixed ))
+                                        showNewCategoryField = false
+                                        selectedCategory = ""
+                                    }
+                                } else {
+                                    await MainActor.run {
+                                        errorMessage = "Failed to add category"
+                                    }
+                                }
+                            }
                         } else {
                             errorMessage = "Please add a category"
                         }
@@ -112,6 +124,9 @@ struct ExpensesView: View {
         }) {
             ButtonView(buttontext: "Add expense", leadingPadding: 33, trailingPadding: 33)
         }
+        .task {
+            await loadCategories()
+        }
         
         if viewtype == .fixed {
             CustomListView(
@@ -132,6 +147,12 @@ struct ExpensesView: View {
         }
     }
     
+    private func loadCategories() async {
+        let categoryType: CategoryType = viewtype == .fixed ? .fixedExpense : .variableExpense
+        let loadedCategories = await budgetfb.loadCategories(type: categoryType)
+        categories = loadedCategories
+    }
+    
     // Bridge function for Fixed
     private func deleteFixedExpense(at offsets: IndexSet) {
         budgetfb.deleteExpense(isfixed: true, from: "fixed", at: offsets)
@@ -145,7 +166,7 @@ struct ExpensesView: View {
 
 #Preview {
     ExpensesView(
-        viewtype: .fixed, categories: ["Rent", "Water", "Electricity"],
+        viewtype: .fixed, 
         selectedCategory: "Rent",
         totalExpenses: .constant(100.0), expenseList: .constant([]),
         budgetfb: BudgetFB()
