@@ -19,17 +19,62 @@ struct CategoryManagementView: View {
         List {
             Section("Income Categories") {
                 ForEach(incomeCats, id: \.self) { category in
-                    Text(category)
+                    HStack {
+                        Text(category)
+                        Spacer()
+                        Button(action: {
+                            
+                        }) {
+                            Image(systemName: "square.and.pencil")
+                        }
+                        .padding()
+                        Button(action: {
+                            
+                        }) {
+                            Image(systemName: "trash")
+                                .foregroundColor(.red)
+                        }
+                    }
                 }
             }
             Section("Fixed Expense Categories") {
                 ForEach(fixedExpenseCats, id: \.self) { category in
-                    Text(category)
+                    HStack {
+                        Text(category)
+                        Spacer()
+                        Button(action: {
+                            
+                        }) {
+                            Image(systemName: "square.and.pencil")
+                        }
+                        .padding()
+                        Button(action: {
+                            
+                        }) {
+                            Image(systemName: "trash")
+                                .foregroundColor(.red)
+                        }
+                    }
                 }
             }
             Section("Variable Expense Categories") {
                 ForEach(variableExpenseCats, id: \.self) { category in
-                    Text(category)
+                    HStack {
+                        Text(category)
+                        Spacer()
+                        Button(action: {
+                            
+                        }) {
+                            Image(systemName: "square.and.pencil")
+                        }
+                        .padding()
+                        Button(action: {
+                            
+                        }) {
+                            Image(systemName: "trash")
+                                .foregroundColor(.red)
+                        }
+                    }
                 }
             }
             .task {
