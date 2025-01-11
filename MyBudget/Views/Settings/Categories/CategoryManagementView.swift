@@ -36,12 +36,14 @@ struct CategoryManagementView: View {
                             Image(systemName: "square.and.pencil")
                         }
                         .padding()
+                        .buttonStyle(BorderlessButtonStyle())
                         Button(action: {
                             
                         }) {
                             Image(systemName: "trash")
                                 .foregroundColor(.red)
                         }
+                        .buttonStyle(BorderlessButtonStyle())
                     }
                 }
             }
@@ -56,12 +58,14 @@ struct CategoryManagementView: View {
                             Image(systemName: "square.and.pencil")
                         }
                         .padding()
+                        .buttonStyle(BorderlessButtonStyle())
                         Button(action: {
                             
                         }) {
                             Image(systemName: "trash")
                                 .foregroundColor(.red)
                         }
+                        .buttonStyle(BorderlessButtonStyle())
                     }
                 }
             }
@@ -76,12 +80,14 @@ struct CategoryManagementView: View {
                             Image(systemName: "square.and.pencil")
                         }
                         .padding()
+                        .buttonStyle(BorderlessButtonStyle())
                         Button(action: {
                             
                         }) {
                             Image(systemName: "trash")
                                 .foregroundColor(.red)
                         }
+                        .buttonStyle(BorderlessButtonStyle())
                     }
                 }
             }
