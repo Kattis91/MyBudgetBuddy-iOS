@@ -101,7 +101,8 @@ struct CategoryManagementView: View {
                 type: category.type,
                 onSave: { newName in
                     Task {
-                        
+                        _ = await budgetfb.editCategory(oldName: category.name, newName: newName, type: category.type)
+                        await loadAllCategories()
                     }
                 }
             )
@@ -109,11 +110,10 @@ struct CategoryManagementView: View {
     }
     
     private func loadAllCategories() async {
-       incomeCats = await budgetfb.loadCategories(type: .income)
-       fixedExpenseCats = await budgetfb.loadCategories(type: .fixedExpense)
-       variableExpenseCats = await budgetfb.loadCategories(type: .variableExpense)
-    
-   }
+        incomeCats = await budgetfb.loadCategories(type: .income)
+        fixedExpenseCats = await budgetfb.loadCategories(type: .fixedExpense)
+        variableExpenseCats = await budgetfb.loadCategories(type: .variableExpense)
+    }
 }
 
 #Preview {

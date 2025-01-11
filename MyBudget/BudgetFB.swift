@@ -829,5 +829,31 @@ import FirebaseAuth
             }
         }
     }
+    
+    func editCategory(oldName: String, newName: String, type: CategoryType) async -> Bool {
+       guard let userId = Auth.auth().currentUser?.uid else { return false }
+       
+       return await withCheckedContinuation { continuation in
+           let ref = Database.database().reference()
+               .child("categories")
+               .child(userId)
+               .child(type.rawValue)
+           
+           ref.observeSingleEvent(of: .value) { snapshot in
+               var categories = snapshot.value as? [String] ?? []
+               
+               guard let index = categories.firstIndex(of: oldName) else {
+                   continuation.resume(returning: false)
+                   return
+               }
+               
+               categories[index] = newName
+               
+               ref.setValue(categories) { error, _ in
+                   continuation.resume(returning: error == nil)
+               }
+           }
+       }
+    }
 }
 
