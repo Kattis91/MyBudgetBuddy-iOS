@@ -7,12 +7,20 @@
 
 import SwiftUI
 
+struct EditingCategory: Identifiable {
+    let id = UUID()
+    let name: String
+    let type: CategoryType
+}
+
 struct CategoryManagementView: View {
     
     @State var budgetfb: BudgetFB
     @State private var incomeCats: [String] = []
     @State private var fixedExpenseCats: [String] = []
     @State private var variableExpenseCats: [String] = []
+    
+    @State private var editingCategory: EditingCategory? = nil
     
     var body: some View {
         
@@ -23,7 +31,7 @@ struct CategoryManagementView: View {
                         Text(category)
                         Spacer()
                         Button(action: {
-                            
+                            editingCategory = EditingCategory(name: category, type: .income)
                         }) {
                             Image(systemName: "square.and.pencil")
                         }
@@ -43,7 +51,7 @@ struct CategoryManagementView: View {
                         Text(category)
                         Spacer()
                         Button(action: {
-                            
+                            editingCategory = EditingCategory(name: category, type: .fixedExpense)
                         }) {
                             Image(systemName: "square.and.pencil")
                         }
@@ -63,7 +71,7 @@ struct CategoryManagementView: View {
                         Text(category)
                         Spacer()
                         Button(action: {
-                            
+                            editingCategory = EditingCategory(name: category, type: .variableExpense)
                         }) {
                             Image(systemName: "square.and.pencil")
                         }
@@ -77,9 +85,20 @@ struct CategoryManagementView: View {
                     }
                 }
             }
-            .task {
-                await loadAllCategories()
-            }
+        }
+        .task {
+            await loadAllCategories()
+        }
+        .sheet(item: $editingCategory) { category in
+            EditCategorySheet(
+                originalName: category.name,
+                type: category.type,
+                onSave: { newName in
+                    Task {
+                        
+                    }
+                }
+            )
         }
     }
     
