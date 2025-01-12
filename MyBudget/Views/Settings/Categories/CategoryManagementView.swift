@@ -23,6 +23,8 @@ struct CategoryManagementView: View {
     @State private var editingCategory: EditingCategory? = nil
     
     @State var showEditForm = false
+    @State var showingDeleteAlert = false
+    @State private var selectedCategory: (String, CategoryType)?
     
     var body: some View {
         
@@ -44,8 +46,8 @@ struct CategoryManagementView: View {
                                 .buttonStyle(BorderlessButtonStyle())
                                 Button(action: {
                                     Task {
-                                       _ = await budgetfb.deleteCategory(name: category, type: .income)
-                                        await loadAllCategories()
+                                        selectedCategory = (category, .income)
+                                        showingDeleteAlert = true
                                     }
                                 }) {
                                     Image(systemName: "trash")
@@ -69,10 +71,8 @@ struct CategoryManagementView: View {
                                 .padding()
                                 .buttonStyle(BorderlessButtonStyle())
                                 Button(action: {
-                                    Task {
-                                        _ = await budgetfb.deleteCategory(name: category, type: .fixedExpense)
-                                        await loadAllCategories()
-                                    }
+                                    selectedCategory = (category, .fixedExpense)
+                                    showingDeleteAlert = true
                                 }) {
                                     Image(systemName: "trash")
                                         .foregroundColor(.red)
@@ -95,15 +95,24 @@ struct CategoryManagementView: View {
                                 .padding()
                                 .buttonStyle(BorderlessButtonStyle())
                                 Button(action: {
-                                    Task {
-                                        _ = await budgetfb.deleteCategory(name: category, type: .variableExpense)
-                                        await loadAllCategories()
-                                    }
+                                    selectedCategory = (category, .variableExpense)
+                                    showingDeleteAlert = true
                                 }) {
                                     Image(systemName: "trash")
                                         .foregroundColor(.red)
                                 }
                                 .buttonStyle(BorderlessButtonStyle())
+                            }
+                        }
+                    }
+                }
+                .alert("Are you sure you want to delete \(selectedCategory?.0 ?? "this category")?", isPresented: $showingDeleteAlert) {
+                    Button("Cancel", role: .cancel) { }
+                    Button("Delete", role: .destructive) {
+                        if let (category, type) = selectedCategory {
+                            Task {
+                                _ = await budgetfb.deleteCategory(name: category, type: type)
+                                await loadAllCategories()
                             }
                         }
                     }
