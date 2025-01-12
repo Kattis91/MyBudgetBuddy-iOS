@@ -26,6 +26,14 @@ struct CategoryManagementView: View {
     @State var showingDeleteAlert = false
     @State private var selectedCategory: (String, CategoryType)?
     
+    @State var showNewIncomeField = false
+    @State var showNewFixedExpenseField = false
+    @State var showNewVariableExpenseField = false
+    
+    @State var incomeCat = ""
+    @State var fixedExpenseCat = ""
+    @State var variableExpenseCat = ""
+    
     var body: some View {
         
         ZStack {
@@ -56,6 +64,32 @@ struct CategoryManagementView: View {
                                 .buttonStyle(BorderlessButtonStyle())
                             }
                         }
+                        Button (action: {
+                            showNewIncomeField = true
+                        }) {
+                            Text("+ Add Income Category")
+                        }
+                        if showNewIncomeField {
+                            HStack {
+                                CustomTextFieldView(placeholder: "Add new category", text: $incomeCat, isSecure: false, leadingPadding: 3, trailingPadding: 10, systemName: "square.grid.2x2")
+                                Button(action: {
+                                    showNewIncomeField = false
+                                }) {
+                                    Image(systemName: "arrow.uturn.backward")
+                                        .foregroundColor(.blue)
+                                        .padding(.trailing, 10)
+                                        .padding(.bottom, 8)
+                                }
+                            }
+                            Button(action: {
+                                Task {
+                                    _ = await budgetfb.addCategory(name: incomeCat, type: .income)
+                                    await loadAllCategories()
+                                }
+                            }) {
+                                ButtonView(buttontext: "Save", maxWidth: 160, leadingPadding: 50, topPadding: 0)
+                            }
+                        }
                     }
                     Section("Fixed Expense Categories") {
                         ForEach(fixedExpenseCats, id: \.self) { category in
@@ -80,6 +114,32 @@ struct CategoryManagementView: View {
                                 .buttonStyle(BorderlessButtonStyle())
                             }
                         }
+                        Button (action: {
+                            showNewFixedExpenseField = true
+                        }) {
+                            Text("+ Add Fixed Expense Category")
+                        }
+                        if showNewFixedExpenseField {
+                            HStack {
+                                CustomTextFieldView(placeholder: "Add new category", text: $fixedExpenseCat, isSecure: false, leadingPadding: 3, trailingPadding: 10, systemName: "square.grid.2x2")
+                                Button(action: {
+                                    showNewFixedExpenseField = false
+                                }) {
+                                    Image(systemName: "arrow.uturn.backward")
+                                        .foregroundColor(.blue)
+                                        .padding(.trailing, 10)
+                                        .padding(.bottom, 8)
+                                }
+                            }
+                            Button(action: {
+                                Task {
+                                    _ = await budgetfb.addCategory(name: fixedExpenseCat, type: .fixedExpense)
+                                    await loadAllCategories()
+                                }
+                            }) {
+                                ButtonView(buttontext: "Save", maxWidth: 160, leadingPadding: 50, topPadding: 0)
+                            }
+                        }
                     }
                     Section("Variable Expense Categories") {
                         ForEach(variableExpenseCats, id: \.self) { category in
@@ -102,6 +162,32 @@ struct CategoryManagementView: View {
                                         .foregroundColor(.red)
                                 }
                                 .buttonStyle(BorderlessButtonStyle())
+                            }
+                        }
+                        Button (action: {
+                            showNewVariableExpenseField = true
+                        }) {
+                            Text("+ Add Variable Expense Category")
+                        }
+                        if showNewVariableExpenseField {
+                            HStack {
+                                CustomTextFieldView(placeholder: "Add new category", text: $variableExpenseCat, isSecure: false, leadingPadding: 3, trailingPadding: 10, systemName: "square.grid.2x2")
+                                Button(action: {
+                                    showNewVariableExpenseField = false
+                                }) {
+                                    Image(systemName: "arrow.uturn.backward")
+                                        .foregroundColor(.blue)
+                                        .padding(.trailing, 10)
+                                        .padding(.bottom, 8)
+                                }
+                            }
+                            Button(action: {
+                                Task {
+                                    _ = await budgetfb.addCategory(name: variableExpenseCat, type: .variableExpense)
+                                    await loadAllCategories()
+                                }
+                            }) {
+                                ButtonView(buttontext: "Save", maxWidth: 160, leadingPadding: 50, topPadding: 0)
                             }
                         }
                     }
