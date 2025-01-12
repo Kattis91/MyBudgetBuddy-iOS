@@ -855,5 +855,27 @@ import FirebaseAuth
            }
        }
     }
+    
+    // Delete category
+   func deleteCategory(name: String, type: CategoryType) async -> Bool {
+       guard let userId = Auth.auth().currentUser?.uid else { return false }
+       
+       return await withCheckedContinuation { continuation in
+           let ref = Database.database().reference()
+               .child("categories")
+               .child(userId)
+               .child(type.rawValue)
+           
+           ref.observeSingleEvent(of: .value) { snapshot in
+               var categories = snapshot.value as? [String] ?? []
+               categories.removeAll { $0 == name }
+               
+               ref.setValue(categories) { error, _ in
+                   continuation.resume(returning: error == nil)
+               }
+           }
+       }
+   }
+
 }
 

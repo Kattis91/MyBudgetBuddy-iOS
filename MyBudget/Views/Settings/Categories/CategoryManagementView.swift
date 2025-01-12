@@ -43,7 +43,10 @@ struct CategoryManagementView: View {
                                 .padding()
                                 .buttonStyle(BorderlessButtonStyle())
                                 Button(action: {
-                                    
+                                    Task {
+                                       _ = await budgetfb.deleteCategory(name: category, type: .income)
+                                        await loadAllCategories()
+                                    }
                                 }) {
                                     Image(systemName: "trash")
                                         .foregroundColor(.red)
@@ -66,7 +69,10 @@ struct CategoryManagementView: View {
                                 .padding()
                                 .buttonStyle(BorderlessButtonStyle())
                                 Button(action: {
-                                    
+                                    Task {
+                                        _ = await budgetfb.deleteCategory(name: category, type: .fixedExpense)
+                                        await loadAllCategories()
+                                    }
                                 }) {
                                     Image(systemName: "trash")
                                         .foregroundColor(.red)
@@ -89,7 +95,10 @@ struct CategoryManagementView: View {
                                 .padding()
                                 .buttonStyle(BorderlessButtonStyle())
                                 Button(action: {
-                                    
+                                    Task {
+                                        _ = await budgetfb.deleteCategory(name: category, type: .variableExpense)
+                                        await loadAllCategories()
+                                    }
                                 }) {
                                     Image(systemName: "trash")
                                         .foregroundColor(.red)
