@@ -49,6 +49,7 @@ struct CategoryManagementView: View {
                                 Button(action: {
                                     editingCategory = EditingCategory(name: category, type: .income)
                                     showEditForm = true
+                                    closeNewCategoryField()
                                 }) {
                                     Image(systemName: "square.and.pencil")
                                 }
@@ -58,6 +59,7 @@ struct CategoryManagementView: View {
                                     Task {
                                         selectedCategory = (category, .income)
                                         showingDeleteAlert = true
+                                        closeNewCategoryField()
                                     }
                                 }) {
                                     Image(systemName: "trash")
@@ -68,6 +70,8 @@ struct CategoryManagementView: View {
                         }
                         Button (action: {
                             showNewIncomeField = true
+                            showNewFixedExpenseField = false
+                            showNewVariableExpenseField = false
                         }) {
                             Text("+ Add Income Category")
                         }
@@ -117,6 +121,7 @@ struct CategoryManagementView: View {
                                 Button(action: {
                                     editingCategory = EditingCategory(name: category, type: .fixedExpense)
                                     showEditForm = true
+                                    closeNewCategoryField()
                                 }) {
                                     Image(systemName: "square.and.pencil")
                                 }
@@ -125,6 +130,7 @@ struct CategoryManagementView: View {
                                 Button(action: {
                                     selectedCategory = (category, .fixedExpense)
                                     showingDeleteAlert = true
+                                    closeNewCategoryField()
                                 }) {
                                     Image(systemName: "trash")
                                         .foregroundColor(.red)
@@ -134,6 +140,8 @@ struct CategoryManagementView: View {
                         }
                         Button (action: {
                             showNewFixedExpenseField = true
+                            showNewIncomeField = false
+                            showNewVariableExpenseField = false
                         }) {
                             Text("+ Add Fixed Expense Category")
                         }
@@ -182,6 +190,7 @@ struct CategoryManagementView: View {
                                 Button(action: {
                                     editingCategory = EditingCategory(name: category, type: .variableExpense)
                                     showEditForm = true
+                                    closeNewCategoryField()
                                 }) {
                                     Image(systemName: "square.and.pencil")
                                 }
@@ -190,6 +199,7 @@ struct CategoryManagementView: View {
                                 Button(action: {
                                     selectedCategory = (category, .variableExpense)
                                     showingDeleteAlert = true
+                                    closeNewCategoryField()
                                 }) {
                                     Image(systemName: "trash")
                                         .foregroundColor(.red)
@@ -199,6 +209,8 @@ struct CategoryManagementView: View {
                         }
                         Button (action: {
                             showNewVariableExpenseField = true
+                            showNewIncomeField = false
+                            showNewFixedExpenseField = false
                         }) {
                             Text("+ Add Variable Expense Category")
                         }
@@ -270,6 +282,16 @@ struct CategoryManagementView: View {
         }
     }
     
+    func closeNewCategoryField() {
+        showNewIncomeField = false
+        showNewFixedExpenseField = false
+        showNewVariableExpenseField = false
+        incomeCat = ""
+        fixedExpenseCat = ""
+        variableExpenseCat = ""
+        errorMessage = ""
+    }
+
     private func loadAllCategories() async {
         incomeCats = await budgetfb.loadCategories(type: .income)
         fixedExpenseCats = await budgetfb.loadCategories(type: .fixedExpense)
