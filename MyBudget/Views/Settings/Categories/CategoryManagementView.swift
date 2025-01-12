@@ -34,6 +34,8 @@ struct CategoryManagementView: View {
     @State var fixedExpenseCat = ""
     @State var variableExpenseCat = ""
     
+    @State var errorMessage = ""
+    
     var body: some View {
         
         ZStack {
@@ -71,9 +73,11 @@ struct CategoryManagementView: View {
                         }
                         if showNewIncomeField {
                             HStack {
-                                CustomTextFieldView(placeholder: "Add new category", text: $incomeCat, isSecure: false, leadingPadding: 3, trailingPadding: 10, systemName: "square.grid.2x2")
+                                CustomTextFieldView(placeholder: "Add new category", text: $incomeCat, isSecure: false, onChange: { errorMessage = ""
+                                }, leadingPadding: 3, trailingPadding: 10, systemName: "square.grid.2x2")
                                 Button(action: {
                                     showNewIncomeField = false
+                                    incomeCat = ""
                                 }) {
                                     Image(systemName: "arrow.uturn.backward")
                                         .foregroundColor(.blue)
@@ -81,10 +85,18 @@ struct CategoryManagementView: View {
                                         .padding(.bottom, 8)
                                 }
                             }
+                            
+                            ErrorMessageView(errorMessage: errorMessage, height: 20)
+                            
                             Button(action: {
-                                Task {
-                                    _ = await budgetfb.addCategory(name: incomeCat, type: .income)
-                                    await loadAllCategories()
+                                if !incomeCat.isEmpty {
+                                    Task {
+                                        _ = await budgetfb.addCategory(name: incomeCat, type: .income)
+                                        await loadAllCategories()
+                                        showNewIncomeField = false
+                                    }
+                                } else {
+                                    errorMessage = "Please enter a category"
                                 }
                             }) {
                                 ButtonView(buttontext: "Save", maxWidth: 160, leadingPadding: 50, topPadding: 0)
@@ -121,9 +133,10 @@ struct CategoryManagementView: View {
                         }
                         if showNewFixedExpenseField {
                             HStack {
-                                CustomTextFieldView(placeholder: "Add new category", text: $fixedExpenseCat, isSecure: false, leadingPadding: 3, trailingPadding: 10, systemName: "square.grid.2x2")
+                                CustomTextFieldView(placeholder: "Add new category", text: $fixedExpenseCat, isSecure: false, onChange: { errorMessage = ""}, leadingPadding: 3, trailingPadding: 10, systemName: "square.grid.2x2")
                                 Button(action: {
                                     showNewFixedExpenseField = false
+                                    fixedExpenseCat = ""
                                 }) {
                                     Image(systemName: "arrow.uturn.backward")
                                         .foregroundColor(.blue)
@@ -131,10 +144,18 @@ struct CategoryManagementView: View {
                                         .padding(.bottom, 8)
                                 }
                             }
+                            
+                            ErrorMessageView(errorMessage: errorMessage, height: 20)
+                            
                             Button(action: {
-                                Task {
-                                    _ = await budgetfb.addCategory(name: fixedExpenseCat, type: .fixedExpense)
-                                    await loadAllCategories()
+                                if !fixedExpenseCat.isEmpty {
+                                    Task {
+                                        _ = await budgetfb.addCategory(name: fixedExpenseCat, type: .fixedExpense)
+                                        await loadAllCategories()
+                                        showNewFixedExpenseField = false
+                                    }
+                                } else {
+                                    errorMessage = "Please enter a category"
                                 }
                             }) {
                                 ButtonView(buttontext: "Save", maxWidth: 160, leadingPadding: 50, topPadding: 0)
@@ -171,9 +192,10 @@ struct CategoryManagementView: View {
                         }
                         if showNewVariableExpenseField {
                             HStack {
-                                CustomTextFieldView(placeholder: "Add new category", text: $variableExpenseCat, isSecure: false, leadingPadding: 3, trailingPadding: 10, systemName: "square.grid.2x2")
+                                CustomTextFieldView(placeholder: "Add new category", text: $variableExpenseCat, isSecure: false, onChange: { errorMessage = ""}, leadingPadding: 3, trailingPadding: 10, systemName: "square.grid.2x2")
                                 Button(action: {
                                     showNewVariableExpenseField = false
+                                    variableExpenseCat = ""
                                 }) {
                                     Image(systemName: "arrow.uturn.backward")
                                         .foregroundColor(.blue)
@@ -181,10 +203,17 @@ struct CategoryManagementView: View {
                                         .padding(.bottom, 8)
                                 }
                             }
+                            
+                            ErrorMessageView(errorMessage: errorMessage, height: 20)
+                            
                             Button(action: {
-                                Task {
-                                    _ = await budgetfb.addCategory(name: variableExpenseCat, type: .variableExpense)
-                                    await loadAllCategories()
+                                if !variableExpenseCat.isEmpty {
+                                    Task {
+                                        _ = await budgetfb.addCategory(name: variableExpenseCat, type: .variableExpense)
+                                        await loadAllCategories()
+                                    }
+                                } else {
+                                    errorMessage = "Please enter a category"
                                 }
                             }) {
                                 ButtonView(buttontext: "Save", maxWidth: 160, leadingPadding: 50, topPadding: 0)
