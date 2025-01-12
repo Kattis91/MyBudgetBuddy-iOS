@@ -76,8 +76,9 @@ struct CategoryManagementView: View {
                                 CustomTextFieldView(placeholder: "Add new category", text: $incomeCat, isSecure: false, onChange: { errorMessage = ""
                                 }, leadingPadding: 3, trailingPadding: 10, systemName: "square.grid.2x2")
                                 Button(action: {
-                                    showNewIncomeField = false
+                                    errorMessage = ""
                                     incomeCat = ""
+                                    showNewIncomeField = false
                                 }) {
                                     Image(systemName: "arrow.uturn.backward")
                                         .foregroundColor(.blue)
@@ -86,7 +87,12 @@ struct CategoryManagementView: View {
                                 }
                             }
                             
-                            ErrorMessageView(errorMessage: errorMessage, height: 20)
+                            VStack {
+                                if !errorMessage.isEmpty {
+                                    ErrorMessageView(errorMessage: errorMessage, height: 20)
+                                }
+                            }
+                            .frame(height: 15)
                             
                             Button(action: {
                                 if !incomeCat.isEmpty {
@@ -135,8 +141,9 @@ struct CategoryManagementView: View {
                             HStack {
                                 CustomTextFieldView(placeholder: "Add new category", text: $fixedExpenseCat, isSecure: false, onChange: { errorMessage = ""}, leadingPadding: 3, trailingPadding: 10, systemName: "square.grid.2x2")
                                 Button(action: {
-                                    showNewFixedExpenseField = false
+                                    errorMessage = ""
                                     fixedExpenseCat = ""
+                                    showNewFixedExpenseField = false
                                 }) {
                                     Image(systemName: "arrow.uturn.backward")
                                         .foregroundColor(.blue)
@@ -145,7 +152,12 @@ struct CategoryManagementView: View {
                                 }
                             }
                             
-                            ErrorMessageView(errorMessage: errorMessage, height: 20)
+                            VStack {
+                                if !errorMessage.isEmpty {
+                                    ErrorMessageView(errorMessage: errorMessage, height: 20)
+                                }
+                            }
+                            .frame(height: 15)
                             
                             Button(action: {
                                 if !fixedExpenseCat.isEmpty {
@@ -194,8 +206,9 @@ struct CategoryManagementView: View {
                             HStack {
                                 CustomTextFieldView(placeholder: "Add new category", text: $variableExpenseCat, isSecure: false, onChange: { errorMessage = ""}, leadingPadding: 3, trailingPadding: 10, systemName: "square.grid.2x2")
                                 Button(action: {
-                                    showNewVariableExpenseField = false
+                                    errorMessage = ""
                                     variableExpenseCat = ""
+                                    showNewVariableExpenseField = false
                                 }) {
                                     Image(systemName: "arrow.uturn.backward")
                                         .foregroundColor(.blue)
@@ -204,7 +217,12 @@ struct CategoryManagementView: View {
                                 }
                             }
                             
-                            ErrorMessageView(errorMessage: errorMessage, height: 20)
+                            VStack {
+                                if !errorMessage.isEmpty {
+                                    ErrorMessageView(errorMessage: errorMessage, height: 20)
+                                }
+                            }
+                            .frame(height: 15)
                             
                             Button(action: {
                                 if !variableExpenseCat.isEmpty {
