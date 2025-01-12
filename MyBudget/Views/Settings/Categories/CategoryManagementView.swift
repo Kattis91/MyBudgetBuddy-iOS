@@ -27,79 +27,81 @@ struct CategoryManagementView: View {
     var body: some View {
         
         ZStack {
-            List {
-                Section("Income Categories") {
-                    ForEach(incomeCats, id: \.self) { category in
-                        HStack {
-                            Text(category)
-                            Spacer()
-                            Button(action: {
-                                editingCategory = EditingCategory(name: category, type: .income)
-                                showEditForm = true
-                            }) {
-                                Image(systemName: "square.and.pencil")
+            if !showEditForm {
+                List {
+                    Section("Income Categories") {
+                        ForEach(incomeCats, id: \.self) { category in
+                            HStack {
+                                Text(category)
+                                Spacer()
+                                Button(action: {
+                                    editingCategory = EditingCategory(name: category, type: .income)
+                                    showEditForm = true
+                                }) {
+                                    Image(systemName: "square.and.pencil")
+                                }
+                                .padding()
+                                .buttonStyle(BorderlessButtonStyle())
+                                Button(action: {
+                                    
+                                }) {
+                                    Image(systemName: "trash")
+                                        .foregroundColor(.red)
+                                }
+                                .buttonStyle(BorderlessButtonStyle())
                             }
-                            .padding()
-                            .buttonStyle(BorderlessButtonStyle())
-                            Button(action: {
-                                
-                            }) {
-                                Image(systemName: "trash")
-                                    .foregroundColor(.red)
+                        }
+                    }
+                    Section("Fixed Expense Categories") {
+                        ForEach(fixedExpenseCats, id: \.self) { category in
+                            HStack {
+                                Text(category)
+                                Spacer()
+                                Button(action: {
+                                    editingCategory = EditingCategory(name: category, type: .fixedExpense)
+                                    showEditForm = true
+                                }) {
+                                    Image(systemName: "square.and.pencil")
+                                }
+                                .padding()
+                                .buttonStyle(BorderlessButtonStyle())
+                                Button(action: {
+                                    
+                                }) {
+                                    Image(systemName: "trash")
+                                        .foregroundColor(.red)
+                                }
+                                .buttonStyle(BorderlessButtonStyle())
                             }
-                            .buttonStyle(BorderlessButtonStyle())
+                        }
+                    }
+                    Section("Variable Expense Categories") {
+                        ForEach(variableExpenseCats, id: \.self) { category in
+                            HStack {
+                                Text(category)
+                                Spacer()
+                                Button(action: {
+                                    editingCategory = EditingCategory(name: category, type: .variableExpense)
+                                    showEditForm = true
+                                }) {
+                                    Image(systemName: "square.and.pencil")
+                                }
+                                .padding()
+                                .buttonStyle(BorderlessButtonStyle())
+                                Button(action: {
+                                    
+                                }) {
+                                    Image(systemName: "trash")
+                                        .foregroundColor(.red)
+                                }
+                                .buttonStyle(BorderlessButtonStyle())
+                            }
                         }
                     }
                 }
-                Section("Fixed Expense Categories") {
-                    ForEach(fixedExpenseCats, id: \.self) { category in
-                        HStack {
-                            Text(category)
-                            Spacer()
-                            Button(action: {
-                                editingCategory = EditingCategory(name: category, type: .fixedExpense)
-                                showEditForm = true
-                            }) {
-                                Image(systemName: "square.and.pencil")
-                            }
-                            .padding()
-                            .buttonStyle(BorderlessButtonStyle())
-                            Button(action: {
-                                
-                            }) {
-                                Image(systemName: "trash")
-                                    .foregroundColor(.red)
-                            }
-                            .buttonStyle(BorderlessButtonStyle())
-                        }
-                    }
+                .task {
+                    await loadAllCategories()
                 }
-                Section("Variable Expense Categories") {
-                    ForEach(variableExpenseCats, id: \.self) { category in
-                        HStack {
-                            Text(category)
-                            Spacer()
-                            Button(action: {
-                                editingCategory = EditingCategory(name: category, type: .variableExpense)
-                                showEditForm = true
-                            }) {
-                                Image(systemName: "square.and.pencil")
-                            }
-                            .padding()
-                            .buttonStyle(BorderlessButtonStyle())
-                            Button(action: {
-                                
-                            }) {
-                                Image(systemName: "trash")
-                                    .foregroundColor(.red)
-                            }
-                            .buttonStyle(BorderlessButtonStyle())
-                        }
-                    }
-                }
-            }
-            .task {
-                await loadAllCategories()
             }
             if showEditForm {
                 EditCategoryView(
