@@ -164,6 +164,9 @@ struct IncomesTabView: View {
                 }
             }
         }
+        .sheet(isPresented: $showSettings) {
+            SettingsView(budgetfb: budgetfb)
+        }
     }
     
     private func loadInitialData() async {
