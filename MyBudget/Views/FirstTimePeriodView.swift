@@ -12,6 +12,7 @@ struct FirstTimePeriodView: View {
     @State var showingNewPeriod = false
     @EnvironmentObject var budgetManager: BudgetManager
     var budgetfb = BudgetFB()
+    var onPeriodCreated: () -> Void
     
     var body: some View {
         
@@ -52,6 +53,14 @@ struct FirstTimePeriodView: View {
                         .padding(.horizontal, 24)
                         .cornerRadius(12)
                         .shadow(radius: 10)
+                        .onDisappear {
+                            // Check if a period was created
+                            budgetfb.checkForAnyBudgetPeriod { exists in
+                                if exists {
+                                    onPeriodCreated()
+                                }
+                            }
+                        }
                 }
             }
         }
@@ -59,6 +68,6 @@ struct FirstTimePeriodView: View {
 }
 
 #Preview {
-    FirstTimePeriodView()
+    FirstTimePeriodView(onPeriodCreated: {})
         .environmentObject(BudgetManager())
 }

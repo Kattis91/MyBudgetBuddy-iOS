@@ -29,56 +29,83 @@ struct HomeView: View {
     
     @EnvironmentObject var budgetManager: BudgetManager
     @State var budgetfb = BudgetFB()
+    @State private var hasExistingPeriods = false
+    @State private var isCheckingPeriods = true
     
     var body: some View {
         
-        VStack {
-            
-            TabView {
-                Tab("Home", systemImage: "house") {
-                    HomeTabView(budgetfb: budgetfb)
-                }
-                
-                Tab("Incomes", systemImage: "plus.circle") {
-                    IncomesTabView(budgetfb: budgetfb)
-                }
-                
-                Tab("Expenses", systemImage: "minus.circle") {
-                    ExpensesTabView(budgetfb: budgetfb)
-                }
-                
-                Tab("Overview", systemImage: "chart.bar") {
-                    OverviewTabView()
-                }
-                
-            }
-        }
-        .onReceive(NotificationCenter.default.publisher(for: .periodUpdated)) { _ in
-            Task {
-                await budgetfb.loadIncomeData()
-                await budgetfb.loadExpenseData(isfixed: true)
-                await budgetfb.loadExpenseData(isfixed: false)
-            }
-        }
-        .onAppear {
-            budgetfb.loadCurrentBudgetPeriod { loadedPeriod in
-                if let loadedPeriod = loadedPeriod {
-                    DispatchQueue.main.async {
-                        budgetManager.currentPeriod = loadedPeriod
+        Group {
+            if isCheckingPeriods {
+                ProgressView()
+            } else {
+                if hasExistingPeriods {
+                    VStack {
+                        TabView {
+                            Tab("Home", systemImage: "house") {
+                                HomeTabView(budgetfb: budgetfb)
+                            }
+                            
+                            Tab("Incomes", systemImage: "plus.circle") {
+                                IncomesTabView(budgetfb: budgetfb)
+                            }
+                            
+                            Tab("Expenses", systemImage: "minus.circle") {
+                                ExpensesTabView(budgetfb: budgetfb)
+                            }
+                            
+                            Tab("Overview", systemImage: "chart.bar") {
+                                OverviewTabView()
+                            }
+                            
+                        }
+                    }
+                    .onReceive(NotificationCenter.default.publisher(for: .periodUpdated)) { _ in
+                        Task {
+                            await budgetfb.loadIncomeData()
+                            await budgetfb.loadExpenseData(isfixed: true)
+                            await budgetfb.loadExpenseData(isfixed: false)
+                        }
+                    }
+                    .accentColor(Color("TextColor"))
+                } else {
+                    FirstTimePeriodView(onPeriodCreated: {
+                            hasExistingPeriods = true
+                            loadInitialData()
+                        })
                     }
                 }
             }
-            Task {
-                await budgetfb.loadIncomeData()
-                await budgetfb.loadExpenseData(isfixed: true) 
-                await budgetfb.loadExpenseData(isfixed: false)
+            .onAppear {
+                checkInitialState()
+        }
+    }
+    
+    private func checkInitialState() {
+        budgetfb.checkForAnyBudgetPeriod { exists in
+            hasExistingPeriods = exists
+            isCheckingPeriods = false
+            
+            if exists {
+                loadInitialData()
             }
         }
-        .task {
-            // Load data when view appears
+    }
+    
+    private func loadInitialData() {
+        budgetfb.loadCurrentBudgetPeriod { loadedPeriod in
+            if let loadedPeriod = loadedPeriod {
+                DispatchQueue.main.async {
+                    budgetManager.currentPeriod = loadedPeriod
+                }
+            }
+        }
+        
+        Task {
+            await budgetfb.loadIncomeData()
+            await budgetfb.loadExpenseData(isfixed: true)
+            await budgetfb.loadExpenseData(isfixed: false)
             await budgetManager.loadData()
         }
-        .accentColor(Color("TextColor"))
     }
     
 }
