@@ -45,9 +45,9 @@ struct FirstTimePeriodView: View {
                 }
                 
                 if showingNewPeriod {
-                    NewBudgetPeriodView(isPresented: $showingNewPeriod)
+                    NewBudgetPeriodView(isPresented: $showingNewPeriod, isLandingPage: true)
                         .navigationBarBackButtonHidden(true)
-                        .frame(height: 500)
+                        .frame(height: 300)
                         .background(Color.white)
                         .padding(.horizontal, 24)
                         .cornerRadius(12)

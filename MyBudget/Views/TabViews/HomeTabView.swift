@@ -53,7 +53,7 @@ struct HomeTabView: View {
                     }
                 }
                 if showingNewPeriod {
-                    NewBudgetPeriodView(isPresented: $showingNewPeriod)
+                    NewBudgetPeriodView(isPresented: $showingNewPeriod, isLandingPage: false)
                         .navigationBarBackButtonHidden(true)
                         .frame(height: 500)
                         .background(Color.white)

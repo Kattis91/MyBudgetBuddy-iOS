@@ -15,6 +15,7 @@ struct NewBudgetPeriodView: View {
     
     @State private var includeIncomes = true
     @State private var includeFixedExpenses = true
+    @State var isLandingPage: Bool = false
     
     @Environment(\.presentationMode) var presentationMode
     
@@ -35,6 +36,7 @@ struct NewBudgetPeriodView: View {
                 }) {
                     Image(systemName: "xmark")
                         .foregroundStyle(Color.red)
+                        .padding(.horizontal)
                 }
             }
             
@@ -59,45 +61,47 @@ struct NewBudgetPeriodView: View {
             }
             .padding(.horizontal, 45)
             
-            HStack {
-                Text("Transfer Settings")
-                    .fontDesign(.rounded)
-                    .tracking(1.5)
-                Spacer()
-            }
-            .padding(.horizontal, 45)
-            Toggle("Include Incomes", isOn: $includeIncomes)
-                .tint(Color("CustomGreen"))
-                .padding(.horizontal, 45)
-            
-            if includeIncomes {
-                VStack(alignment: .leading) {
-                    Text("Incomes to be transferred:")
-                        .font(.subheadline)
-                        .padding(.top)
-                    ForEach(budgetManager.incomeList, id: \.id) { income in
-                        Text(income.category + ": " + String(format: "%.2f", income.amount))
-                            .font(.body)
-                    }
+            if !isLandingPage {
+                HStack {
+                    Text("Transfer Settings")
+                        .fontDesign(.rounded)
+                        .tracking(1.5)
+                    Spacer()
                 }
                 .padding(.horizontal, 45)
-            }
-            Toggle("Include Fast Expenses", isOn: $includeFixedExpenses)
-                .tint(Color("CustomGreen"))
-                .padding(.horizontal, 45)
-                .padding(.bottom, 10)
-            
-            if includeFixedExpenses {
-                VStack(alignment: .leading) {
-                    Text("Fixed Expenses to be transferred:")
-                        .font(.subheadline)
-                        .padding(.top)
-                    ForEach(budgetManager.fixedExpenseList, id: \.id) { expense in
-                        Text(expense.category + ": " + String(format: "%.2f", expense.amount))
-                            .font(.body)
+                Toggle("Include Incomes", isOn: $includeIncomes)
+                    .tint(Color("CustomGreen"))
+                    .padding(.horizontal, 45)
+                
+                if includeIncomes {
+                    VStack(alignment: .leading) {
+                        Text("Incomes to be transferred:")
+                            .font(.subheadline)
+                            .padding(.top)
+                        ForEach(budgetManager.incomeList, id: \.id) { income in
+                            Text(income.category + ": " + String(format: "%.2f", income.amount))
+                                .font(.body)
+                        }
                     }
+                    .padding(.horizontal, 45)
                 }
-                .padding(.horizontal, 45)
+                Toggle("Include Fast Expenses", isOn: $includeFixedExpenses)
+                    .tint(Color("CustomGreen"))
+                    .padding(.horizontal, 45)
+                    .padding(.bottom, 10)
+                
+                if includeFixedExpenses {
+                    VStack(alignment: .leading) {
+                        Text("Fixed Expenses to be transferred:")
+                            .font(.subheadline)
+                            .padding(.top)
+                        ForEach(budgetManager.fixedExpenseList, id: \.id) { expense in
+                            Text(expense.category + ": " + String(format: "%.2f", expense.amount))
+                                .font(.body)
+                        }
+                    }
+                    .padding(.horizontal, 45)
+                }
             }
             
             
