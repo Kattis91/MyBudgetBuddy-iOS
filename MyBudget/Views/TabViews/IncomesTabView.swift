@@ -148,6 +148,11 @@ struct IncomesTabView: View {
                     }, showNegativeAmount: false
                 )
             }
+            .onAppear() {
+                Task {
+                    await budgetfb.loadCategories(type: .income)
+                }
+            }
             .task {
                 await loadInitialData()
             }
@@ -165,6 +170,11 @@ struct IncomesTabView: View {
             }
         }
         .sheet(isPresented: $showSettings) {
+            Task {
+                let loadedCategories = await budgetfb.loadCategories(type: .income)
+                categories = loadedCategories
+            }
+        } content: {
             SettingsView(budgetfb: budgetfb)
         }
     }
