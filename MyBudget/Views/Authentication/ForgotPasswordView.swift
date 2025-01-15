@@ -28,10 +28,8 @@ struct ForgotPasswordView: View {
                 Button(action: {
                     isPresented = false
                 }) {
-                    Text("x")
-                        .font(.title)
+                    Image(systemName: "xmark")
                         .foregroundStyle(.red)
-                        .fontWeight(.bold)
                 }
             }
             .padding(.horizontal)

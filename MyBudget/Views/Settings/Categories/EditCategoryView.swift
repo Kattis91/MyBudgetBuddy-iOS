@@ -24,8 +24,7 @@ struct EditCategoryView: View {
                 Button(action: {
                     isPresented = false
                 }) {
-                    Text("x")
-                        .font(.title)
+                    Image(systemName: "xmark")
                         .foregroundColor(.red)
                 }
             }

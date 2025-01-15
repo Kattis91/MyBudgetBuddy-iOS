@@ -33,9 +33,8 @@ struct NewBudgetPeriodView: View {
                 Button(action: {
                     isPresented = false
                 }) {
-                    Text("X")
+                    Image(systemName: "xmark")
                         .foregroundStyle(Color.red)
-                        .padding(.trailing)
                 }
             }
             
