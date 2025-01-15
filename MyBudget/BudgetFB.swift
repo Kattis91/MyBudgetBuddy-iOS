@@ -582,6 +582,21 @@ import FirebaseAuth
             }
     }
     
+    func checkForAnyBudgetPeriod(completion: @escaping (Bool) -> Void) {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            completion(false)
+            return
+        }
+        
+        let ref = Database.database().reference()
+        let budgetPeriodsRef = ref.child("budgetPeriods").child(userId)
+        
+        budgetPeriodsRef.observeSingleEvent(of: .value) { snapshot in
+            // If snapshot exists and has children, there are budget periods
+            completion(snapshot.exists() && snapshot.hasChildren())
+        }
+    }
+    
     func saveHistoricalPeriods(_ budgetPeriod: BudgetPeriod) {
         guard let userId = Auth.auth().currentUser?.uid else { return }
         let ref = Database.database().reference()
