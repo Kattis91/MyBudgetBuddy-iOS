@@ -35,43 +35,17 @@ struct HomeTabView: View {
                         .shadow(radius: 2)
                         
                         HStack {
-                            VStack(alignment: .leading, spacing: 8) {
-                                HStack {
-                                    Image(systemName: "arrow.up.circle.fill")
-                                        .foregroundColor(.green)
-                                    Text("Total Income:")
-                                        .font(.subheadline)
-                                        .foregroundColor(.secondary)
-                                }
-                                
-                                Text("\(budgetfb.totalIncome, specifier: "%.2f")")
-                                    .font(.title2)
-                                    .fontWeight(.bold)
-                            }
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding()
-                            .background(Color(.systemBackground))
-                            .cornerRadius(12)
-                            .shadow(radius: 2)
+                            StatBoxView(
+                                title: "Total Income",
+                                amount: budgetfb.totalIncome,
+                                isIncome: true
+                            )
                             
-                            VStack(alignment: .leading, spacing: 8) {
-                                HStack {
-                                    Image(systemName: "arrow.down.circle.fill")
-                                        .foregroundColor(.red)
-                                    Text("Total Expense:")
-                                        .font(.subheadline)
-                                        .foregroundColor(.secondary)
-                                }
-                                
-                                Text("\(budgetfb.totalExpenses, specifier: "%.2f")")
-                                    .font(.title2)
-                                    .fontWeight(.bold)
-                            }
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding()
-                            .background(Color(.systemBackground))
-                            .cornerRadius(12)
-                            .shadow(radius: 2)
+                            StatBoxView(
+                                title: "Total Expense",
+                                amount: budgetfb.totalExpenses,
+                                isIncome: false
+                            )
                         }
                         
                         VStack(alignment: .leading, spacing: 12) {
