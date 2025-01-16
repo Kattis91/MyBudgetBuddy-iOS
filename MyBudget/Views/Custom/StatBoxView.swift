@@ -20,7 +20,6 @@ struct StatBoxView: View {
                     .foregroundColor(isIncome ? .green : .red)
                 Text(title)
                     .font(.subheadline)
-                    .foregroundColor(.secondary)
             }
             
             Text("\(amount, specifier: "%.2f")")
@@ -29,7 +28,7 @@ struct StatBoxView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
-        .background(Color(.systemBackground))
+        .background(Color("TabColor"))
         .cornerRadius(12)
         .shadow(radius: 2)
     }

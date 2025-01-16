@@ -39,7 +39,7 @@ struct OutcomeBoxView: View {
                 Spacer()
                 Text("\(percentage, specifier: "%.1f")%")
                     .font(.subheadline)
-                    .foregroundColor(isNegative ? .red : .secondary)
+                    .foregroundColor(isNegative ? .red : .black)
             }
             
             // Custom progress view for negative values
@@ -60,7 +60,7 @@ struct OutcomeBoxView: View {
                 .fontWeight(.bold)
         }
         .padding()
-        .background(Color(.systemBackground))
+        .background(Color("TabColor"))
         .cornerRadius(12)
         .shadow(radius: 2)
         .overlay(
