@@ -48,29 +48,10 @@ struct HomeTabView: View {
                             )
                         }
                         
-                        VStack(alignment: .leading, spacing: 12) {
-                            HStack {
-                                Image(systemName: "piggybank.fill")
-                                    .foregroundColor(.purple)
-                                Text("Outcome")
-                                    .font(.headline)
-                                Spacer()
-                                Text("\((budgetfb.totalIncome - budgetfb.totalExpenses) / budgetfb.totalIncome * 100, specifier: "%.1f")%")
-                                    .font(.subheadline)
-                                    .foregroundColor(.secondary)
-                            }
-                            
-                            ProgressView(value: (budgetfb.totalIncome - budgetfb.totalExpenses) / budgetfb.totalIncome)
-                                .tint(.purple)
-                            
-                            Text("\(budgetfb.totalIncome - budgetfb.totalExpenses, specifier: "%.2f")")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                        }
-                        .padding()
-                        .background(Color(.systemBackground))
-                        .cornerRadius(12)
-                        .shadow(radius: 2)
+                        OutcomeBoxView(
+                            income: budgetfb.totalIncome,
+                            expenses: budgetfb.totalExpenses
+                        )
                         
                         Button(action: {
                             showingNewPeriod.toggle()
