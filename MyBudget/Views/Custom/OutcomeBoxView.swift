@@ -15,32 +15,45 @@ struct OutcomeBoxView: View {
         income - expenses
     }
     
-    // Calculate the percentage with safety checks
     private var percentage: Double {
-        // Check if income is greater than 0
-        guard income > 0 else {
-            // If income is 0 or negative, return 0 to avoid division by zero
-            return 0
+        if income > 0 {
+            return (outcome / income) * 100
+        } else if expenses > 0 {
+            return -100 // Show -100% when there's no income but has expenses
+        } else {
+            return 0 // Only show 0% when both income and expenses are 0
         }
-        // If income is positive, calculate the percentage
-        return (outcome / income) * 100
+    }
+    
+    private var isNegative: Bool {
+        outcome < 0
     }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Image(systemName: "piggybank.fill")
-                    .foregroundColor(.purple)
+                Image(systemName: isNegative ? "exclamationmark.circle.fill" : "piggybank.fill")
+                    .foregroundColor(isNegative ? .red : .purple)
                 Text("Outcome")
                     .font(.headline)
                 Spacer()
-                Text(percentage == 0 ? "0%" : "\(percentage, specifier: "%.1f")%")
+                Text("\(percentage, specifier: "%.1f")%")
                     .font(.subheadline)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(isNegative ? .red : .secondary)
             }
             
-            ProgressView(value: min(max(percentage/100, 0), 1))
-                .tint(.purple)
+            // Custom progress view for negative values
+            ZStack(alignment: .leading) {
+                Rectangle()
+                    .foregroundColor(Color.gray.opacity(0.2))
+                    .frame(height: 8)
+                    .cornerRadius(4)
+                
+                Rectangle()
+                    .foregroundColor(isNegative ? .red : .purple)
+                    .frame(width: abs(min(max(percentage/100, -1), 1)) * UIScreen.main.bounds.width * 0.7, height: 8)
+                    .cornerRadius(4)
+            }
             
             Text("\(outcome, specifier: "%.2f")")
                 .font(.title2)
@@ -50,9 +63,13 @@ struct OutcomeBoxView: View {
         .background(Color(.systemBackground))
         .cornerRadius(12)
         .shadow(radius: 2)
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(isNegative ? Color.red.opacity(0.2) : Color.clear, lineWidth: 1)
+        )
     }
 }
 
 #Preview {
-    OutcomeBoxView(income: 1000, expenses: 500)
+    OutcomeBoxView(income: 0, expenses: 500)
 }
