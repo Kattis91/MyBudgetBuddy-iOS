@@ -12,6 +12,7 @@ struct NewBudgetPeriodView: View {
     @EnvironmentObject var budgetManager: BudgetManager
     @Binding var isPresented: Bool
     @State private var showConfirmation = false
+    var onSuccess: (() -> Void)? = nil
     
     @State private var includeIncomes = true
     @State private var includeFixedExpenses = true
@@ -122,6 +123,7 @@ struct NewBudgetPeriodView: View {
                         Task {
                             await budgetManager.updateCurrentPeriodData(newPeriod)
                             showConfirmation = true
+                            onSuccess?()
                             isPresented = false
                         }
                     }
@@ -142,7 +144,7 @@ struct NewBudgetPeriodView: View {
 
 struct NewBudgetPeriodView_Previews: PreviewProvider {
     static var previews: some View {
-        NewBudgetPeriodView(isPresented: .constant(true))
+        NewBudgetPeriodView(isPresented: .constant(true), onSuccess: nil)
             .environmentObject(BudgetManager())
     }
 }

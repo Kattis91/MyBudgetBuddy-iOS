@@ -46,21 +46,18 @@ struct FirstTimePeriodView: View {
                 }
                 
                 if showingNewPeriod {
-                    NewBudgetPeriodView(isPresented: $showingNewPeriod, isLandingPage: true)
+                    NewBudgetPeriodView(
+                        isPresented: $showingNewPeriod,
+                        onSuccess: {
+                            showingNewPeriod = false
+                            onPeriodCreated()
+                        }, isLandingPage: true)
                         .navigationBarBackButtonHidden(true)
                         .frame(height: 300)
                         .background(Color.white)
                         .padding(.horizontal, 24)
                         .cornerRadius(12)
                         .shadow(radius: 10)
-                        .onDisappear {
-                            // Check if a period was created
-                            budgetfb.checkForAnyBudgetPeriod { exists in
-                                if exists {
-                                    onPeriodCreated()
-                                }
-                            }
-                        }
                 }
             }
         }
