@@ -21,18 +21,10 @@ struct HomeTabView: View {
                 if !showingNewPeriod {
                     VStack (spacing: 20) {
                         
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("Current Period")
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
-                            Text("\(formatDate(budgetManager.currentPeriod.startDate)) - \(formatDate(budgetManager.currentPeriod.endDate))")
-                                .font(.headline)
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding()
-                        .background(Color(.systemBackground))
-                        .cornerRadius(12)
-                        .shadow(radius: 2)
+                        PeriodCardView(
+                            startDate: budgetManager.currentPeriod.startDate,
+                            endDate: budgetManager.currentPeriod.endDate
+                        )
                         
                         HStack {
                             StatBoxView(
