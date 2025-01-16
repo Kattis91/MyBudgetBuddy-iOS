@@ -11,7 +11,7 @@ struct NewBudgetPeriodView: View {
     
     @EnvironmentObject var budgetManager: BudgetManager
     @Binding var isPresented: Bool
-    @State private var showConfirmation = false
+    @State private var showToast = false
     var onSuccess: (() -> Void)? = nil
     
     @State private var includeIncomes = true
@@ -122,9 +122,16 @@ struct NewBudgetPeriodView: View {
                     if success {
                         Task {
                             await budgetManager.updateCurrentPeriodData(newPeriod)
-                            showConfirmation = true
-                            onSuccess?()
-                            isPresented = false
+                            withAnimation {
+                                showToast = true
+                            }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                withAnimation {
+                                    showToast = false
+                                    onSuccess?()
+                                    isPresented = false
+                                }
+                            }
                         }
                     }
                 }
@@ -132,13 +139,31 @@ struct NewBudgetPeriodView: View {
                 ButtonView(buttontext: "Start New Period", maxWidth: 180)
             }
         }
-        .alert(isPresented: $showConfirmation) {
-            Alert(title: Text("Success"), message: Text("A new period has been created!"), dismissButton: .default(Text("OK")))
+        .overlay(alignment: .center) {
+            if showToast {
+                ToastView(message: "New period created successfully!")
+                    .transition(.move(edge: .bottom))
+                    .animation(.spring(), value: showToast)
+            }
         }
         .scrollContentBackground(.hidden)
         .frame(maxWidth: .infinity)
         .frame(height: 500)
         .background(Color("TabColor"))
+    }
+}
+
+struct ToastView: View {
+    let message: String
+    
+    var body: some View {
+        Text(message)
+            .padding()
+            .background(Color("CustomGreen"))
+            .foregroundColor(.white)
+            .cornerRadius(8)
+            .padding(.bottom, 20)
+            .shadow(radius: 5)
     }
 }
 
