@@ -31,6 +31,8 @@ struct HomeView: View {
     @State var budgetfb = BudgetFB()
     @State private var hasExistingPeriods = false
     @State private var isCheckingPeriods = true
+    @State private var hasCurrentPeriod = false
+    @State var showNewPeriodSheet = false
     
     var body: some View {
         
@@ -39,41 +41,75 @@ struct HomeView: View {
                 ProgressView()
             } else {
                 if hasExistingPeriods {
-                    VStack {
-                        TabView {
-                            Tab("Home", systemImage: "house") {
-                                HomeTabView(budgetfb: budgetfb)
+                    if hasCurrentPeriod {
+                        VStack {
+                            TabView {
+                                Tab("Home", systemImage: "house") {
+                                    HomeTabView(budgetfb: budgetfb)
+                                }
+                                
+                                Tab("Incomes", systemImage: "plus.circle") {
+                                    IncomesTabView(budgetfb: budgetfb)
+                                }
+                                
+                                Tab("Expenses", systemImage: "minus.circle") {
+                                    ExpensesTabView(budgetfb: budgetfb)
+                                }
+                                
+                                Tab("Overview", systemImage: "chart.bar") {
+                                    OverviewTabView()
+                                }
+                                
                             }
-                            
-                            Tab("Incomes", systemImage: "plus.circle") {
-                                IncomesTabView(budgetfb: budgetfb)
-                            }
-                            
-                            Tab("Expenses", systemImage: "minus.circle") {
-                                ExpensesTabView(budgetfb: budgetfb)
-                            }
-                            
-                            Tab("Overview", systemImage: "chart.bar") {
-                                OverviewTabView()
-                            }
-                            
                         }
-                    }
-                    .onReceive(NotificationCenter.default.publisher(for: .periodUpdated)) { _ in
-                        Task {
-                            await budgetfb.loadIncomeData()
-                            await budgetfb.loadExpenseData(isfixed: true)
-                            await budgetfb.loadExpenseData(isfixed: false)
+                        .onReceive(NotificationCenter.default.publisher(for: .periodUpdated)) { _ in
+                            Task {
+                                await budgetfb.loadIncomeData()
+                                await budgetfb.loadExpenseData(isfixed: true)
+                                await budgetfb.loadExpenseData(isfixed: false)
+                            }
                         }
+                        .accentColor(Color("TextColor"))
+                    } else {
+                        VStack(spacing: 20) {
+                            Image("Save")
+                                .resizable()
+                                .frame(width: 180, height: 180)
+                                .padding(.bottom, 30)
+                            
+                            Text("Your last budget period has ended")
+                                .font(.title)
+                                .fontWeight(.bold)
+                                .multilineTextAlignment(.center)
+                            
+                            Text("Start a new period to continue tracking your budget")
+                                .multilineTextAlignment(.center)
+                            
+                            Button(action: {
+                                showNewPeriodSheet = true
+                            }) {
+                                ButtonView(buttontext: "Start New Period", maxWidth: 180)
+                            }
+                        }
+                        .padding()
                     }
-                    .accentColor(Color("TextColor"))
                 } else {
                     FirstTimePeriodView(onPeriodCreated: {
                             hasExistingPeriods = true
+                            hasCurrentPeriod = true
                             loadInitialData()
                         })
                     }
                 }
+            }
+            .sheet(isPresented: $showNewPeriodSheet) {
+                NewBudgetPeriodView(
+                    isPresented: $showNewPeriodSheet,
+                    onSuccess: {
+                        hasCurrentPeriod = true
+                        loadInitialData()
+                    }
+                )
             }
             .onAppear {
                 checkInitialState()
@@ -81,12 +117,25 @@ struct HomeView: View {
     }
     
     private func checkInitialState() {
+        isCheckingPeriods = true
+        
+        // First check if any periods exist (current or historical)
         budgetfb.checkForAnyBudgetPeriod { exists in
             hasExistingPeriods = exists
-            isCheckingPeriods = false
             
             if exists {
-                loadInitialData()
+                // Then check if there's a current period
+                budgetfb.loadCurrentBudgetPeriod { loadedPeriod in
+                    hasCurrentPeriod = loadedPeriod != nil
+                    
+                    if loadedPeriod != nil {
+                        loadInitialData()
+                    }
+                    
+                    isCheckingPeriods = false
+                }
+            } else {
+                isCheckingPeriods = false
             }
         }
     }
