@@ -502,54 +502,65 @@ import FirebaseAuth
         let ref = Database.database().reference()
         let newBudgetRef = ref.child("budgetPeriods").child(userId).child(budgetPeriod.id)
         
-        newBudgetRef.setValue(budgetPeriod.toDictionary()) { [self] error, _ in
-            guard error == nil else {
-                completion(false)
-                return
+        // First, get and save the current period as historical
+        loadCurrentBudgetPeriod { [weak self] currentPeriod in
+            if let currentPeriod = currentPeriod {
+                // Always save the current period as historical, even if it's empty
+                self?.saveHistoricalPeriods(currentPeriod)
             }
             
-            if !transferData.incomes && !transferData.expenses {
-                completion(true)
-                return
-            }
-            
-            loadCurrentBudgetPeriod { currentPeriod in
-                guard let currentId = currentPeriod?.id else {
+            // Now proceed with saving the new period
+            newBudgetRef.setValue(budgetPeriod.toDictionary()) { error, _ in
+                guard error == nil else {
+                    completion(false)
+                    return
+                }
+                
+                // If we're not transferring any data or if both lists are empty, complete here
+                if !transferData.incomes && !transferData.expenses {
                     completion(true)
                     return
                 }
                 
-                let currentRef = ref.child("budgetPeriods").child(userId).child(currentId)
-                let group = DispatchGroup()
-                
-                if transferData.incomes {
-                    group.enter()
-                    currentRef.child("incomes").getData { error, snapshot in
-                        if let value = snapshot?.value {
-                            newBudgetRef.child("incomes").setValue(value) { _, _ in
+                self?.loadCurrentBudgetPeriod { currentPeriod in
+                    guard let currentId = currentPeriod?.id else {
+                        completion(true)
+                        return
+                    }
+                    
+                    let currentRef = ref.child("budgetPeriods").child(userId).child(currentId)
+                    let group = DispatchGroup()
+                    
+                    // Rest of your existing transfer logic remains the same...
+                    if transferData.incomes {
+                        group.enter()
+                        currentRef.child("incomes").getData { error, snapshot in
+                            if let value = snapshot?.value {
+                                newBudgetRef.child("incomes").setValue(value) { _, _ in
+                                    group.leave()
+                                }
+                            } else {
                                 group.leave()
                             }
-                        } else {
-                            group.leave()
                         }
                     }
-                }
-                
-                if transferData.expenses {
-                    group.enter()
-                    currentRef.child(isfixed ? "fixedExpenses" : "variableExpenses").getData { error, snapshot in
-                        if let value = snapshot?.value {
-                            newBudgetRef.child(isfixed ? "fixedExpenses" : "variableExpenses").setValue(value) { _, _ in
+                    
+                    if transferData.expenses {
+                        group.enter()
+                        currentRef.child(isfixed ? "fixedExpenses" : "variableExpenses").getData { error, snapshot in
+                            if let value = snapshot?.value {
+                                newBudgetRef.child(isfixed ? "fixedExpenses" : "variableExpenses").setValue(value) { _, _ in
+                                    group.leave()
+                                }
+                            } else {
                                 group.leave()
                             }
-                        } else {
-                            group.leave()
                         }
                     }
-                }
-                
-                group.notify(queue: .main) {
-                    completion(true)
+                    
+                    group.notify(queue: .main) {
+                        completion(true)
+                    }
                 }
             }
         }
@@ -604,34 +615,44 @@ import FirebaseAuth
         // Generate a new unique ID for this historical period
         let periodRef = ref.child("historicalPeriods").child(userId).childByAutoId()
         
-        // Save the complete income and expense data, not just IDs
-        let periodData: [String: Any] = [
-            "startDate": budgetPeriod.startDate.timeIntervalSince1970,
-            "endDate": budgetPeriod.endDate.timeIntervalSince1970,
-            "incomes": budgetPeriod.incomes.map { [
-                "id": $0.id,
-                "amount": $0.amount,
-                "category": $0.category
-            ] },
-            "fixedExpenses": budgetPeriod.fixedExpenses.map { [
-                "id": $0.id,
-                "amount": $0.amount,
-                "category": $0.category,
-                "isfixed": $0.isfixed
-            ] },
-            "variableExpenses": budgetPeriod.variableExpenses.map { [
-                "id": $0.id,
-                "amount": $0.amount,
-                "category": $0.category,
-                "isfixed": $0.isfixed
-            ] }
-        ]
-        
-        periodRef.setValue(periodData) { error, _ in
-            if let error = error {
-                print("Error saving period: \(error.localizedDescription)")
-            } else {
-                print("Period saved successfully!")
+        periodRef.observeSingleEvent(of: .value) { snapshot in
+            guard !snapshot.exists() else {
+                print("Period already exists in historical periods: \(budgetPeriod.id)")
+                return
+            }
+            
+            // Save the complete income and expense data, not just IDs
+            let periodData: [String: Any] = [
+                "startDate": budgetPeriod.startDate.timeIntervalSince1970,
+                "endDate": budgetPeriod.endDate.timeIntervalSince1970,
+                "incomes": budgetPeriod.incomes.map { [
+                    "id": $0.id,
+                    "amount": $0.amount,
+                    "category": $0.category
+                ] },
+                "fixedExpenses": budgetPeriod.fixedExpenses.map { [
+                    "id": $0.id,
+                    "amount": $0.amount,
+                    "category": $0.category,
+                    "isfixed": $0.isfixed
+                ] },
+                "variableExpenses": budgetPeriod.variableExpenses.map { [
+                    "id": $0.id,
+                    "amount": $0.amount,
+                    "category": $0.category,
+                    "isfixed": $0.isfixed
+                ] },
+                "isEmpty": budgetPeriod.incomes.isEmpty &&
+                budgetPeriod.fixedExpenses.isEmpty &&
+                budgetPeriod.variableExpenses.isEmpty
+            ]
+            
+            periodRef.setValue(periodData) { error, _ in
+                if let error = error {
+                    print("Error saving period: \(error.localizedDescription)")
+                } else {
+                    print("Period saved successfully!")
+                }
             }
         }
     }

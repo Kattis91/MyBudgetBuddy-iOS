@@ -25,6 +25,38 @@ struct NewBudgetPeriodView: View {
     // Add state variables for dates
     @State private var startDate = Date()
     @State private var endDate = Calendar.current.date(byAdding: .month, value: 1, to: Date())!
+    
+    @State private var showValidationError = false
+    @State private var validationMessage = ""
+    
+    private func validatePeriod() -> Bool {
+        let calendar = Calendar.current
+        let now = Date()
+        
+        // Check if start date is in the past
+        if startDate < calendar.startOfDay(for: now) {
+            validationMessage = "Start date cannot be in the past"
+            showValidationError = true
+            return false
+        }
+        
+        // Check if end date is before start date
+        if endDate < startDate {
+            validationMessage = "End date must be after start date"
+            showValidationError = true
+            return false
+        }
+        
+        // Check if period is too short (e.g., at least 1 day)
+        let components = calendar.dateComponents([.day], from: startDate, to: endDate)
+        if let days = components.day, days < 1 {
+            validationMessage = "Budget period must be at least 1 day"
+            showValidationError = true
+            return false
+        }
+        
+        return true
+    }
         
     
     var body: some View {
@@ -107,29 +139,31 @@ struct NewBudgetPeriodView: View {
             
             
             Button(action: {
-                // First create the new period
-                let newPeriod = budgetManager.startNewPeriod(
-                    startDate: startDate,
-                    endDate: endDate,
-                    includeIncomes: includeIncomes,
-                    includeFixedExpenses: includeFixedExpenses
-                )
-                
-                budgetfb.saveBudgetPeriod(newPeriod, transferData: (
-                    incomes: includeIncomes,
-                    expenses: includeFixedExpenses
-                ),  isfixed: includeFixedExpenses) { success in
-                    if success {
-                        Task {
-                            await budgetManager.updateCurrentPeriodData(newPeriod)
-                            withAnimation {
-                                showToast = true
-                            }
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                if validatePeriod() {
+                    // First create the new period
+                    let newPeriod = budgetManager.startNewPeriod(
+                        startDate: startDate,
+                        endDate: endDate,
+                        includeIncomes: includeIncomes,
+                        includeFixedExpenses: includeFixedExpenses
+                    )
+                    
+                    budgetfb.saveBudgetPeriod(newPeriod, transferData: (
+                        incomes: includeIncomes,
+                        expenses: includeFixedExpenses
+                    ),  isfixed: includeFixedExpenses) { success in
+                        if success {
+                            Task {
+                                await budgetManager.updateCurrentPeriodData(newPeriod)
                                 withAnimation {
-                                    showToast = false
-                                    onSuccess?()
-                                    isPresented = false
+                                    showToast = true
+                                }
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                    withAnimation {
+                                        showToast = false
+                                        onSuccess?()
+                                        isPresented = false
+                                    }
                                 }
                             }
                         }
@@ -138,6 +172,11 @@ struct NewBudgetPeriodView: View {
             }) {
                 ButtonView(buttontext: "Start New Period", maxWidth: 180)
             }
+        }
+        .alert("Invalid Budget Period", isPresented: $showValidationError) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text(validationMessage)
         }
         .overlay(alignment: .center) {
             if showToast {
@@ -152,7 +191,6 @@ struct NewBudgetPeriodView: View {
         .background(Color("TabColor"))
     }
 }
-
 struct ToastView: View {
     let message: String
     
@@ -166,7 +204,6 @@ struct ToastView: View {
             .shadow(radius: 5)
     }
 }
-
 struct NewBudgetPeriodView_Previews: PreviewProvider {
     static var previews: some View {
         NewBudgetPeriodView(isPresented: .constant(true), onSuccess: nil)
