@@ -52,7 +52,13 @@ struct PeriodCardView: View {
         }
         .padding()
         .frame(maxWidth: .infinity)
-        .background(Color("TabColor"))
+        .background(
+            LinearGradient(
+                gradient: Gradient(colors: [.backgroundTint, .cardShadow]),
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+        )
         .cornerRadius(12)
         .shadow(radius: 2)
     }

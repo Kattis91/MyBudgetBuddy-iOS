@@ -28,7 +28,13 @@ struct StatBoxView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
-        .background(Color("TabColor"))
+        .background(
+            LinearGradient(
+                gradient: Gradient(colors: [.backgroundTint, .cardShadow]),
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+        )
         .cornerRadius(12)
         .shadow(radius: 2)
     }

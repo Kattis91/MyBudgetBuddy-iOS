@@ -60,7 +60,13 @@ struct OutcomeBoxView: View {
                 .fontWeight(.bold)
         }
         .padding()
-        .background(Color("TabColor"))
+        .background(
+            LinearGradient(
+                gradient: Gradient(colors: [.backgroundTint, .cardShadow]),
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+        )
         .cornerRadius(12)
         .shadow(radius: 2)
         .overlay(
