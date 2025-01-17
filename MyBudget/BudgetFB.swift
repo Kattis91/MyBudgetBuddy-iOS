@@ -587,6 +587,28 @@ import FirebaseAuth
                     return
                 }
                 
+                // Check if period has expired
+                let calendar = Calendar.current
+                let today = calendar.startOfDay(for: Date())
+                let periodEndDate = calendar.startOfDay(for: budgetPeriod.endDate)
+                
+                if periodEndDate < today {
+                    budgetPeriod.id = periodData.key
+                    self.saveHistoricalPeriods(budgetPeriod) { success in
+                        if success {
+                            periodData.ref.removeValue { error, _ in
+                                if let error = error {
+                                    print("Error removing expired period: \(error.localizedDescription)")
+                                }
+                                completion(nil)
+                            }
+                        } else {
+                            completion(nil)
+                        }
+                    }
+                    return
+                }
+                            
                 // Set the ID from the snapshot key
                 budgetPeriod.id = periodData.key
                 completion(budgetPeriod)
@@ -601,23 +623,41 @@ import FirebaseAuth
         
         let ref = Database.database().reference()
         let budgetPeriodsRef = ref.child("budgetPeriods").child(userId)
+        let historicalPeriodsRef = ref.child("historicalPeriods").child(userId)
         
+        // Check both current and historical periods
+        let group = DispatchGroup()
+        var hasCurrentPeriods = false
+        var hasHistoricalPeriods = false
+        
+        group.enter()
         budgetPeriodsRef.observeSingleEvent(of: .value) { snapshot in
-            // If snapshot exists and has children, there are budget periods
-            completion(snapshot.exists() && snapshot.hasChildren())
+            hasCurrentPeriods = snapshot.exists() && snapshot.hasChildren()
+            group.leave()
+        }
+        
+        group.enter()
+        historicalPeriodsRef.observeSingleEvent(of: .value) { snapshot in
+            hasHistoricalPeriods = snapshot.exists() && snapshot.hasChildren()
+            group.leave()
+        }
+        
+        group.notify(queue: .main) {
+            completion(hasCurrentPeriods || hasHistoricalPeriods)
         }
     }
     
-    func saveHistoricalPeriods(_ budgetPeriod: BudgetPeriod) {
+    func saveHistoricalPeriods(_ budgetPeriod: BudgetPeriod, completion: @escaping (Bool) -> Void = { _ in }) {
         guard let userId = Auth.auth().currentUser?.uid else { return }
         let ref = Database.database().reference()
         
         // Generate a new unique ID for this historical period
-        let periodRef = ref.child("historicalPeriods").child(userId).childByAutoId()
+        let periodRef = ref.child("historicalPeriods").child(userId).child(budgetPeriod.id)
         
         periodRef.observeSingleEvent(of: .value) { snapshot in
             guard !snapshot.exists() else {
                 print("Period already exists in historical periods: \(budgetPeriod.id)")
+                completion(true)
                 return
             }
             
@@ -650,8 +690,10 @@ import FirebaseAuth
             periodRef.setValue(periodData) { error, _ in
                 if let error = error {
                     print("Error saving period: \(error.localizedDescription)")
+                    completion(false)
                 } else {
                     print("Period saved successfully!")
+                    completion(true)
                 }
             }
         }
