@@ -17,12 +17,14 @@ struct BudgetPeriod: Identifiable {
     var totalIncome: Double
     var totalFixedExpenses: Double
     var totalVariableExpenses: Double
+    var expired: Bool
     
     init(startDate: Date,
          endDate: Date,
          incomes: [Income] = [],
          fixedExpenses: [Expense] = [],
-         variableExpenses: [Expense] = []
+         variableExpenses: [Expense] = [],
+         expired: Bool = false
     ) {
         self.startDate = startDate
         self.endDate = endDate
@@ -32,6 +34,7 @@ struct BudgetPeriod: Identifiable {
         self.totalIncome = incomes.reduce(0) { $0 + $1.amount }
         self.totalFixedExpenses = fixedExpenses.reduce(0) { $0 + $1.amount }
         self.totalVariableExpenses = variableExpenses.reduce(0) { $0 + $1.amount }
+        self.expired = expired
     }
 }
 
@@ -114,6 +117,7 @@ extension BudgetPeriod {
         self.totalIncome = dict["totalIncome"] as? Double ?? self.incomes.reduce(0) { $0 + $1.amount }
         self.totalFixedExpenses = dict["totalFixedExpenses"] as? Double ?? self.fixedExpenses.reduce(0) { $0 + $1.amount }
         self.totalVariableExpenses = dict["totalVariableExpenses"] as? Double ?? self.variableExpenses.reduce(0) { $0 + $1.amount }
+        self.expired = dict["expired"] as? Bool ?? false
     }
     
     func toDictionary() -> [String: Any] {
@@ -123,7 +127,8 @@ extension BudgetPeriod {
             "endDate": endDate.timeIntervalSince1970,
             "totalIncome": totalIncome,
             "totalFixedExpenses": totalFixedExpenses,
-            "totalVariableExpenses": totalVariableExpenses
+            "totalVariableExpenses": totalVariableExpenses,
+            "expired": expired
         ]
         
         // Only include arrays if they're not empty

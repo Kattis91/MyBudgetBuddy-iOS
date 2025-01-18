@@ -665,6 +665,7 @@ import FirebaseAuth
             let periodData: [String: Any] = [
                 "startDate": budgetPeriod.startDate.timeIntervalSince1970,
                 "endDate": budgetPeriod.endDate.timeIntervalSince1970,
+                "expired": true,
                 "incomes": budgetPeriod.incomes.map { [
                     "id": $0.id,
                     "amount": $0.amount,

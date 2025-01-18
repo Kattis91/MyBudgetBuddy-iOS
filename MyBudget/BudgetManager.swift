@@ -107,7 +107,8 @@ class BudgetManager: ObservableObject {
             endDate: currentPeriod.endDate,
             incomes: currentPeriod.incomes,
             fixedExpenses: currentPeriod.fixedExpenses,
-            variableExpenses: currentPeriod.variableExpenses
+            variableExpenses: currentPeriod.variableExpenses,
+            expired: true
         )
         
         // Only add to historical periods if it's not empty and has a valid date range
@@ -140,7 +141,8 @@ class BudgetManager: ObservableObject {
             endDate: endDate,
             incomes: transferredIncomes,
             fixedExpenses: transferredFixedExpenses,
-            variableExpenses: []
+            variableExpenses: [],
+            expired: false
         )
         
         currentPeriod = newPeriod
