@@ -1,18 +1,19 @@
 //
-//  FirstTimePeriodView.swift
+//  NoCurrentPeriodView.swift
 //  MyBudget
 //
-//  Created by Katya Durneva Svedmark on 2025-01-15.
+//  Created by Katya Durneva Svedmark on 2025-01-18.
 //
 
 import SwiftUI
 
-struct FirstTimePeriodView: View {
+struct NoCurrentPeriodView: View {
     
     @State var showingNewPeriod = false
     @EnvironmentObject var budgetManager: BudgetManager
     var budgetfb = BudgetFB()
     var onPeriodCreated: () -> Void
+    @State var isFirstTime: Bool = false
     
     var body: some View {
         
@@ -27,18 +28,18 @@ struct FirstTimePeriodView: View {
                             .frame(width: 180, height: 180)
                             .padding(.bottom, 30)
                         
-                        Text("Welcome to MyBudgetBuddy!")
+                        Text(isFirstTime ? "Welcome to MyBudgetBuddy!" : "Your last budget period has ended")
                             .font(.title)
                             .fontWeight(.bold)
                             .multilineTextAlignment(.center)
                         
-                        Text("To start tracking your budget, you'll need to create your first budget period.")
+                        Text(isFirstTime ? "To start tracking your budget, you'll need to create your first budget period." : "Start a new period to continue tracking your budget")
                             .multilineTextAlignment(.center)
                         
                         Button(action: {
                             showingNewPeriod.toggle()
                         }) {
-                            ButtonView(buttontext: "Create Budget Period")
+                            ButtonView(buttontext: isFirstTime ? "Create Budget Period" : "Start New Period")
                         }
                         .padding(.horizontal)
                     }
@@ -65,6 +66,6 @@ struct FirstTimePeriodView: View {
 }
 
 #Preview {
-    FirstTimePeriodView(onPeriodCreated: {})
+    NoCurrentPeriodView(onPeriodCreated: {})
         .environmentObject(BudgetManager())
 }

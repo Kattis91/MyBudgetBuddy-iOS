@@ -71,45 +71,19 @@ struct HomeView: View {
                         }
                         .accentColor(Color("TextColor"))
                     } else {
-                        VStack(spacing: 20) {
-                            Image("Save")
-                                .resizable()
-                                .frame(width: 180, height: 180)
-                                .padding(.bottom, 30)
-                            
-                            Text("Your last budget period has ended")
-                                .font(.title)
-                                .fontWeight(.bold)
-                                .multilineTextAlignment(.center)
-                            
-                            Text("Start a new period to continue tracking your budget")
-                                .multilineTextAlignment(.center)
-                            
-                            Button(action: {
-                                showNewPeriodSheet = true
-                            }) {
-                                ButtonView(buttontext: "Start New Period", maxWidth: 180)
-                            }
-                        }
-                        .padding()
-                    }
-                } else {
-                    FirstTimePeriodView(onPeriodCreated: {
-                            hasExistingPeriods = true
+                        NoCurrentPeriodView(onPeriodCreated: {
                             hasCurrentPeriod = true
                             loadInitialData()
-                        })
+                        }, isFirstTime: false)
                     }
-                }
-            }
-            .sheet(isPresented: $showNewPeriodSheet) {
-                NewBudgetPeriodView(
-                    isPresented: $showNewPeriodSheet,
-                    onSuccess: {
+                } else {
+                    NoCurrentPeriodView(onPeriodCreated: {
+                        hasExistingPeriods = true
                         hasCurrentPeriod = true
                         loadInitialData()
+                    }, isFirstTime: true)
                     }
-                )
+                }
             }
             .onAppear {
                 checkInitialState()
