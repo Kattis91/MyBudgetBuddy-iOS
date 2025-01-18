@@ -688,13 +688,22 @@ import FirebaseAuth
                 budgetPeriod.variableExpenses.isEmpty
             ]
             
+            // Save to historical periods
             periodRef.setValue(periodData) { error, _ in
                 if let error = error {
-                    print("Error saving period: \(error.localizedDescription)")
+                    print("Error saving to historical periods: \(error.localizedDescription)")
                     completion(false)
                 } else {
-                    print("Period saved successfully!")
-                    completion(true)
+                    // After successful save to historical, remove from current periods
+                    let currentPeriodRef = ref.child("budgetPeriods").child(userId).child(budgetPeriod.id)
+                    currentPeriodRef.removeValue { error, _ in
+                        if let error = error {
+                            print("Error removing from current periods: \(error.localizedDescription)")
+                        } else {
+                            print("Successfully moved period to historical and removed from current")
+                        }
+                        completion(true)
+                    }
                 }
             }
         }
