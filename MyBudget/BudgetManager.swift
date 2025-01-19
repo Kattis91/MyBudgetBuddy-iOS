@@ -100,26 +100,6 @@ class BudgetManager: ObservableObject {
         print("End date: \(endDate)")
         print("Include incomes: \(includeIncomes)")
         print("Include expenses: \(includeFixedExpenses)")
-            
-        // First, save the current period to historical periods
-        let historicalPeriod = BudgetPeriod(
-            startDate: currentPeriod.startDate,
-            endDate: currentPeriod.endDate,
-            incomes: currentPeriod.incomes,
-            fixedExpenses: currentPeriod.fixedExpenses,
-            variableExpenses: currentPeriod.variableExpenses,
-            expired: true
-        )
-        
-        // Only add to historical periods if it's not empty and has a valid date range
-        if !historicalPeriod.incomes.isEmpty || !historicalPeriod.fixedExpenses.isEmpty || !historicalPeriod.variableExpenses.isEmpty {
-            historicalPeriods.append(historicalPeriod)
-            
-            // Save to Firebase
-            Task {
-                budgetfb.saveHistoricalPeriods(historicalPeriod)
-            }
-        }
         
         // Create transferred data for new period
         let transferredIncomes = includeIncomes ? incomeList.map { Income(
