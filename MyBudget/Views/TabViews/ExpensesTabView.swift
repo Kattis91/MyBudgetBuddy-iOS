@@ -65,6 +65,7 @@ struct ExpensesTabView: View {
                         expenseList: $budgetfb.fixedExpenseList,
                         budgetfb: budgetfb
                     )
+                    .id(showSettings)
                 } else {
                     ExpensesView(
                         viewtype: .variable,
@@ -73,6 +74,7 @@ struct ExpensesTabView: View {
                         expenseList: $budgetfb.variableExpenseList,
                         budgetfb: budgetfb
                     )
+                    .id(showSettings)
                 }
             }
             .task {
@@ -92,7 +94,12 @@ struct ExpensesTabView: View {
                 }
             }
         }
-        .sheet(isPresented: $showSettings) {
+        .sheet(isPresented: $showSettings, onDismiss: {
+            Task {
+                await budgetfb.loadExpenseData(isfixed: true)
+                await budgetfb.loadExpenseData(isfixed: false)
+            }
+        }) {
             SettingsView(budgetfb: budgetfb)
         }
     }
