@@ -24,9 +24,19 @@ struct PeriodCardView: View {
         return "\(startStr) - \(endStr), \(yearStr)"
     }
     
+    private var isPeriodActive: Bool {
+        let now = Date()
+        return now >= startDate && now <= endDate
+    }
+    
     private var daysRemaining: Int {
         let calendar = Calendar.current
         return calendar.dateComponents([.day], from: Date(), to: endDate).day ?? 0
+    }
+    
+    private var daysUntilNextPeriod: Int {
+        let calendar = Calendar.current
+        return calendar.dateComponents([.day], from: Date(), to: startDate).day ?? 0
     }
     
     var body: some View {
@@ -40,8 +50,16 @@ struct PeriodCardView: View {
                 .fontWeight(.bold)
             
             // Only show if days remaining is positive
-            if daysRemaining > 0 {
+            if isPeriodActive {
                 Text("\(daysRemaining) days remaining")
+                    .font(.subheadline)
+                    .foregroundColor(.black)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 4)
+                    .background(Color.purple.opacity(0.1))
+                    .cornerRadius(8)
+            } else {
+                Text("Next period starts in \(daysUntilNextPeriod) days")
                     .font(.subheadline)
                     .foregroundColor(.black)
                     .padding(.horizontal, 12)
