@@ -14,13 +14,18 @@ struct HomeView: View {
         let appearance = UITabBarAppearance()
         appearance.configureWithOpaqueBackground()
         // Set the background color of the tab bar
-        appearance.backgroundColor = UIColor(Color("TabColor"))
+        appearance.backgroundColor = UIColor(red: 255/255, green: 242/255, blue: 230/255, alpha: 1.0)
         
         // Set the appearance for inactive tabs
-        appearance.stackedLayoutAppearance.normal.iconColor = UIColor(Color("ButtonsBackground"))
+        appearance.stackedLayoutAppearance.normal.iconColor = UIColor(red: 78 / 255, green: 177 / 255, blue: 181 / 255, alpha: 1.0)
         
         appearance.stackedLayoutAppearance.normal.titleTextAttributes = [
-            .foregroundColor: UIColor(Color("ButtonsBackground"))
+            .foregroundColor: UIColor(red: 78 / 255, green: 177 / 255, blue: 181 / 255, alpha: 1.0)
+        ]
+
+        appearance.stackedLayoutAppearance.selected.iconColor = UIColor(red: 201 / 255, green: 94 / 255, blue: 123 / 255, alpha: 1.0)
+        appearance.stackedLayoutAppearance.selected.titleTextAttributes = [
+            .foregroundColor: UIColor(red: 201 / 255, green: 94 / 255, blue: 123 / 255, alpha: 1.0)
         ]
         
         UITabBar.appearance().standardAppearance = appearance
