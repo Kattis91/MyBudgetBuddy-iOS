@@ -26,20 +26,19 @@ struct CategoryManagementView: View {
     @State var showingDeleteAlert = false
     @State private var selectedCategory: (String, CategoryType)?
     
-    @State var showNewIncomeField = false
-    @State var showNewFixedExpenseField = false
-    @State var showNewVariableExpenseField = false
-    
     @State var incomeCat = ""
     @State var fixedExpenseCat = ""
     @State var variableExpenseCat = ""
     
     @State var errorMessage = ""
     
+    @State private var showNewCategoryField = false
+    @State private var selectedCategoryType: CategoryType? = nil
+    
     var body: some View {
         
         ZStack {
-            if !showEditForm {
+            if !showEditForm && !showNewCategoryField {
                 List {
                     SectionView(
                         title: "Income",
@@ -56,51 +55,12 @@ struct CategoryManagementView: View {
                         },
                         onAdd: {
                             withAnimation(.spring()) {
-                                showNewIncomeField.toggle()
+                                showNewCategoryField = true
                             }
-                            showNewFixedExpenseField = false
-                            showNewVariableExpenseField = false
+                            selectedCategoryType = .income
                         }
                     )
-                    
-                    if showNewIncomeField {
-                        HStack {
-                            CustomTextFieldView(placeholder: "Add new category", text: $incomeCat, isSecure: false, onChange: { errorMessage = ""
-                            }, leadingPadding: 3, trailingPadding: 10, systemName: "square.grid.2x2")
-                            Button(action: {
-                                errorMessage = ""
-                                incomeCat = ""
-                                showNewIncomeField = false
-                            }) {
-                                Image(systemName: "arrow.uturn.backward")
-                                    .foregroundColor(.blue)
-                                    .padding(.trailing, 10)
-                                    .padding(.bottom, 8)
-                            }
-                        }
-                        
-                        VStack {
-                            if !errorMessage.isEmpty {
-                                ErrorMessageView(errorMessage: errorMessage, height: 20)
-                            }
-                        }
-                        .frame(height: 15)
-                        
-                        Button(action: {
-                            if !incomeCat.isEmpty {
-                                Task {
-                                    _ = await budgetfb.addCategory(name: incomeCat, type: .income)
-                                    await loadAllCategories()
-                                    showNewIncomeField = false
-                                }
-                            } else {
-                                errorMessage = "Please enter a category"
-                            }
-                        }) {
-                            ButtonView(buttontext: "Save", maxWidth: 160, leadingPadding: 50, topPadding: 0)
-                        }
-                    }
-                    
+                  
                     SectionView(
                         title: "Fixed Expense",
                         categories: fixedExpenseCats,
@@ -116,48 +76,11 @@ struct CategoryManagementView: View {
                         },
                         onAdd: {
                             withAnimation(.spring()) {
-                                showNewFixedExpenseField.toggle()
+                                showNewCategoryField = true
                             }
-                            showNewIncomeField = false
-                            showNewVariableExpenseField = false
+                            selectedCategoryType = .fixedExpense
                         }
                     )
-                    if showNewFixedExpenseField {
-                        HStack {
-                            CustomTextFieldView(placeholder: "Add new category", text: $fixedExpenseCat, isSecure: false, onChange: { errorMessage = ""}, leadingPadding: 3, trailingPadding: 10, systemName: "square.grid.2x2")
-                            Button(action: {
-                                errorMessage = ""
-                                fixedExpenseCat = ""
-                                showNewFixedExpenseField = false
-                            }) {
-                                Image(systemName: "arrow.uturn.backward")
-                                    .foregroundColor(.blue)
-                                    .padding(.trailing, 10)
-                                    .padding(.bottom, 8)
-                            }
-                        }
-                        
-                        VStack {
-                            if !errorMessage.isEmpty {
-                                ErrorMessageView(errorMessage: errorMessage, height: 20)
-                            }
-                        }
-                        .frame(height: 15)
-                        
-                        Button(action: {
-                            if !fixedExpenseCat.isEmpty {
-                                Task {
-                                    _ = await budgetfb.addCategory(name: fixedExpenseCat, type: .fixedExpense)
-                                    await loadAllCategories()
-                                    showNewFixedExpenseField = false
-                                }
-                            } else {
-                                errorMessage = "Please enter a category"
-                            }
-                        }) {
-                            ButtonView(buttontext: "Save", maxWidth: 160, leadingPadding: 50, topPadding: 0)
-                        }
-                    }
                     
                     SectionView(
                         title: "Variable Expense",
@@ -174,49 +97,11 @@ struct CategoryManagementView: View {
                         },
                         onAdd: {
                             withAnimation(.spring()) {
-                                showNewVariableExpenseField.toggle()
+                                showNewCategoryField = true
                             }
-                            showNewIncomeField = false
-                            showNewFixedExpenseField = false
+                            selectedCategoryType = .variableExpense
                         }
                     )
-                    if showNewVariableExpenseField {
-                        HStack {
-                            CustomTextFieldView(placeholder: "Add new category", text: $variableExpenseCat, isSecure: false, onChange: { errorMessage = ""}, leadingPadding: 3, trailingPadding: 10, systemName: "square.grid.2x2")
-                            Button(action: {
-                                errorMessage = ""
-                                variableExpenseCat = ""
-                                showNewVariableExpenseField = false
-                            }) {
-                                Image(systemName: "arrow.uturn.backward")
-                                    .foregroundColor(.blue)
-                                    .padding(.trailing, 10)
-                                    .padding(.bottom, 8)
-                            }
-                        }
-                        
-                        VStack {
-                            if !errorMessage.isEmpty {
-                                ErrorMessageView(errorMessage: errorMessage, height: 20)
-                            }
-                        }
-                        .frame(height: 15)
-                        
-                        Button(action: {
-                            if !variableExpenseCat.isEmpty {
-                                Task {
-                                    _ = await budgetfb.addCategory(name: variableExpenseCat, type: .variableExpense)
-                                    await loadAllCategories()
-                                    showNewVariableExpenseField = false
-                                }
-                            } else {
-                                errorMessage = "Please enter a category"
-                            }
-                        }) {
-                            ButtonView(buttontext: "Save", maxWidth: 160, leadingPadding: 50, topPadding: 0)
-                        }
-                    }
-                    
                 }
                 .scrollContentBackground(.hidden)
                 .alert("Are you sure you want to delete \(selectedCategory?.0 ?? "this category")?", isPresented: $showingDeleteAlert) {
@@ -247,13 +132,19 @@ struct CategoryManagementView: View {
                 .cornerRadius(12)
                 .shadow(radius: 10)
             }
+            
+            if let categoryType = selectedCategoryType, showNewCategoryField {
+                NewCategoryView(
+                    isPresented: $showNewCategoryField,
+                    budgetfb: budgetfb,
+                    categoryType: categoryType,
+                    onComplete: { await loadAllCategories() }
+                )
+            }
         }
     }
     
     func closeNewCategoryField() {
-        showNewIncomeField = false
-        showNewFixedExpenseField = false
-        showNewVariableExpenseField = false
         incomeCat = ""
         fixedExpenseCat = ""
         variableExpenseCat = ""
