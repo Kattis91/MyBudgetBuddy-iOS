@@ -41,216 +41,184 @@ struct CategoryManagementView: View {
         ZStack {
             if !showEditForm {
                 List {
-                    Section("Income Categories") {
-                        ForEach(incomeCats, id: \.self) { category in
-                            HStack {
-                                Text(category)
-                                Spacer()
-                                Button(action: {
-                                    editingCategory = EditingCategory(name: category, type: .income)
-                                    showEditForm = true
-                                    closeNewCategoryField()
-                                }) {
-                                    Image(systemName: "square.and.pencil")
-                                }
-                                .padding()
-                                .buttonStyle(BorderlessButtonStyle())
-                                Button(action: {
-                                    Task {
-                                        selectedCategory = (category, .income)
-                                        showingDeleteAlert = true
-                                        closeNewCategoryField()
-                                    }
-                                }) {
-                                    Image(systemName: "trash")
-                                        .foregroundColor(.red)
-                                }
-                                .buttonStyle(BorderlessButtonStyle())
+                    SectionView(
+                        title: "Income",
+                        categories: incomeCats,
+                        onEdit: { category in
+                            editingCategory = EditingCategory(name: category, type: .income)
+                            showEditForm = true
+                            closeNewCategoryField()
+                        },
+                        onDelete: { category in
+                            selectedCategory = (category, .income)
+                            showingDeleteAlert = true
+                            closeNewCategoryField()
+                        },
+                        onAdd: {
+                            withAnimation(.spring()) {
+                                showNewIncomeField.toggle()
                             }
-                        }
-                        Button (action: {
-                            showNewIncomeField = true
                             showNewFixedExpenseField = false
                             showNewVariableExpenseField = false
-                        }) {
-                            Text("+ Add Income Category")
                         }
-                        if showNewIncomeField {
-                            HStack {
-                                CustomTextFieldView(placeholder: "Add new category", text: $incomeCat, isSecure: false, onChange: { errorMessage = ""
-                                }, leadingPadding: 3, trailingPadding: 10, systemName: "square.grid.2x2")
-                                Button(action: {
-                                    errorMessage = ""
-                                    incomeCat = ""
+                    )
+                    
+                    if showNewIncomeField {
+                        HStack {
+                            CustomTextFieldView(placeholder: "Add new category", text: $incomeCat, isSecure: false, onChange: { errorMessage = ""
+                            }, leadingPadding: 3, trailingPadding: 10, systemName: "square.grid.2x2")
+                            Button(action: {
+                                errorMessage = ""
+                                incomeCat = ""
+                                showNewIncomeField = false
+                            }) {
+                                Image(systemName: "arrow.uturn.backward")
+                                    .foregroundColor(.blue)
+                                    .padding(.trailing, 10)
+                                    .padding(.bottom, 8)
+                            }
+                        }
+                        
+                        VStack {
+                            if !errorMessage.isEmpty {
+                                ErrorMessageView(errorMessage: errorMessage, height: 20)
+                            }
+                        }
+                        .frame(height: 15)
+                        
+                        Button(action: {
+                            if !incomeCat.isEmpty {
+                                Task {
+                                    _ = await budgetfb.addCategory(name: incomeCat, type: .income)
+                                    await loadAllCategories()
                                     showNewIncomeField = false
-                                }) {
-                                    Image(systemName: "arrow.uturn.backward")
-                                        .foregroundColor(.blue)
-                                        .padding(.trailing, 10)
-                                        .padding(.bottom, 8)
                                 }
+                            } else {
+                                errorMessage = "Please enter a category"
                             }
-                            
-                            VStack {
-                                if !errorMessage.isEmpty {
-                                    ErrorMessageView(errorMessage: errorMessage, height: 20)
-                                }
-                            }
-                            .frame(height: 15)
-                            
-                            Button(action: {
-                                if !incomeCat.isEmpty {
-                                    Task {
-                                        _ = await budgetfb.addCategory(name: incomeCat, type: .income)
-                                        await loadAllCategories()
-                                        showNewIncomeField = false
-                                    }
-                                } else {
-                                    errorMessage = "Please enter a category"
-                                }
-                            }) {
-                                ButtonView(buttontext: "Save", maxWidth: 160, leadingPadding: 50, topPadding: 0)
-                            }
+                        }) {
+                            ButtonView(buttontext: "Save", maxWidth: 160, leadingPadding: 50, topPadding: 0)
                         }
                     }
-                    Section("Fixed Expense Categories") {
-                        ForEach(fixedExpenseCats, id: \.self) { category in
-                            HStack {
-                                Text(category)
-                                Spacer()
-                                Button(action: {
-                                    editingCategory = EditingCategory(name: category, type: .fixedExpense)
-                                    showEditForm = true
-                                    closeNewCategoryField()
-                                }) {
-                                    Image(systemName: "square.and.pencil")
-                                }
-                                .padding()
-                                .buttonStyle(BorderlessButtonStyle())
-                                Button(action: {
-                                    selectedCategory = (category, .fixedExpense)
-                                    showingDeleteAlert = true
-                                    closeNewCategoryField()
-                                }) {
-                                    Image(systemName: "trash")
-                                        .foregroundColor(.red)
-                                }
-                                .buttonStyle(BorderlessButtonStyle())
+                    
+                    SectionView(
+                        title: "Fixed Expense",
+                        categories: fixedExpenseCats,
+                        onEdit: { category in
+                            editingCategory = EditingCategory(name: category, type: .fixedExpense)
+                            showEditForm = true
+                            closeNewCategoryField()
+                        },
+                        onDelete: { category in
+                            selectedCategory = (category, .fixedExpense)
+                            showingDeleteAlert = true
+                            closeNewCategoryField()
+                        },
+                        onAdd: {
+                            withAnimation(.spring()) {
+                                showNewFixedExpenseField.toggle()
                             }
-                        }
-                        Button (action: {
-                            showNewFixedExpenseField = true
                             showNewIncomeField = false
                             showNewVariableExpenseField = false
-                        }) {
-                            Text("+ Add Fixed Expense Category")
                         }
-                        if showNewFixedExpenseField {
-                            HStack {
-                                CustomTextFieldView(placeholder: "Add new category", text: $fixedExpenseCat, isSecure: false, onChange: { errorMessage = ""}, leadingPadding: 3, trailingPadding: 10, systemName: "square.grid.2x2")
-                                Button(action: {
-                                    errorMessage = ""
-                                    fixedExpenseCat = ""
-                                    showNewFixedExpenseField = false
-                                }) {
-                                    Image(systemName: "arrow.uturn.backward")
-                                        .foregroundColor(.blue)
-                                        .padding(.trailing, 10)
-                                        .padding(.bottom, 8)
-                                }
-                            }
-                            
-                            VStack {
-                                if !errorMessage.isEmpty {
-                                    ErrorMessageView(errorMessage: errorMessage, height: 20)
-                                }
-                            }
-                            .frame(height: 15)
-                            
+                    )
+                    if showNewFixedExpenseField {
+                        HStack {
+                            CustomTextFieldView(placeholder: "Add new category", text: $fixedExpenseCat, isSecure: false, onChange: { errorMessage = ""}, leadingPadding: 3, trailingPadding: 10, systemName: "square.grid.2x2")
                             Button(action: {
-                                if !fixedExpenseCat.isEmpty {
-                                    Task {
-                                        _ = await budgetfb.addCategory(name: fixedExpenseCat, type: .fixedExpense)
-                                        await loadAllCategories()
-                                        showNewFixedExpenseField = false
-                                    }
-                                } else {
-                                    errorMessage = "Please enter a category"
-                                }
+                                errorMessage = ""
+                                fixedExpenseCat = ""
+                                showNewFixedExpenseField = false
                             }) {
-                                ButtonView(buttontext: "Save", maxWidth: 160, leadingPadding: 50, topPadding: 0)
+                                Image(systemName: "arrow.uturn.backward")
+                                    .foregroundColor(.blue)
+                                    .padding(.trailing, 10)
+                                    .padding(.bottom, 8)
                             }
+                        }
+                        
+                        VStack {
+                            if !errorMessage.isEmpty {
+                                ErrorMessageView(errorMessage: errorMessage, height: 20)
+                            }
+                        }
+                        .frame(height: 15)
+                        
+                        Button(action: {
+                            if !fixedExpenseCat.isEmpty {
+                                Task {
+                                    _ = await budgetfb.addCategory(name: fixedExpenseCat, type: .fixedExpense)
+                                    await loadAllCategories()
+                                    showNewFixedExpenseField = false
+                                }
+                            } else {
+                                errorMessage = "Please enter a category"
+                            }
+                        }) {
+                            ButtonView(buttontext: "Save", maxWidth: 160, leadingPadding: 50, topPadding: 0)
                         }
                     }
-                    Section("Variable Expense Categories") {
-                        ForEach(variableExpenseCats, id: \.self) { category in
-                            HStack {
-                                Text(category)
-                                Spacer()
-                                Button(action: {
-                                    editingCategory = EditingCategory(name: category, type: .variableExpense)
-                                    showEditForm = true
-                                    closeNewCategoryField()
-                                }) {
-                                    Image(systemName: "square.and.pencil")
-                                }
-                                .padding()
-                                .buttonStyle(BorderlessButtonStyle())
-                                Button(action: {
-                                    selectedCategory = (category, .variableExpense)
-                                    showingDeleteAlert = true
-                                    closeNewCategoryField()
-                                }) {
-                                    Image(systemName: "trash")
-                                        .foregroundColor(.red)
-                                }
-                                .buttonStyle(BorderlessButtonStyle())
+                    
+                    SectionView(
+                        title: "Variable Expense",
+                        categories: variableExpenseCats,
+                        onEdit:  { category in
+                            editingCategory = EditingCategory(name: category, type: .variableExpense)
+                            showEditForm = true
+                            closeNewCategoryField()
+                        },
+                        onDelete: { category in
+                            selectedCategory = (category, .variableExpense)
+                            showingDeleteAlert = true
+                            closeNewCategoryField()
+                        },
+                        onAdd: {
+                            withAnimation(.spring()) {
+                                showNewVariableExpenseField.toggle()
                             }
-                        }
-                        Button (action: {
-                            showNewVariableExpenseField = true
                             showNewIncomeField = false
                             showNewFixedExpenseField = false
-                        }) {
-                            Text("+ Add Variable Expense Category")
                         }
-                        if showNewVariableExpenseField {
-                            HStack {
-                                CustomTextFieldView(placeholder: "Add new category", text: $variableExpenseCat, isSecure: false, onChange: { errorMessage = ""}, leadingPadding: 3, trailingPadding: 10, systemName: "square.grid.2x2")
-                                Button(action: {
-                                    errorMessage = ""
-                                    variableExpenseCat = ""
-                                    showNewVariableExpenseField = false
-                                }) {
-                                    Image(systemName: "arrow.uturn.backward")
-                                        .foregroundColor(.blue)
-                                        .padding(.trailing, 10)
-                                        .padding(.bottom, 8)
-                                }
-                            }
-                            
-                            VStack {
-                                if !errorMessage.isEmpty {
-                                    ErrorMessageView(errorMessage: errorMessage, height: 20)
-                                }
-                            }
-                            .frame(height: 15)
-                            
+                    )
+                    if showNewVariableExpenseField {
+                        HStack {
+                            CustomTextFieldView(placeholder: "Add new category", text: $variableExpenseCat, isSecure: false, onChange: { errorMessage = ""}, leadingPadding: 3, trailingPadding: 10, systemName: "square.grid.2x2")
                             Button(action: {
-                                if !variableExpenseCat.isEmpty {
-                                    Task {
-                                        _ = await budgetfb.addCategory(name: variableExpenseCat, type: .variableExpense)
-                                        await loadAllCategories()
-                                    }
-                                } else {
-                                    errorMessage = "Please enter a category"
-                                }
+                                errorMessage = ""
+                                variableExpenseCat = ""
+                                showNewVariableExpenseField = false
                             }) {
-                                ButtonView(buttontext: "Save", maxWidth: 160, leadingPadding: 50, topPadding: 0)
+                                Image(systemName: "arrow.uturn.backward")
+                                    .foregroundColor(.blue)
+                                    .padding(.trailing, 10)
+                                    .padding(.bottom, 8)
                             }
+                        }
+                        
+                        VStack {
+                            if !errorMessage.isEmpty {
+                                ErrorMessageView(errorMessage: errorMessage, height: 20)
+                            }
+                        }
+                        .frame(height: 15)
+                        
+                        Button(action: {
+                            if !variableExpenseCat.isEmpty {
+                                Task {
+                                    _ = await budgetfb.addCategory(name: variableExpenseCat, type: .variableExpense)
+                                    await loadAllCategories()
+                                    showNewVariableExpenseField = false
+                                }
+                            } else {
+                                errorMessage = "Please enter a category"
+                            }
+                        }) {
+                            ButtonView(buttontext: "Save", maxWidth: 160, leadingPadding: 50, topPadding: 0)
                         }
                     }
+                    
                 }
+                .scrollContentBackground(.hidden)
                 .alert("Are you sure you want to delete \(selectedCategory?.0 ?? "this category")?", isPresented: $showingDeleteAlert) {
                     Button("Cancel", role: .cancel) { }
                     Button("Delete", role: .destructive) {
