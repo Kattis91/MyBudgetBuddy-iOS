@@ -59,19 +59,26 @@ struct OutcomeBoxView: View {
                 .font(.title2)
                 .fontWeight(.bold)
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
         .background(
             LinearGradient(
-                gradient: Gradient(colors: [.backgroundTint, .cardShadow]),
-                startPoint: .leading,
-                endPoint: .trailing
+                gradient: Gradient(colors: [.backgroundTintLight, .backgroundTintDark]),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
             )
         )
         .cornerRadius(12)
-        .shadow(radius: 2)
+        .shadow(
+            color: .black.opacity(0.1),
+            radius: 4,
+            x: 0,
+            y: 2
+        )
+        // Add subtle border for more definition
         .overlay(
             RoundedRectangle(cornerRadius: 12)
-                .stroke(isNegative ? Color.red.opacity(0.2) : Color.clear, lineWidth: 1)
+                .stroke(Color.white.opacity(0.3), lineWidth: 0.5)
         )
     }
 }

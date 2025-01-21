@@ -19,23 +19,32 @@ struct CustomListView<T: Identifiable>: View {
         List {
             ForEach(items) { item in
                 let content = itemContent(item)
-                HStack {
-                    Text(content.category)
-                    Spacer()
-                    Text(showNegativeAmount ? "- \(content.amount, specifier: "%.2f")" : "\(content.amount, specifier: "%.2f")")
+                
+                ZStack {
+                    LinearGradient(
+                        gradient: Gradient(colors: [.backgroundTint, .cardShadow]),
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                    .cornerRadius(16)
+                    .shadow(radius: 1)
+                    
+                    HStack {
+                        Text(content.category)
+                          
+                        Spacer()
+                        Text(showNegativeAmount ? "- \(content.amount, specifier: "%.2f")" : "\(content.amount, specifier: "%.2f")")
+                    }
+                    .padding()
                 }
-                .padding()
+                .padding(.horizontal, 10)
+                .padding(.vertical, 3)
             }
             .onDelete(perform: deleteAction)
-            .background(
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(Color("TabColor"))
-            )
             .listRowSeparator(.hidden)
             .listRowInsets(EdgeInsets(top: 5, leading: 0, bottom: 5, trailing: 0))
         }
         .scrollContentBackground(.hidden)
-        .padding(.horizontal, 10)
     }
 }
 

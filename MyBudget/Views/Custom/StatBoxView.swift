@@ -12,6 +12,7 @@ struct StatBoxView: View {
     let title: String
     let amount: Double
     let isIncome: Bool
+    let showNegativeAmount: Bool
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -22,7 +23,7 @@ struct StatBoxView: View {
                     .font(.subheadline)
             }
             
-            Text("\(amount, specifier: "%.2f")")
+            Text(showNegativeAmount && amount > 0 ? "- \(amount, specifier: "%.2f")" : "\(amount, specifier: "%.2f")")
                 .font(.title2)
                 .fontWeight(.bold)
         }
@@ -30,16 +31,26 @@ struct StatBoxView: View {
         .padding()
         .background(
             LinearGradient(
-                gradient: Gradient(colors: [.backgroundTint, .cardShadow]),
-                startPoint: .leading,
-                endPoint: .trailing
+                gradient: Gradient(colors: [.backgroundTintLight, .backgroundTintDark]),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
             )
         )
         .cornerRadius(12)
-        .shadow(radius: 2)
+        .shadow(
+            color: .black.opacity(0.1),
+            radius: 4,
+            x: 0,
+            y: 2                       
+        )
+        // Add subtle border for more definition
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(Color.white.opacity(0.3), lineWidth: 0.5)
+        )
     }
 }
 
 #Preview {
-    StatBoxView(title: "Test", amount: 5, isIncome: true)
+    StatBoxView(title: "Test", amount: 5, isIncome: true, showNegativeAmount: false)
 }

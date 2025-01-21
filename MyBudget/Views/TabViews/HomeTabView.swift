@@ -30,13 +30,15 @@ struct HomeTabView: View {
                             StatBoxView(
                                 title: "Total Income",
                                 amount: budgetfb.totalIncome,
-                                isIncome: true
+                                isIncome: true,
+                                showNegativeAmount: false
                             )
                             
                             StatBoxView(
                                 title: "Total Expense",
                                 amount: budgetfb.totalExpenses,
-                                isIncome: false
+                                isIncome: false,
+                                showNegativeAmount: true
                             )
                         }
                         
@@ -51,16 +53,18 @@ struct HomeTabView: View {
                             Text("Add New Period")
                                 .font(.headline)
                                 .foregroundColor(.white)
-                                .frame(maxWidth: .infinity)
+                                .shadow(radius: 10)
+                                .frame(maxWidth: 150)
                                 .padding()
                                 .background(
                                     LinearGradient(
-                                        gradient: Gradient(colors: [.blue, .purple]),
+                                        gradient: Gradient(colors: [.buttonGradientLight, .buttonGradientDark]),
                                         startPoint: .leading,
                                         endPoint: .trailing
                                     )
                                 )
-                                .cornerRadius(12)
+                                .cornerRadius(16)
+                                .shadow(color: .black.opacity(0.3), radius: 4, x: 0, y: 2)
                         }
                     }
                     .padding()

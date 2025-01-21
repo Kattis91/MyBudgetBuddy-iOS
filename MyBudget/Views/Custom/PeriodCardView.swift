@@ -53,32 +53,58 @@ struct PeriodCardView: View {
             if isPeriodActive {
                 Text("\(daysRemaining) days remaining")
                     .font(.subheadline)
-                    .foregroundColor(.black)
+                    .foregroundColor(.white)
+                    .shadow(radius: 6)
                     .padding(.horizontal, 12)
-                    .padding(.vertical, 4)
-                    .background(Color.purple.opacity(0.1))
+                    .padding(.vertical, 8)
+                    .background(
+                        LinearGradient(
+                            gradient: Gradient(colors: [.buttonGradientLight, .buttonGradientDark]),
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .shadow(color: .black.opacity(0.3), radius: 4, x: 0, y: 2)
                     .cornerRadius(8)
             } else {
                 Text("Next period starts in \(daysUntilNextPeriod) days")
                     .font(.subheadline)
-                    .foregroundColor(.black)
+                    .foregroundColor(.white)
+                    .shadow(radius: 6)
                     .padding(.horizontal, 12)
-                    .padding(.vertical, 4)
-                    .background(Color.purple.opacity(0.1))
+                    .padding(.vertical, 8)
+                    .background(
+                        LinearGradient(
+                            gradient: Gradient(colors: [.buttonGradientLight, .buttonGradientDark]),
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .shadow(color: .black.opacity(0.3), radius: 4, x: 0, y: 2)
                     .cornerRadius(8)
             }
         }
+        .frame(maxWidth: .infinity, alignment: .center)
         .padding()
-        .frame(maxWidth: .infinity)
         .background(
             LinearGradient(
-                gradient: Gradient(colors: [.backgroundTint, .cardShadow]),
-                startPoint: .leading,
-                endPoint: .trailing
+                gradient: Gradient(colors: [.backgroundTintLight, .backgroundTintDark]),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
             )
         )
         .cornerRadius(12)
-        .shadow(radius: 2)
+        .shadow(
+            color: .black.opacity(0.1),
+            radius: 4,
+            x: 0,
+            y: 2
+        )
+        // Add subtle border for more definition
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(Color.white.opacity(0.3), lineWidth: 0.5)
+        )
     }
 }
 
