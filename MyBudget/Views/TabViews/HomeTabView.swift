@@ -10,6 +10,7 @@ import SwiftUI
 struct HomeTabView: View {
     
     @State var showingNewPeriod = false
+    @State var showingSignOutAlert = false
     
     var budgetfb = BudgetFB()
     @EnvironmentObject var budgetManager: BudgetManager
@@ -67,14 +68,23 @@ struct HomeTabView: View {
                                 .shadow(color: .black.opacity(0.3), radius: 4, x: 0, y: 2)
                         }
                     }
+                    .alert("Are you sure you want to sign out?", isPresented: $showingSignOutAlert) {
+                        Button("Go Back", role: .cancel) { }
+                        Button("Sign Out", role: .destructive) {
+                            budgetfb.userLogout()
+                        }
+                    }
                     .padding()
                     .toolbar {
                         ToolbarItem(placement: .topBarTrailing) {
                             
                             Button(action: {
-                                budgetfb.userLogout()
+                                showingSignOutAlert = true
                             }) {
-                                Text("Sign out")
+                                Image(systemName: "escape")
+                                    .resizable()
+                                    .frame(width: 25, height: 25)
+                                    .foregroundStyle(Color(red: 201 / 255, green: 94 / 255, blue: 123 / 255))
                             }
                         }
                     }
