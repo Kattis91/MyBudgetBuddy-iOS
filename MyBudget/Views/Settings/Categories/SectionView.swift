@@ -24,7 +24,7 @@ struct SectionView: View {
                     Spacer()
                     HStack(spacing: 16) {
                         Button(action: { onEdit(category) }) {
-                            Image(systemName: "pencil")
+                            Image(systemName: "square.and.pencil")
                                 .resizable()
                                 .frame(width: 20, height: 20)
                                 .foregroundColor(.blue)
