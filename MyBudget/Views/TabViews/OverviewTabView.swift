@@ -55,8 +55,10 @@ struct PeriodRowView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text("\(isCurrent ? "Current Period" : "Period"): \(formatDate(period.startDate)) - \(formatDate(period.endDate))")
+            Text(isCurrent ? "Current Period" : "Period")
                 .font(.headline)
+            Text(DateUtils.formattedDateRange(startDate: period.startDate, endDate: period.endDate))
+            
             Text("Incomes: \(period.incomes.count) | Fixed Expenses: \(period.fixedExpenses.count) | Variable Expenses: \(period.variableExpenses.count)")
                 .font(.subheadline)
             
@@ -68,12 +70,6 @@ struct PeriodRowView: View {
             .font(.caption)
         }
         .padding(.vertical, 4)
-    }
-    
-    private func formatDate(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .short
-        return formatter.string(from: date)
     }
 }
 

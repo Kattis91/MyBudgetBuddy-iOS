@@ -11,19 +11,6 @@ struct PeriodCardView: View {
     let startDate: Date
     let endDate: Date
     
-    private var formattedDateRange: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMM d"  // This will show "Jan 17"
-        let yearFormatter = DateFormatter()
-        yearFormatter.dateFormat = "yyyy"
-        
-        let startStr = formatter.string(from: startDate)
-        let endStr = formatter.string(from: endDate)
-        let yearStr = yearFormatter.string(from: endDate)
-        
-        return "\(startStr) - \(endStr), \(yearStr)"
-    }
-    
     private var isPeriodActive: Bool {
         let now = Date()
         return now >= startDate && now <= endDate
@@ -45,7 +32,7 @@ struct PeriodCardView: View {
                 .font(.headline)
                 .foregroundColor(.secondary)
             
-            Text(formattedDateRange)
+            Text(DateUtils.formattedDateRange(startDate: startDate, endDate: endDate))
                 .font(.title2)
                 .fontWeight(.bold)
             
