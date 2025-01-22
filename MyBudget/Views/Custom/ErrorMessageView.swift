@@ -11,14 +11,15 @@ struct ErrorMessageView: View {
     
     var errorMessage: String
     var height: CGFloat = 50
+    var padding: CGFloat = 18
     
     var body: some View {
         
         VStack(alignment: .leading) {
             HStack {
                 Text(errorMessage)
-                    .padding(.horizontal)
-                    .foregroundColor(.red)
+                    .padding(.horizontal, padding)
+                    .foregroundColor(Color("ButtonsBackground"))
                     .multilineTextAlignment(.leading)
                     .frame(height: height) // Fixed height to reserve space
                     .opacity(errorMessage.isEmpty ? 0 : 1) // Fade out
