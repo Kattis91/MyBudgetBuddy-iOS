@@ -13,7 +13,10 @@ struct LoginView: View {
     
     @State var email = ""
     @State var password = ""
-    @State var errorMessage = ""
+
+    @State private var emailErrorMessage = ""
+    @State private var passwordErrorMessage = ""
+    @State private var generalErrorMessage = ""
     
     @State var showForgotPassword = false
     
@@ -24,33 +27,29 @@ struct LoginView: View {
                     
                     Image("Save")
                         .resizable()
-                        .frame(width: 120, height: 120)
-                        .padding(.bottom, 30)
-                    
-                    Text("WELCOME back! Let's dive in!")
-                        .padding()
-                        .foregroundStyle(Color("TextColor"))
-                        .font(.title3)
-                    
-                    ErrorMessageView(errorMessage: errorMessage)
+                        .frame(width: 170, height: 170)
+                        .padding(.bottom, 70)
                     
                     CustomTextFieldView(placeholder: "Email", text: $email, onChange: {
-                            errorMessage = ""
+                            emailErrorMessage = ""
                     }, leadingPadding: 45, trailingPadding: 45, systemName: "envelope")
                     
+                    ErrorMessageView(errorMessage: emailErrorMessage, height: 15, padding: 30)
+                    
                     CustomTextFieldView(placeholder: "Password", text: $password, isSecure: true, onChange: {
-                        errorMessage = ""
+                        passwordErrorMessage = ""
                     }, leadingPadding: 45, trailingPadding: 45, systemName: "lock")
                     
-                    if budgetfb.loginerror != nil {
-                        Text(budgetfb.loginerror!)
-                    }
-                    
+                    ErrorMessageView(errorMessage: passwordErrorMessage, height: 15, padding: 30)
+                  
                     HStack {
                         Spacer()
                         Button(action: {
                             email = ""
-                            errorMessage = ""
+                            password = ""
+                            emailErrorMessage = ""
+                            passwordErrorMessage = ""
+                            generalErrorMessage = ""
                             showForgotPassword.toggle()
                         }) {
                             Text("Forgot password?")
@@ -58,20 +57,21 @@ struct LoginView: View {
                     }
                     .padding(.trailing, 45)
                     
+                    ErrorMessageView(errorMessage: generalErrorMessage, padding: 30)
+                    
                     Button(action: {
-                        if let validationError = ValidationUtils.validateInputs(email: email, password: password) {
-                            errorMessage = validationError
-                        } else {
+                        emailErrorMessage = ValidationUtils.validateEmail(email: email) ?? ""
+                        passwordErrorMessage = ValidationUtils.validatePassword(password: password) ?? ""
+                        
+                        if emailErrorMessage.isEmpty && passwordErrorMessage.isEmpty {
                             budgetfb.userLogin(email: email, password: password) { firebaseError in
-                                errorMessage = firebaseError ?? "" // Default to empty string if no Firebase error
+                                generalErrorMessage = firebaseError ?? ""
                             }
                         }
                     }) {
                         ButtonView(buttontext: "Sign in".uppercased(), maxWidth: 150)
                     }
-                    
                 }
-                .padding(.bottom, 100)
             }
             if showForgotPassword {
                 ForgotPasswordView(isPresented: $showForgotPassword)

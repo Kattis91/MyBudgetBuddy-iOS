@@ -14,7 +14,11 @@ struct RegisterView: View {
     @State var email = ""
     @State var password = ""
     @State var confirmPassword = ""
-    @State var errorMessage = ""
+    
+    @State private var emailErrorMessage = ""
+    @State private var passwordErrorMessage = ""
+    @State private var confirmPasswordErrorMessage = ""
+    @State private var generalErrorMessage = ""
     
     var body: some View {
         VStack {
@@ -23,39 +27,43 @@ struct RegisterView: View {
                 
                 Image("Save")
                     .resizable()
-                    .frame(width: 120, height: 120)
-                    .padding(.bottom, 30)
-                
-                Text("Nice to have you here! Let's dive in!")
-                    .foregroundStyle(Color("TextColor"))
-                    .font(.title3)
-                
-                ErrorMessageView(errorMessage: errorMessage)
+                    .frame(width: 170, height: 170)
+                    .padding(.bottom, 70)
                 
                 CustomTextFieldView(placeholder: "Email", text: $email, onChange: {
-                    errorMessage = ""
+                    emailErrorMessage = ""
                 }, leadingPadding: 45, trailingPadding: 45, systemName: "envelope")
                 
+                ErrorMessageView(errorMessage: emailErrorMessage, height: 15, padding: 30)
+                
                 CustomTextFieldView(placeholder: "Password", text: $password, isSecure: true, onChange: {
-                    errorMessage = ""
+                    passwordErrorMessage = ""
                 }, leadingPadding: 45, trailingPadding: 45, systemName: "lock")
+                
+                ErrorMessageView(errorMessage: passwordErrorMessage, height: 15, padding: 30)
                 
                 CustomTextFieldView(placeholder: "Confirm Password", text: $confirmPassword, isSecure: true, onChange: {
-                    errorMessage = ""
+                    confirmPasswordErrorMessage = ""
                 }, leadingPadding: 45, trailingPadding: 45, systemName: "lock")
                 
+                ErrorMessageView(errorMessage: confirmPasswordErrorMessage, height: 15, padding: 30)
+            
+                ErrorMessageView(errorMessage: generalErrorMessage, padding: 30)
+                
                 Button(action: {
-                    if let validationError = ValidationUtils.validateInputs(email: email, password: password, confirmPassword: confirmPassword) {
-                        errorMessage = validationError
-                    } else {
+                    emailErrorMessage = ValidationUtils.validateEmail(email: email) ?? ""
+                    passwordErrorMessage = ValidationUtils.validatePassword(password: password) ?? ""
+                    confirmPasswordErrorMessage = ValidationUtils.validateConfirmPassword(password: password, confirmPassword: confirmPassword) ?? ""
+                    
+                    if emailErrorMessage.isEmpty && passwordErrorMessage.isEmpty && confirmPasswordErrorMessage.isEmpty {
                         budgetfb.userRegister(email: email, password: password) { firebaseError in
-                            errorMessage = firebaseError ?? "" // Default to empty string if no Firebase error
+                            generalErrorMessage = firebaseError ?? ""
                         }
                     }
                 }) {
                     ButtonView(buttontext: "Sign Up".uppercased(), maxWidth: 150)
+                        .shadow(color: .black.opacity(0.3), radius: 4, x: 0, y: 2)
                 }
-                .padding(.bottom, 100)
             }
         }
     }
