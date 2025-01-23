@@ -19,17 +19,17 @@ struct PeriodDetailView: View {
                     .font(.headline)
                 
                 HStack(spacing: 20) {
-                    SummaryBox(
+                    SummaryBoxView(
                         title: "Income",
                         amount: period.totalIncome,
                         color: Color(red: 78/255, green: 177/255, blue: 181/255)
                     )
-                    SummaryBox(
+                    SummaryBoxView(
                         title: "Expenses",
                         amount: period.totalFixedExpenses + period.totalVariableExpenses,
                         color: Color(red: 174/255, green: 41/255, blue: 114/255)
                     )
-                    SummaryBox(
+                    SummaryBoxView(
                         title: "Balance",
                         amount: period.totalIncome - (period.totalFixedExpenses + period.totalVariableExpenses),
                         color: Color(red: 67/255, green: 135/255, blue: 221/255)
@@ -66,23 +66,6 @@ struct PeriodDetailView: View {
             Spacer()
         }
         .navigationTitle("Period Details")
-    }
-}
-
-struct SummaryBox: View {
-    let title: String
-    let amount: Double
-    let color: Color
-    
-    var body: some View {
-        VStack {
-            Text("\(amount, specifier: "%.2f")")
-                .foregroundStyle(color)
-                .fontWeight(.bold)
-                .font(.title3)
-            Text(title)
-                .font(.caption)
-        }
     }
 }
 

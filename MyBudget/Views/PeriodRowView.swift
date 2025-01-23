@@ -25,26 +25,26 @@ struct PeriodRowView: View {
                 
                 HStack() {
                     VStack {
-                        Text("\(period.totalIncome, specifier: "%.2f")")
-                            .foregroundStyle(Color(red: 78 / 255, green: 177 / 255, blue: 181 / 255))
-                            .fontWeight(.bold)
-                            .font(.title3)
-                        Text("Incomes")
+                        SummaryBoxView(
+                            title: "Income",
+                            amount: period.totalIncome,
+                            color: Color(red: 78/255, green: 177/255, blue: 181/255)
+                        )
                     }
                     VStack {
-                        Text("\((period.totalFixedExpenses + period.totalVariableExpenses), specifier: "%.2f")")
-                            .foregroundStyle(Color(red: 174 / 255, green: 41 / 255, blue: 114 / 255))
-                            .fontWeight(.bold)
-                            .font(.title3)
-                        Text("Expenses")
+                        SummaryBoxView(
+                            title: "Expenses",
+                            amount: period.totalFixedExpenses + period.totalVariableExpenses,
+                            color: Color(red: 174/255, green: 41/255, blue: 114/255)
+                        )
                     }
                     .padding(.horizontal, 6)
                     VStack {
-                        Text("\(period.totalIncome - (period.totalFixedExpenses + period.totalVariableExpenses), specifier: "%.2f")")
-                            .foregroundStyle(Color(red: 67 / 255, green: 135 / 255, blue: 221 / 255))
-                            .fontWeight(.bold)
-                            .font(.title3)
-                        Text("Balance")
+                        SummaryBoxView(
+                            title: "Balance",
+                            amount: period.totalIncome - (period.totalFixedExpenses + period.totalVariableExpenses),
+                            color: Color(red: 67/255, green: 135/255, blue: 221/255)
+                        )
                     }
                 }
                 .padding(.vertical, 10)
