@@ -67,12 +67,13 @@ struct PeriodRowView: View {
                }
             }
             if isExpanded {
-                VStack(alignment: .leading) {
-                    Text("Total Income: \(period.totalIncome, specifier: "%.2f")")
-                    Text("Total Fixed Expenses: \(period.totalFixedExpenses, specifier: "%.2f")")
-                    Text("Total Variable Expenses: \(period.totalVariableExpenses, specifier: "%.2f")")
+                NavigationLink(destination: PeriodDetailView(period: period)) {
+                    VStack(alignment: .leading) {
+                        Text("Total Income: \(period.totalIncome, specifier: "%.2f")")
+                        Text("Total Fixed Expenses: \(period.totalFixedExpenses, specifier: "%.2f")")
+                        Text("Total Variable Expenses: \(period.totalVariableExpenses, specifier: "%.2f")")
+                    }
                 }
-                .font(.caption)
             }
         }
     }
