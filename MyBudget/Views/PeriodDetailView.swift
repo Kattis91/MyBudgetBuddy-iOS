@@ -54,11 +54,11 @@ struct PeriodDetailView: View {
             // Add tab view content
             switch selectedTab {
             case 0:
-                IncomeList(incomes: period.incomes, total: period.totalIncome)
+                IncomeListView(incomes: period.incomes, total: period.totalIncome)
             case 1:
-                ExpenseList(expenses: period.fixedExpenses, total: period.totalFixedExpenses, isFixed: true)
+                ExpenseListView(expenses: period.fixedExpenses, total: period.totalFixedExpenses, isFixed: true)
             case 2:
-                ExpenseList(expenses: period.variableExpenses, total: period.totalVariableExpenses, isFixed: false)
+                ExpenseListView(expenses: period.variableExpenses, total: period.totalVariableExpenses, isFixed: false)
             default:
                 EmptyView()
             }
@@ -66,48 +66,6 @@ struct PeriodDetailView: View {
             Spacer()
         }
         .navigationTitle("Period Details")
-    }
-}
-
-// Add these supporting views:
-struct IncomeList: View {
-    let incomes: [Income]
-    let total: Double
-    
-    var body: some View {
-        List {
-            Section(header: Text("Total: \(total, specifier: "%.2f")")) {
-                ForEach(incomes) { income in
-                    HStack {
-                        Text(income.category)
-                        Spacer()
-                        Text("\(income.amount, specifier: "%.2f")")
-                            .fontWeight(.semibold)
-                    }
-                }
-            }
-        }
-    }
-}
-
-struct ExpenseList: View {
-    let expenses: [Expense]
-    let total: Double
-    let isFixed: Bool
-    
-    var body: some View {
-        List {
-            Section(header: Text("Total: \(total, specifier: "%.2f")")) {
-                ForEach(expenses) { expense in
-                    HStack {
-                        Text(expense.category)
-                        Spacer()
-                        Text("\(expense.amount, specifier: "%.2f")")
-                            .fontWeight(.semibold)
-                    }
-                }
-            }
-        }
     }
 }
 
