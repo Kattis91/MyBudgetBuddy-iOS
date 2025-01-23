@@ -35,73 +35,89 @@ struct CategoryManagementView: View {
     @State private var showNewCategoryField = false
     @State private var selectedCategoryType: CategoryType? = nil
     
+    @State private var selectedTab = 0
+    
     var body: some View {
         
         ZStack {
             if !showEditForm && !showNewCategoryField {
                 List {
-                    SectionView(
-                        title: "Income",
-                        categories: incomeCats,
-                        onEdit: { category in
-                            editingCategory = EditingCategory(name: category, type: .income)
-                            showEditForm = true
-                            closeNewCategoryField()
-                        },
-                        onDelete: { category in
-                            selectedCategory = (category, .income)
-                            showingDeleteAlert = true
-                            closeNewCategoryField()
-                        },
-                        onAdd: {
-                            withAnimation(.spring()) {
-                                showNewCategoryField = true
-                            }
-                            selectedCategoryType = .income
-                        }
-                    )
-                  
-                    SectionView(
-                        title: "Fixed Expense",
-                        categories: fixedExpenseCats,
-                        onEdit: { category in
-                            editingCategory = EditingCategory(name: category, type: .fixedExpense)
-                            showEditForm = true
-                            closeNewCategoryField()
-                        },
-                        onDelete: { category in
-                            selectedCategory = (category, .fixedExpense)
-                            showingDeleteAlert = true
-                            closeNewCategoryField()
-                        },
-                        onAdd: {
-                            withAnimation(.spring()) {
-                                showNewCategoryField = true
-                            }
-                            selectedCategoryType = .fixedExpense
-                        }
-                    )
+                    // Add segmented control
+                    Picker("Category", selection: $selectedTab) {
+                        Text("Incomes").tag(0)
+                        Text("Fixed").tag(1)
+                        Text("Variable").tag(2)
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                    .padding(.horizontal)
                     
-                    SectionView(
-                        title: "Variable Expense",
-                        categories: variableExpenseCats,
-                        onEdit:  { category in
-                            editingCategory = EditingCategory(name: category, type: .variableExpense)
-                            showEditForm = true
-                            closeNewCategoryField()
-                        },
-                        onDelete: { category in
-                            selectedCategory = (category, .variableExpense)
-                            showingDeleteAlert = true
-                            closeNewCategoryField()
-                        },
-                        onAdd: {
-                            withAnimation(.spring()) {
-                                showNewCategoryField = true
+                    switch selectedTab {
+                    case 0:
+                        SectionView(
+                            title: "Income",
+                            categories: incomeCats,
+                            onEdit: { category in
+                                editingCategory = EditingCategory(name: category, type: .income)
+                                showEditForm = true
+                                closeNewCategoryField()
+                            },
+                            onDelete: { category in
+                                selectedCategory = (category, .income)
+                                showingDeleteAlert = true
+                                closeNewCategoryField()
+                            },
+                            onAdd: {
+                                withAnimation(.spring()) {
+                                    showNewCategoryField = true
+                                }
+                                selectedCategoryType = .income
                             }
-                            selectedCategoryType = .variableExpense
-                        }
-                    )
+                        )
+                    case 1:
+                        SectionView(
+                            title: "Fixed Expense",
+                            categories: fixedExpenseCats,
+                            onEdit: { category in
+                                editingCategory = EditingCategory(name: category, type: .fixedExpense)
+                                showEditForm = true
+                                closeNewCategoryField()
+                            },
+                            onDelete: { category in
+                                selectedCategory = (category, .fixedExpense)
+                                showingDeleteAlert = true
+                                closeNewCategoryField()
+                            },
+                            onAdd: {
+                                withAnimation(.spring()) {
+                                    showNewCategoryField = true
+                                }
+                                selectedCategoryType = .fixedExpense
+                            }
+                        )
+                    case 2:
+                        SectionView(
+                            title: "Variable Expense",
+                            categories: variableExpenseCats,
+                            onEdit:  { category in
+                                editingCategory = EditingCategory(name: category, type: .variableExpense)
+                                showEditForm = true
+                                closeNewCategoryField()
+                            },
+                            onDelete: { category in
+                                selectedCategory = (category, .variableExpense)
+                                showingDeleteAlert = true
+                                closeNewCategoryField()
+                            },
+                            onAdd: {
+                                withAnimation(.spring()) {
+                                    showNewCategoryField = true
+                                }
+                                selectedCategoryType = .variableExpense
+                            }
+                        )
+                    default:
+                        EmptyView()
+                    }
                 }
                 .scrollContentBackground(.hidden)
                 .alert("Are you sure you want to delete \(selectedCategory?.0 ?? "this category")?", isPresented: $showingDeleteAlert) {
