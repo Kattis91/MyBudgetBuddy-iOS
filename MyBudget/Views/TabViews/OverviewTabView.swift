@@ -8,21 +8,38 @@
 import SwiftUI
 
 struct OverviewTabView: View {
-    @State var showingNewPeriod = false
     @EnvironmentObject var budgetManager: BudgetManager
     @State var budgetfb = BudgetFB()
 
-    
     var body: some View {
+        
+        let nonEmptyPeriods = budgetManager.historicalPeriods.filter {
+            !$0.incomes.isEmpty || !$0.fixedExpenses.isEmpty || !$0.variableExpenses.isEmpty
+        }
+        let emptyPeriods = budgetManager.historicalPeriods.filter {
+            $0.incomes.isEmpty && $0.fixedExpenses.isEmpty && $0.variableExpenses.isEmpty
+        }
+        
         NavigationView {
             List {
                 Section("Current Period") {
                     PeriodRowView(period: budgetManager.currentPeriod, isCurrent: true)
                 }
                 
-                if !budgetManager.historicalPeriods.isEmpty {
+                if !nonEmptyPeriods.isEmpty {
                     Section("Historical Periods") {
-                        ForEach(budgetManager.historicalPeriods.reversed()) { period in
+                        ForEach(nonEmptyPeriods.reversed()) { period in
+                            PeriodRowView(period: period, isCurrent: false)
+                        }
+                        .onDelete { offsets in
+                            budgetfb.deleteHistoricalPeriod(at: offsets, from: budgetManager.historicalPeriods)
+                        }
+                    }
+                }
+
+                if !emptyPeriods.isEmpty {
+                    Section("Empty Periods") {
+                        ForEach(emptyPeriods.reversed()) { period in
                             PeriodRowView(period: period, isCurrent: false)
                         }
                         .onDelete { offsets in
@@ -37,11 +54,6 @@ struct OverviewTabView: View {
                 }
             }
             .navigationTitle("Budget Periods")
-            .toolbar {
-                Button("New Period") {
-                    showingNewPeriod = true
-                }
-            }
         }
         .task {
             await budgetManager.loadData()
