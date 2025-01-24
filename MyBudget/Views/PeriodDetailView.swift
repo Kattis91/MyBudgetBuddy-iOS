@@ -54,11 +54,32 @@ struct PeriodDetailView: View {
             // Add tab view content
             switch selectedTab {
             case 0:
-                IncomeListView(incomes: period.incomes, total: period.totalIncome)
+                CustomListView(
+                    items: period.incomes,
+                    deleteAction: nil,
+                    itemContent: { income in
+                        (category: income.category, amount: income.amount)
+                    },
+                    showNegativeAmount: false
+                )
             case 1:
-                ExpenseListView(expenses: period.fixedExpenses, total: period.totalFixedExpenses, isFixed: true)
+                CustomListView(
+                    items: period.fixedExpenses,
+                    deleteAction: nil,
+                    itemContent: { expense in
+                        (category: expense.category, amount: expense.amount)
+                    },
+                    showNegativeAmount: true
+                )
             case 2:
-                ExpenseListView(expenses: period.variableExpenses, total: period.totalVariableExpenses, isFixed: false)
+                CustomListView(
+                    items: period.variableExpenses,
+                    deleteAction: nil,
+                    itemContent: { expense in
+                        (category: expense.category, amount: expense.amount)
+                    },
+                    showNegativeAmount: true
+                )
             default:
                 EmptyView()
             }
