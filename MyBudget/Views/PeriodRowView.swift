@@ -10,7 +10,6 @@ import SwiftUI
 struct PeriodRowView: View {
     let period: BudgetPeriod
     let isCurrent: Bool
-    @State private var isExpanded = false
     
     var body: some View {
         
@@ -52,7 +51,7 @@ struct PeriodRowView: View {
             .padding(.vertical, 4)
         } else {
             VStack {
-                Button(action: { isExpanded.toggle() }) {
+                NavigationLink(destination: PeriodDetailView(period: period)) {
                    HStack {
                        VStack {
                            Text(DateUtils.formattedDateRange(startDate: period.startDate, endDate: period.endDate))
@@ -62,18 +61,8 @@ struct PeriodRowView: View {
                                .foregroundStyle(.black)
                        }
                        Spacer()
-                       Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
                    }
                }
-            }
-            if isExpanded {
-                NavigationLink(destination: PeriodDetailView(period: period)) {
-                    VStack(alignment: .leading) {
-                        Text("Total Income: \(period.totalIncome, specifier: "%.2f")")
-                        Text("Total Fixed Expenses: \(period.totalFixedExpenses, specifier: "%.2f")")
-                        Text("Total Variable Expenses: \(period.totalVariableExpenses, specifier: "%.2f")")
-                    }
-                }
             }
         }
     }
