@@ -137,7 +137,7 @@ struct IncomesTabView: View {
                         errorMessage = "Amount must be a number."
                     }
                 }) {
-                    ButtonView(buttontext: "Add income", greenBackground: true, leadingPadding: 33, trailingPadding: 33)
+                    ButtonView(buttontext: "Add income", incomeButton: true, leadingPadding: 33, trailingPadding: 33)
                 }
                 
                 CustomListView(

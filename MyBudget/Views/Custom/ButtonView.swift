@@ -10,10 +10,12 @@ struct ButtonView: View {
     
     var buttontext : String
     var maxWidth: CGFloat? = .infinity
-    var greenBackground: Bool = false
+    var incomeButton: Bool = false
+    var expenseButton: Bool = false
     var height: CGFloat? = 45
     var leadingPadding: CGFloat = 24
     var trailingPadding: CGFloat = 24
+    var topPadding: CGFloat = 10
     
     var body: some View {
         
@@ -23,7 +25,18 @@ struct ButtonView: View {
             .frame(maxWidth: maxWidth)
             .frame(height: height)
             .foregroundStyle(.white)
-            .background(greenBackground ?
+            .background(
+                expenseButton ?
+                    LinearGradient(
+                      gradient: Gradient(colors: [
+                        .addExpenseStart,
+                        .addExpenseMiddle,
+                        .addExpenseEnd
+                      ]),
+                      startPoint: .topLeading,
+                      endPoint: .bottomTrailing
+                    ) :
+                incomeButton ?
                   LinearGradient(
                       gradient: Gradient(colors: [
                         .addIncomeStart,   // Start color
@@ -32,23 +45,23 @@ struct ButtonView: View {
                       ]),
                       startPoint: .topLeading,
                       endPoint: .bottomTrailing
-                  ) : LinearGradient(
+                  ) :
+                    LinearGradient(
                     gradient: Gradient(colors: [
-                        .gradientStart,   // Start color
-                        .gradientMiddle,  // Middle color
-                        .gradientEnd // End color
+                        .buttonGradientLight,
+                        .buttonGradientDark// End color
                     ]),
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
                 )
             )
             .cornerRadius(12)
-            .padding(.top, 10)
+            .padding(.top, topPadding)
             .padding(.leading, leadingPadding)
             .padding(.trailing, trailingPadding)
     }
 }
 
 #Preview {
-    ButtonView(buttontext: "Button", maxWidth: .infinity, greenBackground: false)
+    ButtonView(buttontext: "Button", maxWidth: .infinity, incomeButton: false)
 }

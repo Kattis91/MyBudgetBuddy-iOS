@@ -122,7 +122,7 @@ struct ExpensesView: View {
                 errorMessage = "Amount must be a number."
             }
         }) {
-            ButtonView(buttontext: "Add expense", leadingPadding: 33, trailingPadding: 33)
+            ButtonView(buttontext: "Add expense", expenseButton: true, leadingPadding: 33, trailingPadding: 33)
         }
         .task {
             await loadCategories()
