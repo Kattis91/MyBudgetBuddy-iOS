@@ -17,15 +17,15 @@ struct HomeView: View {
         appearance.backgroundColor = UIColor(red: 255/255, green: 242/255, blue: 230/255, alpha: 1.0)
         
         // Set the appearance for inactive tabs
-        appearance.stackedLayoutAppearance.normal.iconColor = UIColor(red: 78 / 255, green: 177 / 255, blue: 181 / 255, alpha: 1.0)
+        appearance.stackedLayoutAppearance.normal.iconColor = UIColor(red: 170 / 255, green: 170 / 255, blue: 216 / 255, alpha: 1.0)
         
         appearance.stackedLayoutAppearance.normal.titleTextAttributes = [
-            .foregroundColor: UIColor(red: 78 / 255, green: 177 / 255, blue: 181 / 255, alpha: 1.0)
+            .foregroundColor: UIColor(red: 148 / 255, green: 148 / 255, blue: 194 / 255, alpha: 1.0)
         ]
 
-        appearance.stackedLayoutAppearance.selected.iconColor = UIColor(red: 201 / 255, green: 94 / 255, blue: 123 / 255, alpha: 1.0)
+        appearance.stackedLayoutAppearance.selected.iconColor = UIColor(red: 0 / 255, green: 51 / 255, blue: 102 / 255, alpha: 1.0)
         appearance.stackedLayoutAppearance.selected.titleTextAttributes = [
-            .foregroundColor: UIColor(red: 201 / 255, green: 94 / 255, blue: 123 / 255, alpha: 1.0)
+            .foregroundColor: UIColor(red: 0 / 255, green: 51 / 255, blue: 102 / 255, alpha: 1.0)
         ]
         
         UITabBar.appearance().standardAppearance = appearance
