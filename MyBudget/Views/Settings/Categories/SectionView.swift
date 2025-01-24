@@ -52,10 +52,19 @@ struct SectionView: View {
                     )
                 )
                 .cornerRadius(16)
-                .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 2)
+                .shadow(
+                    color: .black.opacity(0.25),
+                    radius: 1,
+                    x: 0,
+                    y: 4
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(Color.white.opacity(0.4), lineWidth: 0.8)
+                )
             }
             .listRowSeparator(.hidden)
-            .listRowInsets(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
+            .listRowInsets(EdgeInsets(top: 7, leading: 0, bottom: 7, trailing: 0))
             
             Button(action: onAdd) {
                 HStack {

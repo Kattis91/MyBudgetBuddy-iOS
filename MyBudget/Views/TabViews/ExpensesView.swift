@@ -69,8 +69,27 @@ struct ExpensesView: View {
                             .foregroundColor(.gray)
                     }
                     .padding()
-                    .background(Color(.systemGray6))
+                    .background(
+                        LinearGradient(
+                            gradient: Gradient(colors: [
+                                Color(red: 245/255, green: 247/255, blue: 245/255), // Light gray
+                                Color(red: 240/255, green: 242/255, blue: 240/255)  // Slightly darker gray
+                            ]),
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
                     .cornerRadius(16)
+                    .shadow(
+                        color: .black.opacity(0.25),
+                        radius: 1,
+                        x: 0,
+                        y: 4
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16)
+                            .stroke(Color.white.opacity(0.4), lineWidth: 0.8)
+                    )
                 }
                 .padding(.bottom)
                 .padding(.horizontal, 33)
@@ -122,7 +141,7 @@ struct ExpensesView: View {
                 errorMessage = "Amount must be a number."
             }
         }) {
-            ButtonView(buttontext: "Add expense", expenseButton: true, leadingPadding: 33, trailingPadding: 33)
+            ButtonView(buttontext: "Add expense", expenseButton: true, leadingPadding: 33, trailingPadding: 33 )
         }
         .task {
             await loadCategories()
