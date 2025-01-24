@@ -40,7 +40,16 @@ struct OverviewTabView: View {
                 if !emptyPeriods.isEmpty {
                     Section("Empty Periods") {
                         ForEach(emptyPeriods.reversed()) { period in
-                            PeriodRowView(period: period, isCurrent: false)
+                            HStack {
+                                VStack {
+                                    Text(DateUtils.formattedDateRange(startDate: period.startDate, endDate: period.endDate))
+                                        .fontWeight(.bold)
+                                        .foregroundStyle(.black)
+                                    Text("Balance: \(period.totalIncome - (period.totalFixedExpenses + period.totalVariableExpenses), specifier: "%.2f")")
+                                        .foregroundStyle(.black)
+                                }
+                                Spacer()
+                            }
                         }
                         .onDelete { offsets in
                             budgetfb.deleteHistoricalPeriod(at: offsets, from: budgetManager.historicalPeriods)
