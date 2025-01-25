@@ -14,33 +14,7 @@ struct PeriodDetailView: View {
     var body: some View {
         VStack {
             // Summary card
-            VStack(spacing: 12) {
-                Text(DateUtils.formattedDateRange(startDate: period.startDate, endDate: period.endDate))
-                    .font(.headline)
-                
-                HStack(spacing: 20) {
-                    SummaryBoxView(
-                        title: "Income",
-                        amount: period.totalIncome,
-                        color: Color(red: 78/255, green: 177/255, blue: 181/255)
-                    )
-                    SummaryBoxView(
-                        title: "Expenses",
-                        amount: period.totalFixedExpenses + period.totalVariableExpenses,
-                        color: Color(red: 174/255, green: 41/255, blue: 114/255)
-                    )
-                    SummaryBoxView(
-                        title: "Balance",
-                        amount: period.totalIncome - (period.totalFixedExpenses + period.totalVariableExpenses),
-                        color: Color(red: 67/255, green: 135/255, blue: 221/255)
-                    )
-                }
-            }
-            .padding()
-            .background(Color(.systemBackground))
-            .cornerRadius(10)
-            .shadow(radius: 1)
-            .padding()
+            SummaryBoxView(period: period, isCurrent: false)
             
             // Add segmented control
             Picker("Category", selection: $selectedTab) {
@@ -49,7 +23,7 @@ struct PeriodDetailView: View {
                 Text("Variable").tag(2)
             }
             .pickerStyle(SegmentedPickerStyle())
-            .padding(.horizontal)
+            .padding(.horizontal, 34)
             
             // Add tab view content
             switch selectedTab {

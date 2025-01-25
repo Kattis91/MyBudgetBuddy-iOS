@@ -14,41 +14,7 @@ struct PeriodRowView: View {
     var body: some View {
         
         if isCurrent {
-            VStack {
-                VStack {
-                    Text("Current Period")
-                        .font(.headline)
-                    Text(DateUtils.formattedDateRange(startDate: period.startDate, endDate: period.endDate))
-                }
-                .frame(maxWidth: .infinity, alignment: .center)
-                
-                HStack() {
-                    VStack {
-                        SummaryBoxView(
-                            title: "Income",
-                            amount: period.totalIncome,
-                            color: Color(red: 78/255, green: 177/255, blue: 181/255)
-                        )
-                    }
-                    VStack {
-                        SummaryBoxView(
-                            title: "Expenses",
-                            amount: period.totalFixedExpenses + period.totalVariableExpenses,
-                            color: Color(red: 174/255, green: 41/255, blue: 114/255)
-                        )
-                    }
-                    .padding(.horizontal, 6)
-                    VStack {
-                        SummaryBoxView(
-                            title: "Balance",
-                            amount: period.totalIncome - (period.totalFixedExpenses + period.totalVariableExpenses),
-                            color: Color(red: 67/255, green: 135/255, blue: 221/255)
-                        )
-                    }
-                }
-                .padding(.vertical, 10)
-            }
-            .padding(.vertical, 4)
+            SummaryBoxView(period: period, isCurrent: true)
         } else {
             VStack {
                 NavigationLink(destination: PeriodDetailView(period: period)) {
