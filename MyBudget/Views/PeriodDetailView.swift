@@ -15,6 +15,8 @@ struct PeriodDetailView: View {
         VStack {
             // Summary card
             SummaryBoxView(period: period, isCurrent: false)
+                .padding(.horizontal, 34)
+                .padding(.vertical, 30)
             
             // Add segmented control
             Picker("Category", selection: $selectedTab) {
@@ -60,7 +62,6 @@ struct PeriodDetailView: View {
             
             Spacer()
         }
-        .navigationTitle("Period Details")
     }
 }
 
