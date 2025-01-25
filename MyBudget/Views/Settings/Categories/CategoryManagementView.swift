@@ -49,7 +49,6 @@ struct CategoryManagementView: View {
                         Text("Variable").tag(2)
                     }
                     .pickerStyle(SegmentedPickerStyle())
-                    .padding(.horizontal)
                     
                     switch selectedTab {
                     case 0:

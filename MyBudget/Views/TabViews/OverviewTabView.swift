@@ -24,17 +24,22 @@ struct OverviewTabView: View {
             List {
                 Section("Current Period") {
                     PeriodRowView(period: budgetManager.currentPeriod, isCurrent: true)
+                            .listRowInsets(EdgeInsets(top: 5, leading: 4, bottom: 5, trailing: 4))
+                            
                 }
                 
                 if !nonEmptyPeriods.isEmpty {
                     Section("Historical Periods") {
                         ForEach(nonEmptyPeriods.reversed()) { period in
                             PeriodRowView(period: period, isCurrent: false)
+                                .listRowInsets(EdgeInsets(top: 0, leading: 4, bottom: 8, trailing: 4))
                         }
                         .onDelete { offsets in
                             budgetfb.deleteHistoricalPeriod(at: offsets, from: budgetManager.historicalPeriods)
                         }
+                        .listRowSeparator(.hidden)
                     }
+                    .padding(.bottom, 8)
                 }
 
                 if !emptyPeriods.isEmpty {
@@ -57,6 +62,7 @@ struct OverviewTabView: View {
                     }
                 }
             }
+            .scrollContentBackground(.hidden)
             .onAppear {
                 Task {
                     await budgetfb.loadHistoricalPeriods()

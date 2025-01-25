@@ -63,6 +63,7 @@ struct SectionView: View {
                         .stroke(Color.white.opacity(0.4), lineWidth: 0.8)
                 )
             }
+            .padding(.horizontal, 10)
             .listRowSeparator(.hidden)
             .listRowInsets(EdgeInsets(top: 7, leading: 0, bottom: 7, trailing: 0))
             
