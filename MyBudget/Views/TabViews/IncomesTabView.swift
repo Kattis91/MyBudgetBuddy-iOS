@@ -189,7 +189,8 @@ struct IncomesTabView: View {
                     deleteAction: deleteIncomeItem,
                     itemContent: { income in
                         (category: income.category, amount: income.amount)
-                    }, showNegativeAmount: false
+                    }, isCurrent: true,
+                    showNegativeAmount: false
                 )
             }
             .onAppear() {

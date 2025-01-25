@@ -12,6 +12,7 @@ struct CustomListView<T: Identifiable>: View {
     let items: [T]
     let deleteAction: ((IndexSet) -> Void)?
     let itemContent: (T) -> (category: String, amount: Double)
+    let isCurrent: Bool
     let showNegativeAmount: Bool
     
     var body: some View {
@@ -46,6 +47,18 @@ struct CustomListView<T: Identifiable>: View {
                           
                         Spacer()
                         Text(showNegativeAmount ? "- \(content.amount, specifier: "%.2f")" : "\(content.amount, specifier: "%.2f")")
+                        
+                        if isCurrent {
+                            Button(action: {
+                                
+                            }) {
+                                Image(systemName: "pencil")
+                                    .resizable()
+                                    .frame(width: 18, height: 18)
+                                    .foregroundColor(.blue)
+                            }
+                            .buttonStyle(BorderlessButtonStyle())
+                        }
                     }
                     .padding()
                 }
@@ -70,6 +83,7 @@ struct CustomListView<T: Identifiable>: View {
         itemContent: { income in
             (category: income.category, amount: income.amount)
         },
+        isCurrent: true,
         showNegativeAmount: false
     )
 }

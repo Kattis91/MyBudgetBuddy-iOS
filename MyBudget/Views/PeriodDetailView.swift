@@ -36,6 +36,7 @@ struct PeriodDetailView: View {
                     itemContent: { income in
                         (category: income.category, amount: income.amount)
                     },
+                    isCurrent: false,
                     showNegativeAmount: false
                 )
             case 1:
@@ -45,6 +46,7 @@ struct PeriodDetailView: View {
                     itemContent: { expense in
                         (category: expense.category, amount: expense.amount)
                     },
+                    isCurrent: false,
                     showNegativeAmount: true
                 )
             case 2:
@@ -54,6 +56,7 @@ struct PeriodDetailView: View {
                     itemContent: { expense in
                         (category: expense.category, amount: expense.amount)
                     },
+                    isCurrent: false,
                     showNegativeAmount: true
                 )
             default:

@@ -153,7 +153,8 @@ struct ExpensesView: View {
                 deleteAction: deleteFixedExpense,
                 itemContent: { expense in
                     (category: expense.category, amount: expense.amount)
-                }, showNegativeAmount: true
+                }, isCurrent: true,
+                showNegativeAmount: true
             )
         } else {
             CustomListView(
@@ -161,7 +162,8 @@ struct ExpensesView: View {
                 deleteAction: deleteVariableExpense,
                 itemContent: { expense in
                     (category: expense.category, amount: expense.amount)
-                }, showNegativeAmount: true
+                }, isCurrent: true,
+                showNegativeAmount: true
             )
         }
     }
