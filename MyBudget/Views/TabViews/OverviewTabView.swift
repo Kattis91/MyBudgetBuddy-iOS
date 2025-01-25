@@ -10,6 +10,7 @@ import SwiftUI
 struct OverviewTabView: View {
     @EnvironmentObject var budgetManager: BudgetManager
     @State var budgetfb = BudgetFB()
+    @State private var isExpanded = false
 
     var body: some View {
         
@@ -43,6 +44,20 @@ struct OverviewTabView: View {
                 }
 
                 if !emptyPeriods.isEmpty {
+                    Section {
+                        Button(action: {
+                            withAnimation {
+                                isExpanded.toggle()
+                            }
+                        }) {
+                            HStack {
+                                Text("Empty Periods")
+                                Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
+                            }
+                        }
+                    }
+                }
+                if isExpanded {
                     Section("Empty Periods") {
                         ForEach(emptyPeriods.reversed()) { period in
                             HStack {
@@ -55,6 +70,29 @@ struct OverviewTabView: View {
                                 }
                                 Spacer()
                             }
+                            .listRowInsets(EdgeInsets(top: 0, leading: 4, bottom: 8, trailing: 4))
+                            .padding()
+                            .background(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [
+                                        Color(red: 245/255, green: 247/255, blue: 245/255), // Light gray
+                                        Color(red: 240/255, green: 242/255, blue: 240/255)  // Slightly darker gray
+                                    ]),
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
+                            .cornerRadius(16)
+                            .shadow(
+                                color: .black.opacity(0.25),
+                                radius: 1,
+                                x: 0,
+                                y: 4
+                            )
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .stroke(Color.white.opacity(0.4), lineWidth: 0.8)
+                            )
                         }
                         .onDelete { offsets in
                             budgetfb.deleteHistoricalPeriod(at: offsets, from: budgetManager.historicalPeriods)
