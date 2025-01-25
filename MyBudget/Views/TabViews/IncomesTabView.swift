@@ -32,13 +32,38 @@ struct IncomesTabView: View {
         
         NavigationStack {
             VStack {
-                
-                Text("Current Period: \(formatDate(budgetManager.currentPeriod.startDate)) - \(formatDate(budgetManager.currentPeriod.endDate))")
-                                .font(.headline)
-                                .padding()
+                VStack {
+                    Text("Current Period:")
+                        .font(.headline)
+                        .padding(.bottom, 10)
+                    Text(DateUtils.formattedDateRange(
+                       startDate: budgetManager.currentPeriod.startDate,
+                       endDate: budgetManager.currentPeriod.endDate
+                   ))
+                }
+                .padding()
+                .background(
+                    LinearGradient(
+                        gradient: Gradient(colors: [.backgroundTintLight, .backgroundTintDark]),
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
+                .cornerRadius(16)
+                .shadow(
+                    color: .black.opacity(0.3),
+                    radius: 4,
+                    x: 0,
+                    y: 2
+                )
+                // Add subtle border for more definition
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(Color.white.opacity(0.3), lineWidth: 0.5)
+                )
                 
                 Text("Total Income: \(budgetfb.totalIncome, specifier: "%.2f")")
-                    .font(.largeTitle)
+                    .font(.title)
                     .bold()
                     .padding()
                 
