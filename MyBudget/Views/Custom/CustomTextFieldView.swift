@@ -34,7 +34,7 @@ struct CustomTextFieldView: View {
                 TextField(placeholder, text: $text)
             }
         }
-        .frame(height: 45)
+        .frame(height: 50)
         .textFieldStyle(PlainTextFieldStyle())
         .padding(.horizontal)
         .background(
@@ -45,7 +45,7 @@ struct CustomTextFieldView: View {
             )
         )
         .cornerRadius(15)
-        .shadow(color: .black.opacity(0.3), radius: 4, x: 0, y: 2)
+        .shadow(color: .black.opacity(0.3), radius: 4, x: 0, y: 4)
         // Add subtle border for more definition
         .overlay(
             RoundedRectangle(cornerRadius: 12)
