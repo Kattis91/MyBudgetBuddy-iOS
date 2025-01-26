@@ -57,7 +57,9 @@ struct CategoryManagementView: View {
                             categories: incomeCats,
                             onEdit: { category in
                                 editingCategory = EditingCategory(name: category, type: .income)
-                                showEditForm = true
+                                withAnimation(.spring()) {
+                                    showEditForm = true
+                                }
                                 closeNewCategoryField()
                             },
                             onDelete: { category in
@@ -78,7 +80,9 @@ struct CategoryManagementView: View {
                             categories: fixedExpenseCats,
                             onEdit: { category in
                                 editingCategory = EditingCategory(name: category, type: .fixedExpense)
-                                showEditForm = true
+                                withAnimation(.spring()) {
+                                    showEditForm = true
+                                }
                                 closeNewCategoryField()
                             },
                             onDelete: { category in
@@ -99,7 +103,9 @@ struct CategoryManagementView: View {
                             categories: variableExpenseCats,
                             onEdit:  { category in
                                 editingCategory = EditingCategory(name: category, type: .variableExpense)
-                                showEditForm = true
+                                withAnimation(.spring()) {
+                                    showEditForm = true
+                                }
                                 closeNewCategoryField()
                             },
                             onDelete: { category in
