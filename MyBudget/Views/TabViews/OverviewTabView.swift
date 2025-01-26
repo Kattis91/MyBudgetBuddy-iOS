@@ -36,7 +36,7 @@ struct OverviewTabView: View {
                                 .listRowInsets(EdgeInsets(top: 0, leading: 4, bottom: 8, trailing: 4))
                         }
                         .onDelete { offsets in
-                            budgetfb.deleteHistoricalPeriod(at: offsets, from: budgetManager.historicalPeriods)
+                            budgetfb.deleteHistoricalPeriod(at: offsets, from: &budgetManager.historicalPeriods)
                         }
                         .listRowSeparator(.hidden)
                     }
@@ -95,7 +95,7 @@ struct OverviewTabView: View {
                             )
                         }
                         .onDelete { offsets in
-                            budgetfb.deleteHistoricalPeriod(at: offsets, from: budgetManager.historicalPeriods)
+                            budgetfb.deleteHistoricalPeriod(at: offsets, from: &budgetManager.historicalPeriods)
                         }
                     }
                 }

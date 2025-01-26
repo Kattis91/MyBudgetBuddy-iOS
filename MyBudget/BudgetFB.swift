@@ -832,30 +832,28 @@ import FirebaseAuth
         return periods
     }
     
-    func deleteHistoricalPeriod(at offsets: IndexSet, from periods: [BudgetPeriod]) {
+    func deleteHistoricalPeriod(at offsets: IndexSet, from periods: inout [BudgetPeriod]) {
         guard let userId = Auth.auth().currentUser?.uid else { return }
         let ref = Database.database().reference()
         
-        // Get a snapshot of the current data to find the correct key to delete
+        let periodsToDelete = offsets.map { periods[$0] }
+        
+        // Ta bort lokala objekt innan databasen uppdateras
+        periods.remove(atOffsets: offsets)
+
         ref.child("historicalPeriods").child(userId).getData { error, snapshot in
             guard let snapshot = snapshot else { return }
             
-            // Convert the periods at the specified offsets to an array of dates for comparison
-            let periodsToDelete = offsets.map { periods[$0] }
-            
-            // Iterate through the snapshot to find matching periods
             for case let historicalSnap as DataSnapshot in snapshot.children {
                 guard let historicalData = historicalSnap.value as? [String: Any],
                       let startDate = historicalData["startDate"] as? TimeInterval,
                       let endDate = historicalData["endDate"] as? TimeInterval else {
                     continue
                 }
-                
-                // Check if this snapshot matches any of our periods to delete
+
                 for periodToDelete in periodsToDelete {
                     if startDate == periodToDelete.startDate.timeIntervalSince1970 &&
                        endDate == periodToDelete.endDate.timeIntervalSince1970 {
-                        // Found a match, delete this node
                         ref.child("historicalPeriods").child(userId).child(historicalSnap.key).removeValue { error, _ in
                             if let error = error {
                                 print("Error deleting period: \(error.localizedDescription)")
@@ -868,6 +866,7 @@ import FirebaseAuth
             }
         }
     }
+
     
     // Add category management functions
     func loadCategories(type: CategoryType) async -> [String] {
