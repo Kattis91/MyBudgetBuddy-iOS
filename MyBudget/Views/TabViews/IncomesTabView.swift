@@ -75,7 +75,7 @@ struct IncomesTabView: View {
                     
                     if showNewCategoryField {
                         HStack {
-                            CustomTextFieldView(placeholder: "New category", text: $newCategory, isSecure: false, leadingPadding: 33, systemName: "square.grid.2x2")
+                            CustomTextFieldView(placeholder: "New category", text: $newCategory, isSecure: false, leadingPadding: 33, systemName: "tag")
                             Button(action: {
                                 showNewCategoryField = false
                                 selectedCategory = ""
@@ -87,7 +87,7 @@ struct IncomesTabView: View {
                                     .padding(.bottom, 8)
                             }
                         }
-                        .padding(.top, 10)
+                        .padding(.top, 5)
                         
                     } else {
                         Menu {
@@ -102,8 +102,8 @@ struct IncomesTabView: View {
                             }
                         } label: {
                             HStack {
-                                Text(selectedCategory.isEmpty ? "Category" : selectedCategory)
-                                    .foregroundColor(selectedCategory.isEmpty ? .gray : .primary)
+                                Text(selectedCategory.isEmpty ? "Choose Category" : selectedCategory)
+                                    .foregroundColor(selectedCategory.isEmpty ? .black.opacity(0.5) : .primary)
                                 Spacer()
                                 Image(systemName: "chevron.down")
                                     .foregroundColor(.gray)
@@ -123,7 +123,7 @@ struct IncomesTabView: View {
                             .shadow(
                                 color: .black.opacity(0.25),
                                 radius: 1,
-                                x: 0,
+                                x: -2,
                                 y: 4
                             )
                             .overlay(
@@ -131,8 +131,8 @@ struct IncomesTabView: View {
                                     .stroke(Color.white.opacity(0.4), lineWidth: 0.8)
                             )
                         }
-                        .padding(.bottom)
-                        .padding(.horizontal, 33)
+                        .padding(.bottom, 10)
+                        .padding(.horizontal, 31)
                     }
                 }
                 

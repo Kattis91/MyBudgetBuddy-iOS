@@ -36,7 +36,7 @@ struct ExpensesView: View {
             
             if showNewCategoryField {
                 HStack {
-                    CustomTextFieldView(placeholder: "New category", text: $newCategory, isSecure: false, leadingPadding: 33, systemName: "square.grid.2x2")
+                    CustomTextFieldView(placeholder: "New category", text: $newCategory, isSecure: false, leadingPadding: 33, systemName: "tag")
                     Button(action: {
                         showNewCategoryField = false
                         selectedCategory = ""
@@ -48,7 +48,7 @@ struct ExpensesView: View {
                             .padding(.bottom, 8)
                     }
                 }
-                .padding(.top, 10)
+                .padding(.top, 5)
             } else {
                 Menu {
                     ForEach(categories, id: \.self) { category in
@@ -62,8 +62,8 @@ struct ExpensesView: View {
                     }
                 } label: {
                     HStack {
-                        Text(selectedCategory.isEmpty ? "Category" : selectedCategory)
-                            .foregroundColor(selectedCategory.isEmpty ? .gray : .primary)
+                        Text(selectedCategory.isEmpty ? "Choose Category" : selectedCategory)
+                            .foregroundColor(selectedCategory.isEmpty ? .black.opacity(0.5) : .primary)
                         Spacer()
                         Image(systemName: "chevron.down")
                             .foregroundColor(.gray)
@@ -83,7 +83,7 @@ struct ExpensesView: View {
                     .shadow(
                         color: .black.opacity(0.25),
                         radius: 1,
-                        x: 0,
+                        x: -2,
                         y: 4
                     )
                     .overlay(
@@ -92,7 +92,7 @@ struct ExpensesView: View {
                     )
                 }
                 .padding(.bottom)
-                .padding(.horizontal, 33)
+                .padding(.horizontal, 31)
             }
         }
         
