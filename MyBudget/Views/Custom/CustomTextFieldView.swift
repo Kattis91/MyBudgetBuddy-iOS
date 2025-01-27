@@ -22,16 +22,16 @@ struct CustomTextFieldView: View {
         HStack {
             // Add the icon
             Image(systemName: systemName ?? "")
-                .foregroundColor(Color.gray)
+                .foregroundColor(Color.black.opacity(0.5))
                 .padding(.horizontal, 5)
                 .scaledToFit()
                 .frame(width: 20, height: 20)
             
             // Conditionally render SecureField or TextField
             if isSecure {
-                SecureField(placeholder, text: $text)
+                SecureField("", text: $text, prompt: Text(placeholder).foregroundStyle(.black.opacity(0.5)))
             } else {
-                TextField(placeholder, text: $text)
+                TextField("", text: $text, prompt: Text(placeholder).foregroundStyle(.black.opacity(0.5)))
             }
         }
         .frame(height: 50)
@@ -63,5 +63,5 @@ struct CustomTextFieldView: View {
 #Preview {
     @Previewable @State var email = ""
     @Previewable @State var password = ""
-    CustomTextFieldView(placeholder: "Placeholder", text: $email, isSecure: false, onChange: {  }, systemName: "envelope")
+    CustomTextFieldView(placeholder: "Email", text: $email, isSecure: false, onChange: {  }, systemName: "envelope")
 }
