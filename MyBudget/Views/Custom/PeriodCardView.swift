@@ -38,37 +38,18 @@ struct PeriodCardView: View {
             
             // Only show if days remaining is positive
             if isPeriodActive {
-                Text("\(daysRemaining) days remaining")
-                    .font(.subheadline)
-                    .foregroundColor(.white)
-                    .shadow(radius: 6)
+                Text("~ \(daysRemaining) days remaining ~")
+                    .font(.headline)
+                    .foregroundColor(.secondary)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 8)
-                    .background(
-                        LinearGradient(
-                            gradient: Gradient(colors: [.buttonGradientLight, .buttonGradientDark]),
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
-                    .shadow(color: .black.opacity(0.3), radius: 4, x: 0, y: 2)
-                    .cornerRadius(8)
             } else {
-                Text("Next period starts in \(daysUntilNextPeriod) days")
-                    .font(.subheadline)
-                    .foregroundColor(.white)
-                    .shadow(radius: 6)
+                Text("~ Next period starts in \(daysUntilNextPeriod) days ~")
+                    .font(.headline)
+                    .foregroundColor(.secondary)
+                    .fontWeight(.bold)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 8)
-                    .background(
-                        LinearGradient(
-                            gradient: Gradient(colors: [.buttonGradientLight, .buttonGradientDark]),
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
-                    .shadow(color: .black.opacity(0.3), radius: 4, x: 0, y: 2)
-                    .cornerRadius(8)
             }
         }
         .frame(maxWidth: .infinity, alignment: .center)
@@ -82,10 +63,10 @@ struct PeriodCardView: View {
         )
         .cornerRadius(12)
         .shadow(
-            color: .black.opacity(0.1),
+            color: .black.opacity(0.3),
             radius: 4,
             x: 0,
-            y: 2
+            y: 4
         )
         // Add subtle border for more definition
         .overlay(

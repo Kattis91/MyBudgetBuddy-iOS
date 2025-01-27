@@ -32,14 +32,15 @@ struct OutcomeBoxView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Image(systemName: isNegative ? "exclamationmark.circle.fill" : "piggybank.fill")
-                    .foregroundColor(isNegative ? .red : .purple)
+                Image(systemName: isNegative ? "exclamationmark.circle.fill" : "checkmark.circle.fill")
+                    .foregroundColor(isNegative ? Color("ButtonsBackground") : Color("CustomGreen"))
                 Text("Outcome")
                     .font(.headline)
                 Spacer()
                 Text("\(percentage, specifier: "%.1f")%")
                     .font(.subheadline)
-                    .foregroundColor(isNegative ? .red : .black)
+                    .foregroundColor(.black)
+                    .fontWeight(.bold)
             }
             
             // Custom progress view for negative values
@@ -50,7 +51,7 @@ struct OutcomeBoxView: View {
                     .cornerRadius(4)
                 
                 Rectangle()
-                    .foregroundColor(isNegative ? .red : .purple)
+                    .foregroundColor(isNegative ? Color("ButtonsBackground") : Color("CustomGreen"))
                     .frame(width: abs(min(max(percentage/100, -1), 1)) * UIScreen.main.bounds.width * 0.7, height: 8)
                     .cornerRadius(4)
             }
@@ -70,10 +71,10 @@ struct OutcomeBoxView: View {
         )
         .cornerRadius(12)
         .shadow(
-            color: .black.opacity(0.1),
+            color: .black.opacity(0.3),
             radius: 4,
             x: 0,
-            y: 2
+            y: 4
         )
         // Add subtle border for more definition
         .overlay(

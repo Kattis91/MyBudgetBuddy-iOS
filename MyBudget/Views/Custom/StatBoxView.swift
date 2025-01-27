@@ -18,7 +18,7 @@ struct StatBoxView: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Image(systemName: isIncome ? "arrow.up.circle.fill" : "arrow.down.circle.fill")
-                    .foregroundColor(isIncome ? .green : .red)
+                    .foregroundColor(isIncome ? Color("CustomGreen") : Color("ButtonsBackground"))
                 Text(title)
                     .font(.subheadline)
             }
@@ -38,10 +38,10 @@ struct StatBoxView: View {
         )
         .cornerRadius(12)
         .shadow(
-            color: .black.opacity(0.1),
+            color: .black.opacity(0.3),
             radius: 4,
             x: 0,
-            y: 2                       
+            y: 4
         )
         // Add subtle border for more definition
         .overlay(
