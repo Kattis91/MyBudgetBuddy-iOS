@@ -70,6 +70,7 @@ struct NewBudgetPeriodView: View {
                     Image(systemName: "xmark")
                         .foregroundStyle(Color.red)
                         .padding(.horizontal)
+                        .padding(.top, 20)
                 }
             }
             
@@ -78,12 +79,14 @@ struct NewBudgetPeriodView: View {
                 Text("Period Dates")
                     .fontDesign(.rounded)
                     .tracking(1.5)
+                    .font(.title2)
                 
                 DatePicker("Start Date",
                     selection: $startDate,
                     displayedComponents: [.date]
                 )
                 .padding(.vertical, 5)
+                .font(.title3)
                 
                 DatePicker("End Date",
                     selection: $endDate,
@@ -91,49 +94,76 @@ struct NewBudgetPeriodView: View {
                     displayedComponents: [.date]
                 )
                 .padding(.vertical, 5)
+                .font(.title3)
             }
             .padding(.horizontal, 45)
             
             if !isLandingPage {
-                HStack {
-                    Text("Transfer Settings")
-                        .fontDesign(.rounded)
-                        .tracking(1.5)
-                    Spacer()
-                }
-                .padding(.horizontal, 45)
-                Toggle("Include Incomes", isOn: $includeIncomes)
-                    .tint(Color("CustomGreen"))
-                    .padding(.horizontal, 45)
-                
-                if includeIncomes {
-                    VStack(alignment: .leading) {
-                        Text("Incomes to be transferred:")
-                            .font(.subheadline)
-                            .padding(.top)
-                        ForEach(budgetManager.incomeList, id: \.id) { income in
-                            Text(income.category + ": " + String(format: "%.2f", income.amount))
-                                .font(.body)
-                        }
+                if !budgetManager.incomeList.isEmpty && !budgetManager.fixedExpenseList.isEmpty {
+                    HStack {
+                        Text("Transfer Settings")
+                            .fontDesign(.rounded)
+                            .tracking(1.5)
+                            .font(.title2)
+                        Spacer()
                     }
                     .padding(.horizontal, 45)
+                    .padding(.vertical, 10)
                 }
-                Toggle("Include Fast Expenses", isOn: $includeFixedExpenses)
-                    .tint(Color("CustomGreen"))
-                    .padding(.horizontal, 45)
-                    .padding(.bottom, 10)
                 
-                if includeFixedExpenses {
-                    VStack(alignment: .leading) {
-                        Text("Fixed Expenses to be transferred:")
-                            .font(.subheadline)
-                            .padding(.top)
-                        ForEach(budgetManager.fixedExpenseList, id: \.id) { expense in
-                            Text(expense.category + ": " + String(format: "%.2f", expense.amount))
-                                .font(.body)
+                if !budgetManager.incomeList.isEmpty {
+                    Toggle("Include Incomes", isOn: $includeIncomes)
+                        .tint(Color("CustomGreen"))
+                        .padding(.horizontal, 45)
+                    
+                    if includeIncomes {
+                        VStack(alignment: .leading, spacing: 10) {
+                            ScrollView {
+                                VStack(alignment: .leading, spacing: 10) {
+                                    ForEach(budgetManager.incomeList, id: \.id) { income in
+                                        HStack {
+                                            Text(income.category)
+                                            Spacer()
+                                            Text(String(format: "%.2f", income.amount))
+                                        }
+                                        .padding()
+                                        .background(Color.white)
+                                        .cornerRadius(16)
+                                    }
+                                }
+                            }
+                            .frame(maxHeight: 62)
                         }
+                        .padding(.horizontal, 42)
                     }
-                    .padding(.horizontal, 45)
+                }
+                
+                if !budgetManager.fixedExpenseList.isEmpty {
+                    Toggle("Include Fast Expenses", isOn: $includeFixedExpenses)
+                        .tint(Color("CustomGreen"))
+                        .padding(.horizontal, 45)
+                        .padding(.bottom, 10)
+                    
+                    if includeFixedExpenses {
+                        VStack(alignment: .leading, spacing: 10) {
+                            ScrollView {
+                                VStack(alignment: .leading, spacing: 10) {
+                                    ForEach(budgetManager.fixedExpenseList, id: \.id) { expense in
+                                        HStack {
+                                            Text(expense.category)
+                                            Spacer()
+                                            Text(String(format: "%.2f", expense.amount))
+                                        }
+                                        .padding()
+                                        .background(Color.white)
+                                        .cornerRadius(16)
+                                    }
+                                }
+                            }
+                            .frame(maxHeight: 62)
+                        }
+                        .padding(.horizontal, 42)
+                    }
                 }
             }
             
@@ -171,6 +201,7 @@ struct NewBudgetPeriodView: View {
                 }
             }) {
                 ButtonView(buttontext: "Start New Period", maxWidth: 180)
+                    .padding(.bottom, 25)
             }
         }
         .alert("Invalid Budget Period", isPresented: $showValidationError) {
@@ -187,7 +218,6 @@ struct NewBudgetPeriodView: View {
         }
         .scrollContentBackground(.hidden)
         .frame(maxWidth: .infinity)
-        .frame(height: 500)
         .background(Color("TabColor"))
     }
 }
