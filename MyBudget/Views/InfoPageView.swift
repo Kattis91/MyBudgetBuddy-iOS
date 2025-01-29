@@ -30,14 +30,26 @@ struct InfoPageView: View {
                         .font(.headline)
                         .padding(.horizontal, 10)
                     
-                    Text("• Add your income and expenses, with expenses categorized as fixed or variable.")
-                        .padding(.horizontal, 10)
-                    Text("• Organize your finances better by adding your own categories, or stick with the default ones.")
-                        .padding(.horizontal, 10)
-                    Text("• Customize your own budget periods: choose from monthly, weekly, or even 5-day periods to match your needs.")
-                        .padding(.horizontal, 10)
-                    Text("• Keep track of your entire budget history, so you can see exactly where your money goes.")
-                        .padding(.horizontal, 10)
+                    HStack {
+                        Image(systemName: "plus.circle")
+                        Text("Add your income and expenses, with expenses categorized as fixed or variable.")
+                            .padding(.horizontal, 10)
+                    }
+                    HStack {
+                        Image(systemName: "tag")
+                        Text("Organize your finances better by adding your own categories, or stick with the default ones.")
+                            .padding(.horizontal, 10)
+                    }
+                    HStack {
+                        Image(systemName: "calendar")
+                        Text("Customize your own budget periods: choose from monthly, weekly, or even 5-day periods to match your needs.")
+                            .padding(.horizontal, 10)
+                    }
+                    HStack {
+                        Image(systemName: "clock")
+                        Text("Keep track of your entire budget history, so you can see exactly where your money goes.")
+                            .padding(.horizontal, 10)
+                    }
                 }
                 
                 // Second section: Upcoming features
