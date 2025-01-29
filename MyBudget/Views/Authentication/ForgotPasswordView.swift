@@ -73,7 +73,7 @@ struct ForgotPasswordView: View {
                         }
                     }
                 }) {
-                    ButtonView(buttontext: "Send reset link", maxWidth: 180)
+                    ButtonView(buttontext: "Send reset link", maxWidth: 180, expenseButton:  true)
                 }
             }
             .padding(.top, 25)

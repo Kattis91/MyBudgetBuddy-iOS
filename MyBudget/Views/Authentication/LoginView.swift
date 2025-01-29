@@ -50,7 +50,9 @@ struct LoginView: View {
                             emailErrorMessage = ""
                             passwordErrorMessage = ""
                             generalErrorMessage = ""
-                            showForgotPassword.toggle()
+                            withAnimation(.spring()) {
+                                showForgotPassword.toggle()
+                            }
                         }) {
                             Text("Forgot password?")
                         }
@@ -69,7 +71,7 @@ struct LoginView: View {
                             }
                         }
                     }) {
-                        ButtonView(buttontext: "Sign in".uppercased(), maxWidth: 150)
+                        ButtonView(buttontext: "Sign in".uppercased(), maxWidth: 150, expenseButton: true)
                     }
                 }
             }
@@ -81,7 +83,6 @@ struct LoginView: View {
                     .padding(.horizontal, 24)
                     .cornerRadius(12)
                     .shadow(radius: 10)
-                    .padding(.bottom, 100)
             }
         }
     }

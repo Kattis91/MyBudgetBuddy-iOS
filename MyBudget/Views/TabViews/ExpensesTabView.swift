@@ -42,9 +42,9 @@ struct ExpensesTabView: View {
                 .cornerRadius(16)
                 .shadow(
                     color: .black.opacity(0.3),
-                    radius: 4,
+                    radius: 1,
                     x: 0,
-                    y: 2
+                    y: 3
                 )
                 // Add subtle border for more definition
                 .overlay(
@@ -52,10 +52,13 @@ struct ExpensesTabView: View {
                         .stroke(Color.white.opacity(0.3), lineWidth: 0.5)
                 )
                 
-                Text("Total expenses: \(budgetfb.totalExpenses,  specifier: "%.2f")")
-                    .font(.title)
-                    .bold()
-                    .padding()
+                VStack {
+                    Text("Total expenses:")
+                    Text("\(budgetfb.totalExpenses,  specifier: "%.2f")")
+                }
+                .font(.title)
+                .bold()
+                .padding()
                 
                 HStack {
                     Button(action: {

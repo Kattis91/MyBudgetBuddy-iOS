@@ -61,7 +61,7 @@ struct RegisterView: View {
                         }
                     }
                 }) {
-                    ButtonView(buttontext: "Sign Up".uppercased(), maxWidth: 150)
+                    ButtonView(buttontext: "Sign Up".uppercased(), maxWidth: 150, expenseButton: true)
                         .shadow(color: .black.opacity(0.3), radius: 4, x: 0, y: 2)
                 }
             }

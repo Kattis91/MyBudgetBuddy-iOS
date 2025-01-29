@@ -39,7 +39,7 @@ struct NoCurrentPeriodView: View {
                         Button(action: {
                             showingNewPeriod.toggle()
                         }) {
-                            ButtonView(buttontext: isFirstTime ? "Create Budget Period" : "Start New Period")
+                            ButtonView(buttontext: isFirstTime ? "Create Budget Period" : "Start New Period", maxWidth: 230, expenseButton: true)
                         }
                         .padding(.horizontal)
                     }

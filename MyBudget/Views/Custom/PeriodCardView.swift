@@ -64,8 +64,8 @@ struct PeriodCardView: View {
         .cornerRadius(12)
         .shadow(
             color: .black.opacity(0.3),
-            radius: 4,
-            x: 0,
+            radius: 2,
+            x: -2,
             y: 4
         )
         // Add subtle border for more definition

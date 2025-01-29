@@ -34,7 +34,7 @@ struct CustomTextFieldView: View {
                 TextField("", text: $text, prompt: Text(placeholder).foregroundStyle(.black.opacity(0.5)))
             }
         }
-        .frame(height: 50)
+        .frame(height: 51)
         .textFieldStyle(PlainTextFieldStyle())
         .padding(.horizontal)
         .background(
@@ -44,11 +44,11 @@ struct CustomTextFieldView: View {
                 endPoint: .bottomTrailing
             )
         )
-        .cornerRadius(15)
-        .shadow(color: .black.opacity(0.3), radius: 4, x: 0, y: 4)
+        .cornerRadius(16)
+        .shadow(color: .black.opacity(0.4), radius: 4, x: -3, y: 4)
         // Add subtle border for more definition
         .overlay(
-            RoundedRectangle(cornerRadius: 12)
+            RoundedRectangle(cornerRadius: 16)
                 .stroke(Color.white.opacity(0.3), lineWidth: 0.5)
         )
         .padding(.leading, leadingPadding)

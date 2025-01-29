@@ -20,6 +20,11 @@ struct UnloggedView: View {
         NavigationStack {
             VStack {
                 VStack {
+                    Image("Save")
+                        .resizable() // Makes the image resizable
+                        .frame(width: 200, height: 200)
+                        .padding()
+                        .padding(.top, 70)
                     Text("MyBudgetBuddy")
                         .font(.largeTitle)
                         .padding(.top, 50)
@@ -28,28 +33,18 @@ struct UnloggedView: View {
                         .foregroundStyle(Color("TextColor"))
                         .font(.title3)
                         .multilineTextAlignment(.leading)
-                    Image("Save")
-                        .resizable() // Makes the image resizable
-                        .frame(width: 200, height: 200)
-                        .padding()
                 }
                 
                 Spacer()
                 
                 VStack {
                     
-                    Text("Welcome! Let's get started!")
-                        .font(.title2)
-                        .fontWeight(.regular)
-                        .padding()
-                        .foregroundStyle(Color("TextColor"))
-                    
                     NavigationLink(destination: LoginView()) {
-                        ButtonView(buttontext: "Sign in", maxWidth: 180)
+                        ButtonView(buttontext: "Sign in", maxWidth: 180, expenseButton: true)
                     }
                     
                     NavigationLink(destination: RegisterView()) {
-                        ButtonView(buttontext: "Create an account", maxWidth: 180)
+                        ButtonView(buttontext: "Create an account", maxWidth: 180, expenseButton: true)
                     }
                 }
                 .padding(.bottom, 100)
