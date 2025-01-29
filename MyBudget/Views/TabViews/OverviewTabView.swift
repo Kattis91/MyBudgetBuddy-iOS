@@ -23,14 +23,18 @@ struct OverviewTabView: View {
         
         NavigationView {
             List {
-                Section("Current Period") {
+                Section {
                     PeriodRowView(period: budgetManager.currentPeriod, isCurrent: true)
-                            .listRowInsets(EdgeInsets(top: 5, leading: 4, bottom: 5, trailing: 4))
-                            
+                            .listRowInsets(EdgeInsets(top: 10, leading: 4, bottom: 8, trailing: 4))
+                } header: {
+                    Text("Current Period")
+                        .font(.title2)
+                        .textCase(nil)
+                        .padding(.leading, -10)
                 }
                 
                 if !nonEmptyPeriods.isEmpty {
-                    Section("Historical Periods") {
+                    Section {
                         ForEach(nonEmptyPeriods.reversed()) { period in
                             PeriodRowView(period: period, isCurrent: false)
                                 .listRowInsets(EdgeInsets(top: 0, leading: 4, bottom: 8, trailing: 4))
@@ -39,8 +43,15 @@ struct OverviewTabView: View {
                             budgetfb.deleteHistoricalPeriod(at: offsets, from: &budgetManager.historicalPeriods)
                         }
                         .listRowSeparator(.hidden)
+                    } header: {
+                        Text("Historical Periods")
+                            .font(.title2)
+                            .textCase(nil)
+                            .padding(.leading, -10)
                     }
-                    .padding(.bottom, 8)
+                    .padding(.bottom, 10)
+                } else {
+                    Text("You have no historical periods right now.")
                 }
 
                 if !emptyPeriods.isEmpty {
@@ -58,7 +69,7 @@ struct OverviewTabView: View {
                     }
                 }
                 if isExpanded {
-                    Section("Empty Periods") {
+                    Section {
                         ForEach(emptyPeriods.reversed()) { period in
                             HStack {
                                 VStack {
@@ -97,7 +108,13 @@ struct OverviewTabView: View {
                         .onDelete { offsets in
                             budgetfb.deleteHistoricalPeriod(at: offsets, from: &budgetManager.historicalPeriods)
                         }
+                    } header: {
+                        Text("Empty Periods")
+                            .font(.title2)
+                            .textCase(nil)
+                            .padding(.leading, -10)
                     }
+                    .padding(.bottom, 10)
                 }
             }
             .scrollContentBackground(.hidden)
@@ -106,7 +123,6 @@ struct OverviewTabView: View {
                     await budgetfb.loadHistoricalPeriods()
                 }
             }
-            .navigationTitle("Budget Periods")
         }
         .task {
             await budgetManager.loadData()

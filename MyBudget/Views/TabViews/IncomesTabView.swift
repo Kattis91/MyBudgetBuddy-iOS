@@ -52,9 +52,9 @@ struct IncomesTabView: View {
                 .cornerRadius(16)
                 .shadow(
                     color: .black.opacity(0.3),
-                    radius: 4,
+                    radius: 1,
                     x: 0,
-                    y: 2
+                    y: 3
                 )
                 // Add subtle border for more definition
                 .overlay(
@@ -62,10 +62,13 @@ struct IncomesTabView: View {
                         .stroke(Color.white.opacity(0.3), lineWidth: 0.5)
                 )
                 
-                Text("Total Income: \(budgetfb.totalIncome, specifier: "%.2f")")
-                    .font(.title)
-                    .bold()
-                    .padding()
+                VStack {
+                    Text("Total Income:")
+                    Text("\(budgetfb.totalIncome, specifier: "%.2f")")
+                }
+                .font(.title)
+                .bold()
+                .padding()
                 
                 VStack {
                     

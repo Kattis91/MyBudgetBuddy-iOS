@@ -66,7 +66,8 @@ struct HomeTabView: View {
                                     )
                                 )
                                 .cornerRadius(16)
-                                .shadow(color: .black.opacity(0.3), radius: 4, x: 0, y: 2)
+                                .shadow(color: .black.opacity(0.4), radius: 1, x: -2, y: 4)
+                                .padding(.top, 15)
                         }
                     }
                     .alert("Are you sure you want to sign out?", isPresented: $showingSignOutAlert) {
@@ -80,7 +81,7 @@ struct HomeTabView: View {
                         ToolbarItem(placement: .topBarLeading) {
                             
                             Button(action: {
-                                
+                                showingSignOutAlert = true
                             }) {
                                 Image(systemName: "escape")
                                     .resizable()
