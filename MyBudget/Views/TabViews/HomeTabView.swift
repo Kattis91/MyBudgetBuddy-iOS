@@ -14,6 +14,7 @@ struct HomeTabView: View {
     
     var budgetfb = BudgetFB()
     @EnvironmentObject var budgetManager: BudgetManager
+    @State var showInfo = false
     
     var body: some View {
         
@@ -76,10 +77,10 @@ struct HomeTabView: View {
                     }
                     .padding()
                     .toolbar {
-                        ToolbarItem(placement: .topBarTrailing) {
+                        ToolbarItem(placement: .topBarLeading) {
                             
                             Button(action: {
-                                showingSignOutAlert = true
+                                
                             }) {
                                 Image(systemName: "escape")
                                     .resizable()
@@ -87,12 +88,22 @@ struct HomeTabView: View {
                                     .foregroundStyle(Color(red: 201 / 255, green: 94 / 255, blue: 123 / 255))
                             }
                         }
+                        ToolbarItem(placement: .topBarTrailing) {
+                            
+                            Button(action: {
+                                showInfo.toggle()
+                            }) {
+                                Image(systemName: "info.circle")
+                                    .resizable()
+                                    .frame(width: 25, height: 25)
+                                    .foregroundStyle(Color("CustomGreen"))
+                            }
+                        }
                     }
                 }
                 if showingNewPeriod {
                     NewBudgetPeriodView(isPresented: $showingNewPeriod, isLandingPage: false)
                         .navigationBarBackButtonHidden(true)
-                        
                         .background(Color.white)
                         .padding(.horizontal, 24)
                         .cornerRadius(12)
@@ -103,6 +114,9 @@ struct HomeTabView: View {
         .task {
             // Load data when view appears
             await budgetManager.loadData()
+        }
+        .sheet(isPresented: $showInfo) {
+            InfoPageView()
         }
     }
     
