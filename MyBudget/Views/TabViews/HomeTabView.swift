@@ -50,7 +50,9 @@ struct HomeTabView: View {
                         )
                         
                         Button(action: {
-                            showingNewPeriod.toggle()
+                            withAnimation(.spring()) {
+                                showingNewPeriod.toggle()
+                            }
                         }) {
                             Text("Add New Period")
                                 .font(.headline)
