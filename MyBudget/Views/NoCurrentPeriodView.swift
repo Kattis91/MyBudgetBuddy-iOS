@@ -15,6 +15,8 @@ struct NoCurrentPeriodView: View {
     var onPeriodCreated: () -> Void
     @State var isFirstTime: Bool = false
     
+    @State var showingSignOutAlert = false
+    
     var body: some View {
         
         ZStack {
@@ -37,11 +39,32 @@ struct NoCurrentPeriodView: View {
                             .multilineTextAlignment(.center)
                         
                         Button(action: {
-                            showingNewPeriod.toggle()
+                            withAnimation(.spring()) {
+                                showingNewPeriod.toggle()
+                            }
                         }) {
                             ButtonView(buttontext: isFirstTime ? "Create Budget Period" : "Start New Period", maxWidth: 230, expenseButton: true)
                         }
                         .padding(.horizontal)
+                    }
+                    .alert("Are you sure you want to sign out?", isPresented: $showingSignOutAlert) {
+                        Button("Go Back", role: .cancel) { }
+                        Button("Sign Out", role: .destructive) {
+                            budgetfb.userLogout()
+                        }
+                    }
+                    .toolbar {
+                        ToolbarItem(placement: .topBarLeading) {
+                            
+                            Button(action: {
+                                showingSignOutAlert = true
+                            }) {
+                                Image(systemName: "escape")
+                                    .resizable()
+                                    .frame(width: 25, height: 25)
+                                    .foregroundStyle(Color(red: 201 / 255, green: 94 / 255, blue: 123 / 255))
+                            }
+                        }
                     }
                     .padding()
                 }
@@ -54,7 +77,6 @@ struct NoCurrentPeriodView: View {
                             onPeriodCreated()
                         }, isLandingPage: true)
                         .navigationBarBackButtonHidden(true)
-                        .frame(height: 300)
                         .background(Color.white)
                         .padding(.horizontal, 24)
                         .cornerRadius(12)
