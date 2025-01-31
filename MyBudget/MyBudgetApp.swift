@@ -8,6 +8,8 @@
 import SwiftUI
 import FirebaseCore
 import FirebaseMessaging
+import FirebaseAuth
+import Firebase
 
 class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate {
     func application(_ application: UIApplication,
@@ -45,8 +47,25 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
             object: nil,
             userInfo: dataDict
         )
-        // TODO: If necessary send token to application server.
-        // Note: This callback is fired at each app startup and whenever a new token is generated.
+        
+        if let token = fcmToken {
+            guard let userId = Auth.auth().currentUser?.uid else {
+                print("Error: User is not authenticated.")
+                return
+            }
+            
+            let ref = Database.database().reference()
+            
+            let tokenData = ["token": token]
+            
+            ref.child("userTokens").child(userId).setValue(tokenData) { error, _ in
+                if let error = error {
+                    print("Error saving token to database: \(error)")
+                } else {
+                    print("Token saved to database successfully.")
+                }
+            }
+        }
     }
 }
 
