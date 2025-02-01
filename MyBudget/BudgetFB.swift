@@ -963,6 +963,30 @@ import FirebaseAuth
            }
        }
    }
+    
+    func saveInvoiceReminder(title: String, expiryDate: Date) {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            print("Error: Unable to retrieve user ID")
+            return
+        }
+        var ref: DatabaseReference!
+        
+        ref = Database.database().reference()
+        
+        let invoiceEntry: [String: Any] = [
+            "title": title,
+            "expiryDate": expiryDate.timeIntervalSince1970,
+            "uid": userId // Including userId in the data for further verification
+        ]
+        
+        ref.child("invoices").child(userId).childByAutoId().setValue(invoiceEntry) { error, _ in
+            if let error = error {
+                print("Error saving invoice: \(error.localizedDescription)")
+            } else {
+                print("Invoice saved successfully")
+            }
+        }
+    }
 
 }
 

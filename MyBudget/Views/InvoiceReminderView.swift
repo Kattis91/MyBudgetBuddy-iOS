@@ -10,8 +10,9 @@ import SwiftUI
 struct InvoiceReminderView: View {
 
     @State private var title: String = ""
-    @State private var payDate: Date = Date()
+    @State private var expiryDate: Date = Date()
     @Environment(\.presentationMode) var presentationMode
+    @State var budgetfb = BudgetFB()
     
     var body: some View {
         
@@ -19,11 +20,15 @@ struct InvoiceReminderView: View {
             CustomTextFieldView(placeholder: "Title", text: $title, systemName: "bell.badge")
             
             VStack {
-                DatePicker("Last payment day", selection: $payDate, displayedComponents: .date)
+                DatePicker("Last payment day", selection: $expiryDate, displayedComponents: .date)
             }
             .padding(.horizontal, 28)
             
-            ButtonView(buttontext: "Save".uppercased(), expenseButton: true)
+            Button(action: {
+                budgetfb.saveInvoiceReminder(title: title, expiryDate: expiryDate)
+            }) {
+                ButtonView(buttontext: "Save".uppercased(), expenseButton: true)
+            }
         }
         .padding(.top, 50)
         
