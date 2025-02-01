@@ -26,6 +26,18 @@ struct SettingsView: View {
                 } header: {
                     Text("Categories")
                 }
+                
+                Section {
+                    NavigationLink(destination: InvoiceReminderView()) {
+                        HStack {
+                            Image(systemName: "bell.badge")
+                                .foregroundColor(.purple)
+                            Text("Invoice Reminders")
+                        }
+                    }
+                } header: {
+                    Text("Extra features")
+                }
             }
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)
