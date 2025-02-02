@@ -8,11 +8,21 @@
 import SwiftUI
 
 struct InvoiceReminderView: View {
+    
+    @State var budgetfb = BudgetFB()
+    @EnvironmentObject var budgetManager: BudgetManager
 
     @State private var title: String = ""
     @State private var expiryDate: Date = Date()
     @Environment(\.presentationMode) var presentationMode
-    @State var budgetfb = BudgetFB()
+    @State private var invoices: [String] = []
+    
+    let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .none
+        return formatter
+    }()
     
     var body: some View {
         
@@ -32,15 +42,25 @@ struct InvoiceReminderView: View {
         }
         .padding(.top, 50)
         
-        List {
-            
+        Text("Your invoices:")
+            .font(.title)
+            .padding(.top)
+        
+        List(budgetManager.invoices) { invoice in
+            HStack {
+                Text(invoice.title)
+                Spacer()
+                Text(dateFormatter.string(from: invoice.expiryDate))
+            }
+        }
+        .task {
+            await budgetManager.loadInvoices()
         }
 
     }
 }
 
-
-
 #Preview {
     InvoiceReminderView()
+        .environmentObject(BudgetManager())
 }
