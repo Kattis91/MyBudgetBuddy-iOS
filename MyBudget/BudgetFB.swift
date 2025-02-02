@@ -987,6 +987,31 @@ import FirebaseAuth
             }
         }
     }
+    
+    func loadInvoices() async -> [Invoice] {
+        guard let userId = Auth.auth().currentUser?.uid else { return [] }
+        
+        return await withCheckedContinuation { continuation in
+            let ref = Database.database().reference().child("invoices").child(userId)
+            
+            ref.observeSingleEvent(of: .value) { snapshot in
+                var invoices: [Invoice] = []
+                
+                for child in snapshot.children {
+                    if let childSnapshot = child as? DataSnapshot,
+                       let invoiceData = childSnapshot.value as? [String: Any],
+                       let title = invoiceData["title"] as? String,
+                       let expiryDateTimestamp = invoiceData["expiryDate"] as? TimeInterval {
+                        let expiryDate = Date(timeIntervalSince1970: expiryDateTimestamp)
+                        let invoice = Invoice(id: childSnapshot.key, title: title, expiryDate: expiryDate)
+                        invoices.append(invoice)
+                    }
+                }
+                
+                continuation.resume(returning: invoices)
+            }
+        }
+    }
 
 }
 

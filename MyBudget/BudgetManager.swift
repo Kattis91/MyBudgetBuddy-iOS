@@ -36,6 +36,8 @@ class BudgetManager: ObservableObject {
     @Published var groupedExpense: [String: Double] = [:]
     @Published var totalExpenses: Double = 0.0
     
+    @Published var invoices: [Invoice] = []
+    
     init() {
         // Initialize with first period
         self.currentPeriod = BudgetPeriod(
@@ -155,5 +157,11 @@ class BudgetManager: ObservableObject {
             }
         totalExpenses = allExpenses.reduce(0) { $0 + $1.amount }
     }
-
+    
+    func loadInvoices() async {
+        let loadedInvoices = await budgetfb.loadInvoices()
+        await MainActor.run {
+            self.invoices = loadedInvoices
+        }
+    }
 }
