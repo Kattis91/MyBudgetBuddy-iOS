@@ -34,7 +34,7 @@ struct CustomListView<T: Identifiable>: View {
                     .shadow(
                         color: .black.opacity(0.25),
                         radius: 1,
-                        x: 0,
+                        x: -2,
                         y: 4
                     )
                     .overlay(
