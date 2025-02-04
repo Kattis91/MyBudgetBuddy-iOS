@@ -35,6 +35,9 @@ struct InvoiceReminderView: View {
             
             Button(action: {
                 budgetfb.saveInvoiceReminder(title: title, expiryDate: expiryDate)
+                Task {
+                    await budgetManager.loadInvoices()
+                }
             }) {
                 ButtonView(buttontext: "Save".uppercased(), expenseButton: true)
             }
@@ -54,11 +57,6 @@ struct InvoiceReminderView: View {
             isCurrent: true,
             showNegativeAmount: false
         )
-        .onAppear() {
-            Task {
-                await budgetManager.loadInvoices()
-            }
-        }
         .task {
             await budgetManager.loadInvoices()
         }
