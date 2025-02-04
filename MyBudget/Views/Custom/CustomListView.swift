@@ -11,7 +11,7 @@ struct CustomListView<T: Identifiable>: View {
     
     let items: [T]
     let deleteAction: ((IndexSet) -> Void)?
-    let itemContent: (T) -> (category: String, amount: Double)
+    let itemContent: (T) -> (category: String, amount: Double?, date: Date?)
     let isCurrent: Bool
     let showNegativeAmount: Bool
     
@@ -46,18 +46,10 @@ struct CustomListView<T: Identifiable>: View {
                         Text(content.category)
                           
                         Spacer()
-                        Text(showNegativeAmount ? "- \(content.amount, specifier: "%.2f")" : "\(content.amount, specifier: "%.2f")")
-                        
-                        if isCurrent {
-                            Button(action: {
-                                
-                            }) {
-                                Image(systemName: "pencil")
-                                    .resizable()
-                                    .frame(width: 18, height: 18)
-                                    .foregroundColor(.blue)
-                            }
-                            .buttonStyle(BorderlessButtonStyle())
+                        if let amount = content.amount {
+                            Text(showNegativeAmount ? "- \(amount, specifier: "%.2f")" : "\(amount, specifier: "%.2f")")
+                        } else if let date = content.date {
+                            Text(dateFormatter.string(from: date))
                         }
                     }
                     .padding()
@@ -73,6 +65,12 @@ struct CustomListView<T: Identifiable>: View {
     }
 }
 
+let dateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateStyle = .short
+    return formatter
+}()
+
 #Preview {
     CustomListView(
         items: [
@@ -81,7 +79,7 @@ struct CustomListView<T: Identifiable>: View {
         ],
         deleteAction: { _ in },
         itemContent: { income in
-            (category: income.category, amount: income.amount)
+            (category: income.category, amount: income.amount, date: Date())
         },
         isCurrent: true,
         showNegativeAmount: false

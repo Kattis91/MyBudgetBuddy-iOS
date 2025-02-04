@@ -15,7 +15,6 @@ struct InvoiceReminderView: View {
     @State private var title: String = ""
     @State private var expiryDate: Date = Date()
     @Environment(\.presentationMode) var presentationMode
-    @State private var invoices: [String] = []
     
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -46,11 +45,18 @@ struct InvoiceReminderView: View {
             .font(.title)
             .padding(.top)
         
-        List(budgetManager.invoices) { invoice in
-            HStack {
-                Text(invoice.title)
-                Spacer()
-                Text(dateFormatter.string(from: invoice.expiryDate))
+        CustomListView(
+            items: budgetManager.invoices,
+            deleteAction: { _ in }, // Add your delete action here
+            itemContent: { invoice in
+                (category: invoice.title, amount: nil, date: invoice.expiryDate)
+            },
+            isCurrent: true,
+            showNegativeAmount: false
+        )
+        .onAppear() {
+            Task {
+                await budgetManager.loadInvoices()
             }
         }
         .task {

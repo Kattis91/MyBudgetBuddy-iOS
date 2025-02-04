@@ -152,7 +152,7 @@ struct ExpensesView: View {
                 items: budgetfb.fixedExpenseList,
                 deleteAction: deleteFixedExpense,
                 itemContent: { expense in
-                    (category: expense.category, amount: expense.amount)
+                    (category: expense.category, amount: expense.amount, date: nil)
                 }, isCurrent: true,
                 showNegativeAmount: true
             )
@@ -161,7 +161,7 @@ struct ExpensesView: View {
                 items: budgetfb.variableExpenseList,
                 deleteAction: deleteVariableExpense,
                 itemContent: { expense in
-                    (category: expense.category, amount: expense.amount)
+                    (category: expense.category, amount: expense.amount, date: nil)
                 }, isCurrent: true,
                 showNegativeAmount: true
             )

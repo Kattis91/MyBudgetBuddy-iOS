@@ -191,7 +191,7 @@ struct IncomesTabView: View {
                     items: budgetfb.incomeList,
                     deleteAction: deleteIncomeItem,
                     itemContent: { income in
-                        (category: income.category, amount: income.amount)
+                        (category: income.category, amount: income.amount, date: nil)
                     }, isCurrent: true,
                     showNegativeAmount: false
                 )

@@ -34,7 +34,7 @@ struct PeriodDetailView: View {
                     items: period.incomes,
                     deleteAction: nil,
                     itemContent: { income in
-                        (category: income.category, amount: income.amount)
+                        (category: income.category, amount: income.amount, date: nil)
                     },
                     isCurrent: false,
                     showNegativeAmount: false
@@ -44,7 +44,7 @@ struct PeriodDetailView: View {
                     items: period.fixedExpenses,
                     deleteAction: nil,
                     itemContent: { expense in
-                        (category: expense.category, amount: expense.amount)
+                        (category: expense.category, amount: expense.amount, date: nil)
                     },
                     isCurrent: false,
                     showNegativeAmount: true
@@ -54,7 +54,7 @@ struct PeriodDetailView: View {
                     items: period.variableExpenses,
                     deleteAction: nil,
                     itemContent: { expense in
-                        (category: expense.category, amount: expense.amount)
+                        (category: expense.category, amount: expense.amount, date: nil)
                     },
                     isCurrent: false,
                     showNegativeAmount: true
