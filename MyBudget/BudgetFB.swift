@@ -1012,6 +1012,27 @@ import FirebaseAuth
             }
         }
     }
-
+   
+    func deleteInvoiceReminders(at offsets: IndexSet) {
+        guard let userId = Auth.auth().currentUser?.uid else { return }
+        let ref = Database.database().reference().child("invoices").child(userId)
+        
+        ref.observeSingleEvent(of: .value) { snapshot in
+            guard let invoices = snapshot.children.allObjects as? [DataSnapshot] else {
+                return
+            }
+            
+            for offset in offsets {
+                let invoiceSnapshot = invoices[offset]
+                invoiceSnapshot.ref.removeValue { error, _ in
+                    if let error = error {
+                        print("Error deleting invoice: \(error.localizedDescription)")
+                    } else {
+                        print("Invoice deleted successfully")
+                    }
+                }
+            }
+        }
+    }
 }
 

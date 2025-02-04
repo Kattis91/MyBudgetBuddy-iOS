@@ -41,13 +41,13 @@ struct InvoiceReminderView: View {
         }
         .padding(.top, 50)
         
-        Text("Your invoices:")
-            .font(.title)
+        Text(budgetManager.invoices.isEmpty ? "You have no invoices right now." : "Your invoices:")
+            .font(.title2)
             .padding(.top)
         
         CustomListView(
             items: budgetManager.invoices,
-            deleteAction: { _ in }, // Add your delete action here
+            deleteAction: deleteInvoiceItem, // Add your delete action here
             itemContent: { invoice in
                 (category: invoice.title, amount: nil, date: invoice.expiryDate)
             },
@@ -62,7 +62,11 @@ struct InvoiceReminderView: View {
         .task {
             await budgetManager.loadInvoices()
         }
-
+    }
+    
+    // Bridge function
+    private func deleteInvoiceItem(at offsets: IndexSet) {
+        budgetfb.deleteInvoiceReminders(at: offsets)
     }
 }
 
