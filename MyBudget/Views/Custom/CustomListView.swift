@@ -14,6 +14,13 @@ struct CustomListView<T: Identifiable>: View {
     let itemContent: (T) -> (category: String, amount: Double?, date: Date?)
     let isCurrent: Bool
     let showNegativeAmount: Bool
+    let alignAmountInMiddle: Bool
+    
+    let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        return formatter
+    }()
     
     var body: some View {
         
@@ -44,12 +51,21 @@ struct CustomListView<T: Identifiable>: View {
                     
                     HStack {
                         Text(content.category)
-                          
-                        Spacer()
-                        if let amount = content.amount {
-                            Text(showNegativeAmount ? "- \(amount, specifier: "%.2f")" : "\(amount, specifier: "%.2f")")
-                        } else if let date = content.date {
-                            Text(dateFormatter.string(from: date))
+
+                        if content.date != nil {
+                            Spacer()
+                            Text(showNegativeAmount ? "- \(content.amount ?? 0, specifier: "%.2f")" : "\(content.amount ?? 0, specifier: "%.2f")")
+                            Spacer()
+                            Text(dateFormatter.string(from: content.date!))
+                        } else {
+                            if alignAmountInMiddle {
+                                Spacer()
+                                Text(showNegativeAmount ? "- \(content.amount ?? 0, specifier: "%.2f")" : "\(content.amount ?? 0, specifier: "%.2f")")
+                                Spacer()
+                            } else {
+                                Spacer()
+                                Text(showNegativeAmount ? "- \(content.amount ?? 0, specifier: "%.2f")" : "\(content.amount ?? 0, specifier: "%.2f")")
+                            }
                         }
                     }
                     .padding()
@@ -65,12 +81,6 @@ struct CustomListView<T: Identifiable>: View {
     }
 }
 
-let dateFormatter: DateFormatter = {
-    let formatter = DateFormatter()
-    formatter.dateStyle = .short
-    return formatter
-}()
-
 #Preview {
     CustomListView(
         items: [
@@ -82,6 +92,7 @@ let dateFormatter: DateFormatter = {
             (category: income.category, amount: income.amount, date: Date())
         },
         isCurrent: true,
-        showNegativeAmount: false
+        showNegativeAmount: false,
+        alignAmountInMiddle: false
     )
 }

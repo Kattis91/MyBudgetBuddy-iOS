@@ -193,7 +193,8 @@ struct IncomesTabView: View {
                     itemContent: { income in
                         (category: income.category, amount: income.amount, date: nil)
                     }, isCurrent: true,
-                    showNegativeAmount: false
+                    showNegativeAmount: false,
+                    alignAmountInMiddle: false
                 )
             }
             .onAppear() {
@@ -206,14 +207,8 @@ struct IncomesTabView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: {
-                        showSettings.toggle()
-                    }) {
-                        Label("Open Settings", systemImage: "gearshape")
-                            .font(.title2)
-                            .foregroundColor(.purple)
-                    }
-                    .padding()
+                    CustomSettingsMenu(budgetfb: budgetfb)
+                                .padding()
                 }
             }
         }

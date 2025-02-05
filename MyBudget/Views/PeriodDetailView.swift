@@ -37,7 +37,8 @@ struct PeriodDetailView: View {
                         (category: income.category, amount: income.amount, date: nil)
                     },
                     isCurrent: false,
-                    showNegativeAmount: false
+                    showNegativeAmount: false,
+                    alignAmountInMiddle: false
                 )
             case 1:
                 CustomListView(
@@ -47,7 +48,8 @@ struct PeriodDetailView: View {
                         (category: expense.category, amount: expense.amount, date: nil)
                     },
                     isCurrent: false,
-                    showNegativeAmount: true
+                    showNegativeAmount: true,
+                    alignAmountInMiddle: false
                 )
             case 2:
                 CustomListView(
@@ -57,7 +59,8 @@ struct PeriodDetailView: View {
                         (category: expense.category, amount: expense.amount, date: nil)
                     },
                     isCurrent: false,
-                    showNegativeAmount: true
+                    showNegativeAmount: true,
+                    alignAmountInMiddle: false
                 )
             default:
                 EmptyView()
