@@ -964,7 +964,7 @@ import FirebaseAuth
        }
    }
     
-    func saveInvoiceReminder(title: String, expiryDate: Date) {
+    func saveInvoiceReminder(title: String, amount: Double, expiryDate: Date) {
         guard let userId = Auth.auth().currentUser?.uid else {
             print("Error: Unable to retrieve user ID")
             return
@@ -975,6 +975,7 @@ import FirebaseAuth
         
         let invoiceEntry: [String: Any] = [
             "title": title,
+            "amount": amount,
             "expiryDate": expiryDate.timeIntervalSince1970,
             "uid": userId // Including userId in the data for further verification
         ]
@@ -1001,9 +1002,10 @@ import FirebaseAuth
                     if let childSnapshot = child as? DataSnapshot,
                        let invoiceData = childSnapshot.value as? [String: Any],
                        let title = invoiceData["title"] as? String,
+                       let amount = invoiceData["amount"] as? Double,
                        let expiryDateTimestamp = invoiceData["expiryDate"] as? TimeInterval {
                         let expiryDate = Date(timeIntervalSince1970: expiryDateTimestamp)
-                        let invoice = Invoice(id: childSnapshot.key, title: title, expiryDate: expiryDate)
+                        let invoice = Invoice(id: childSnapshot.key, title: title, amount: amount, expiryDate: expiryDate)
                         invoices.append(invoice)
                     }
                 }

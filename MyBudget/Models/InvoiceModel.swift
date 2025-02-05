@@ -10,5 +10,6 @@ import Foundation
 struct Invoice: Identifiable {
     let id: String
     let title: String
+    let amount: Double
     let expiryDate: Date
 }
