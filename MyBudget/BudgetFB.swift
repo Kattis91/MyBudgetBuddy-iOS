@@ -977,6 +977,7 @@ import FirebaseAuth
             "title": title,
             "amount": amount,
             "expiryDate": expiryDate.timeIntervalSince1970,
+            "processed": false,
             "uid": userId // Including userId in the data for further verification
         ]
         
@@ -1003,9 +1004,10 @@ import FirebaseAuth
                        let invoiceData = childSnapshot.value as? [String: Any],
                        let title = invoiceData["title"] as? String,
                        let amount = invoiceData["amount"] as? Double,
+                       let processed = invoiceData["processed"] as? Bool,
                        let expiryDateTimestamp = invoiceData["expiryDate"] as? TimeInterval {
                         let expiryDate = Date(timeIntervalSince1970: expiryDateTimestamp)
-                        let invoice = Invoice(id: childSnapshot.key, title: title, amount: amount, expiryDate: expiryDate)
+                        let invoice = Invoice(id: childSnapshot.key, title: title, amount: amount, processed: processed, expiryDate: expiryDate)
                         invoices.append(invoice)
                     }
                 }
