@@ -15,6 +15,7 @@ struct CustomListView<T: Identifiable>: View {
     let isCurrent: Bool
     let showNegativeAmount: Bool
     let alignAmountInMiddle: Bool
+    let isInvoice: Bool
     
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -72,6 +73,20 @@ struct CustomListView<T: Identifiable>: View {
                 }
                 .padding(.horizontal, 10)
                 .padding(.vertical, 3)
+                
+                if isInvoice {
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            
+                        }) {
+                            ButtonView(buttontext: "Mark as processed", maxWidth: 210, incomeButton: true, height: 25)
+                        }
+                        .buttonStyle(BorderlessButtonStyle())
+                        Spacer()
+                    }
+                    .padding(.bottom, 10)
+                }
             }
             .onDelete(perform: deleteAction)
             .listRowSeparator(.hidden)
@@ -93,6 +108,7 @@ struct CustomListView<T: Identifiable>: View {
         },
         isCurrent: true,
         showNegativeAmount: false,
-        alignAmountInMiddle: false
+        alignAmountInMiddle: false,
+        isInvoice: false
     )
 }

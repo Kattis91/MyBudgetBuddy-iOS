@@ -27,6 +27,9 @@ struct InvoiceReminderView: View {
     var body: some View {
         
         VStack {
+            Text("Manage your invoices:")
+                .font(.title3)
+                .padding(.bottom, 45)
             CustomTextFieldView(placeholder: "Title", text: $title, systemName: "bell.badge")
             
             CustomTextFieldView(placeholder: "Amount", text: $amount, systemName: "dollarsign.circle")
@@ -107,7 +110,7 @@ struct InvoiceReminderView: View {
         }
         .padding(.top, 50)
         
-        Text(budgetManager.invoices.isEmpty ? "You have no invoices right now." : "Your invoices:")
+        Text(budgetManager.invoices.isEmpty ? "You have no invoices right now." : "Your actual invoices:")
             .font(.title2)
             .padding(.top)
         
@@ -119,7 +122,8 @@ struct InvoiceReminderView: View {
             },
             isCurrent: true,
             showNegativeAmount: false,
-            alignAmountInMiddle: true
+            alignAmountInMiddle: true,
+            isInvoice: true
         )
         .task {
             await budgetManager.loadInvoices()

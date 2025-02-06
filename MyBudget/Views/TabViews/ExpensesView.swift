@@ -155,7 +155,8 @@ struct ExpensesView: View {
                     (category: expense.category, amount: expense.amount, date: nil)
                 }, isCurrent: true,
                 showNegativeAmount: true,
-                alignAmountInMiddle: false
+                alignAmountInMiddle: false,
+                isInvoice: false
             )
         } else {
             CustomListView(
@@ -165,7 +166,8 @@ struct ExpensesView: View {
                     (category: expense.category, amount: expense.amount, date: nil)
                 }, isCurrent: true,
                 showNegativeAmount: true,
-                alignAmountInMiddle: false
+                alignAmountInMiddle: false,
+                isInvoice: false
             )
         }
     }

@@ -194,7 +194,8 @@ struct IncomesTabView: View {
                         (category: income.category, amount: income.amount, date: nil)
                     }, isCurrent: true,
                     showNegativeAmount: false,
-                    alignAmountInMiddle: false
+                    alignAmountInMiddle: false,
+                    isInvoice: false
                 )
             }
             .onAppear() {
