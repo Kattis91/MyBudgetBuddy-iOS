@@ -207,18 +207,15 @@ struct IncomesTabView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    CustomSettingsMenu(budgetfb: budgetfb)
-                                .padding()
+                    CustomSettingsMenu(
+                        budgetfb: budgetfb,
+                        onCategoriesUpdate: {
+                            let loadedCategories = await budgetfb.loadCategories(type: .income)
+                            categories = loadedCategories
+                        }
+                    )
                 }
             }
-        }
-        .sheet(isPresented: $showSettings) {
-            Task {
-                let loadedCategories = await budgetfb.loadCategories(type: .income)
-                categories = loadedCategories
-            }
-        } content: {
-            SettingsView(budgetfb: budgetfb)
         }
     }
     

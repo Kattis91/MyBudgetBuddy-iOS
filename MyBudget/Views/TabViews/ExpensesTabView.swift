@@ -17,6 +17,7 @@ struct ExpensesTabView: View {
     @EnvironmentObject var budgetManager: BudgetManager
     
     @State var showSettings = false
+    @State private var refreshTrigger = UUID()
 
     var body: some View {
         
@@ -98,7 +99,7 @@ struct ExpensesTabView: View {
                         expenseList: $budgetfb.fixedExpenseList,
                         budgetfb: budgetfb
                     )
-                    .id(showSettings)
+                    .id(refreshTrigger)
                 } else {
                     ExpensesView(
                         viewtype: .variable,
@@ -107,7 +108,7 @@ struct ExpensesTabView: View {
                         expenseList: $budgetfb.variableExpenseList,
                         budgetfb: budgetfb
                     )
-                    .id(showSettings)
+                    .id(refreshTrigger)
                 }
             }
             .task {
@@ -116,24 +117,21 @@ struct ExpensesTabView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: {
-                        showSettings.toggle()
-                    }) {
-                        Label("Open Settings", systemImage: "gearshape")
-                            .font(.title2)
-                            .foregroundColor(.purple)
-                    }
-                    .padding()
+                    CustomSettingsMenu(
+                        budgetfb: budgetfb,
+                        onCategoriesUpdate: {
+                            // Load both fixed and variable expenses after category updates
+                            await budgetfb.loadExpenseData(isfixed: true)
+                            await budgetfb.loadExpenseData(isfixed: false)
+                            _ = await budgetfb.loadCategories(type: .fixedExpense)
+                            _ = await budgetfb.loadCategories(type: .variableExpense)
+                            await MainActor.run {
+                                refreshTrigger = UUID() // Force view refresh
+                            }
+                        }
+                    )
                 }
             }
-        }
-        .sheet(isPresented: $showSettings, onDismiss: {
-            Task {
-                await budgetfb.loadExpenseData(isfixed: true)
-                await budgetfb.loadExpenseData(isfixed: false)
-            }
-        }) {
-            SettingsView(budgetfb: budgetfb)
         }
     }
 }
