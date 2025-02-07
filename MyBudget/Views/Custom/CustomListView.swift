@@ -16,6 +16,9 @@ struct CustomListView<T: Identifiable>: View {
     let showNegativeAmount: Bool
     let alignAmountInMiddle: Bool
     let isInvoice: Bool
+    @State var budgetfb = BudgetFB()
+    
+    let onMarkProcessed: ((T) -> Void)?
     
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -78,7 +81,7 @@ struct CustomListView<T: Identifiable>: View {
                     HStack {
                         Spacer()
                         Button(action: {
-                            
+                            onMarkProcessed?(item)
                         }) {
                             ButtonView(buttontext: "Mark as processed", maxWidth: 210, incomeButton: true, height: 25)
                         }
@@ -109,6 +112,7 @@ struct CustomListView<T: Identifiable>: View {
         isCurrent: true,
         showNegativeAmount: false,
         alignAmountInMiddle: false,
-        isInvoice: false
+        isInvoice: false,
+        onMarkProcessed: nil
     )
 }
