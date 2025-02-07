@@ -11,6 +11,6 @@ struct Invoice: Identifiable {
     let id: String
     let title: String
     let amount: Double
-    let processed: Bool
+    var processed: Bool
     let expiryDate: Date
 }
