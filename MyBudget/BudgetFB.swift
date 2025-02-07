@@ -990,6 +990,57 @@ import FirebaseAuth
         }
     }
     
+    func updateInvoiceStatus(invoiceId: String, processed: Bool) async throws {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            throw NSError(domain: "InvoiceError", code: 401, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
+        }
+        
+        let ref = Database.database().reference()
+            .child("invoices")
+            .child(userId)
+            .child(invoiceId)
+        
+        return try await withCheckedThrowingContinuation { continuation in
+            ref.updateChildValues(["processed": processed]) { error, _ in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                } else {
+                    continuation.resume()
+                }
+            }
+        }
+    }
+    
+    func loadInvoicesByStatus(processed: Bool) async -> [Invoice] {
+        guard let userId = Auth.auth().currentUser?.uid else { return [] }
+        
+        return await withCheckedContinuation { continuation in
+            let ref = Database.database().reference().child("invoices").child(userId)
+            
+            // Query to filter by processed status
+            ref.queryOrdered(byChild: "processed")
+               .queryEqual(toValue: processed)
+               .observeSingleEvent(of: .value) { snapshot in
+                var invoices: [Invoice] = []
+                
+                for child in snapshot.children {
+                    if let childSnapshot = child as? DataSnapshot,
+                       let invoiceData = childSnapshot.value as? [String: Any],
+                       let title = invoiceData["title"] as? String,
+                       let amount = invoiceData["amount"] as? Double,
+                       let processed = invoiceData["processed"] as? Bool,
+                       let expiryDateTimestamp = invoiceData["expiryDate"] as? TimeInterval {
+                        let expiryDate = Date(timeIntervalSince1970: expiryDateTimestamp)
+                        let invoice = Invoice(id: childSnapshot.key, title: title, amount: amount, processed: processed, expiryDate: expiryDate)
+                        invoices.append(invoice)
+                    }
+                }
+                
+                continuation.resume(returning: invoices)
+            }
+        }
+    }
+    
     func loadInvoices() async -> [Invoice] {
         guard let userId = Auth.auth().currentUser?.uid else { return [] }
         
@@ -1016,24 +1067,23 @@ import FirebaseAuth
             }
         }
     }
-   
-    func deleteInvoiceReminders(at offsets: IndexSet) {
-        guard let userId = Auth.auth().currentUser?.uid else { return }
-        let ref = Database.database().reference().child("invoices").child(userId)
+    
+    func deleteInvoiceReminder(invoiceId: String) async throws {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            throw NSError(domain: "InvoiceError", code: 401, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
+        }
         
-        ref.observeSingleEvent(of: .value) { snapshot in
-            guard let invoices = snapshot.children.allObjects as? [DataSnapshot] else {
-                return
-            }
-            
-            for offset in offsets {
-                let invoiceSnapshot = invoices[offset]
-                invoiceSnapshot.ref.removeValue { error, _ in
-                    if let error = error {
-                        print("Error deleting invoice: \(error.localizedDescription)")
-                    } else {
-                        print("Invoice deleted successfully")
-                    }
+        let ref = Database.database().reference()
+            .child("invoices")
+            .child(userId)
+            .child(invoiceId)
+        
+        return try await withCheckedThrowingContinuation { continuation in
+            ref.removeValue { error, _ in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                } else {
+                    continuation.resume()
                 }
             }
         }
