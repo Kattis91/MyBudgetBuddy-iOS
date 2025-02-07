@@ -39,7 +39,8 @@ struct PeriodDetailView: View {
                     isCurrent: false,
                     showNegativeAmount: false,
                     alignAmountInMiddle: false,
-                    isInvoice: false
+                    isInvoice: false,
+                    onMarkProcessed: nil
                 )
             case 1:
                 CustomListView(
@@ -51,7 +52,8 @@ struct PeriodDetailView: View {
                     isCurrent: false,
                     showNegativeAmount: true,
                     alignAmountInMiddle: false,
-                    isInvoice: false
+                    isInvoice: false,
+                    onMarkProcessed: nil
                 )
             case 2:
                 CustomListView(
@@ -63,7 +65,8 @@ struct PeriodDetailView: View {
                     isCurrent: false,
                     showNegativeAmount: true,
                     alignAmountInMiddle: false,
-                    isInvoice: false
+                    isInvoice: false,
+                    onMarkProcessed: nil
                 )
             default:
                 EmptyView()

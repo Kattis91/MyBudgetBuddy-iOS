@@ -156,7 +156,8 @@ struct ExpensesView: View {
                 }, isCurrent: true,
                 showNegativeAmount: true,
                 alignAmountInMiddle: false,
-                isInvoice: false
+                isInvoice: false,
+                onMarkProcessed: nil
             )
         } else {
             CustomListView(
@@ -167,7 +168,8 @@ struct ExpensesView: View {
                 }, isCurrent: true,
                 showNegativeAmount: true,
                 alignAmountInMiddle: false,
-                isInvoice: false
+                isInvoice: false,
+                onMarkProcessed: nil
             )
         }
     }

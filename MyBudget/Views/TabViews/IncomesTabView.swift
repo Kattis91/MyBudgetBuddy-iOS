@@ -195,7 +195,8 @@ struct IncomesTabView: View {
                     }, isCurrent: true,
                     showNegativeAmount: false,
                     alignAmountInMiddle: false,
-                    isInvoice: false
+                    isInvoice: false,
+                    onMarkProcessed: nil
                 )
             }
             .onAppear() {
