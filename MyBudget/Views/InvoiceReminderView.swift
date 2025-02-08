@@ -72,6 +72,7 @@ struct InvoiceReminderView: View {
                 )
                 .tint(.pink)
                 .padding(.horizontal, 25)
+                .padding(.bottom, 10)
                 
                 ErrorMessageView(errorMessage: errorMessage, height: 15)
                 
@@ -102,7 +103,6 @@ struct InvoiceReminderView: View {
                     }
                 }) {
                     ButtonView(buttontext: "Save".uppercased(), expenseButton: true)
-                        .padding(.top, 30)
                 }
             }
             .padding(.top, 50)
