@@ -152,6 +152,8 @@ struct InvoiceReminderView: View {
             default:
                 EmptyView()
             }
+            
+            Spacer()
         }
         .task {
             await loadInvoices()
