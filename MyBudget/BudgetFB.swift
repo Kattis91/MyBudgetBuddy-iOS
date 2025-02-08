@@ -648,6 +648,15 @@ import FirebaseAuth
     }
     
     func saveHistoricalPeriods(_ budgetPeriod: BudgetPeriod, completion: @escaping (Bool) -> Void = { _ in }) {
+        
+        if budgetPeriod.incomes.isEmpty &&
+           budgetPeriod.fixedExpenses.isEmpty &&
+           budgetPeriod.variableExpenses.isEmpty {
+            print("Period is empty, skipping save to historical periods")
+            completion(true)
+            return
+        }
+        
         guard let userId = Auth.auth().currentUser?.uid else { return }
         let ref = Database.database().reference()
         
@@ -682,10 +691,7 @@ import FirebaseAuth
                     "amount": $0.amount,
                     "category": $0.category,
                     "isfixed": $0.isfixed
-                ] },
-                "isEmpty": budgetPeriod.incomes.isEmpty &&
-                budgetPeriod.fixedExpenses.isEmpty &&
-                budgetPeriod.variableExpenses.isEmpty
+                ] }
             ]
             
             // Save to historical periods
