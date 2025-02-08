@@ -18,6 +18,8 @@ struct InvoiceReminderView: View {
     @State private var processedInvoices: [Invoice] = []
     @Environment(\.presentationMode) var presentationMode
     
+    @State private var selectedTab = 0
+    
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
@@ -83,59 +85,72 @@ struct InvoiceReminderView: View {
             }
             .padding(.top, 50)
             
-            // Unprocessed Invoices Section
-            Text(unprocessedInvoices.isEmpty ? "You have no pending invoices." : "Pending invoices:")
-                .font(.title2)
-                .padding(.top)
-            
-            if !unprocessedInvoices.isEmpty {
-                CustomListView(
-                    items: unprocessedInvoices,
-                    deleteAction: { offsets in
-                        deleteUnprocessedInvoices(at: offsets)
-                    },
-                    itemContent: { invoice in
-                        (category: invoice.title, amount: invoice.amount, date: invoice.expiryDate)
-                    },
-                    isCurrent: true,
-                    showNegativeAmount: false,
-                    alignAmountInMiddle: true,
-                    isInvoice: true,
-                    onMarkProcessed: { item in
-                        if let invoice = item as? Invoice {
-                            Task {
-                                do {
-                                    try await budgetfb.updateInvoiceStatus(invoiceId: invoice.id, processed: true)
-                                    await loadInvoices()
-                                } catch {
-                                    print("Error updating invoice: \(error.localizedDescription)")
-                                }
-                            }
-                        }
-                    }
-                )
+            Picker("Invoices", selection: $selectedTab) {
+                Text("Pending Invoices").tag(0)
+                Text("Processed Invoices").tag(1)
             }
+            .pickerStyle(SegmentedPickerStyle())
+            .padding(.horizontal, 28)
+            .padding(.top, 30)
             
-            // Processed Invoices Section
-            if !processedInvoices.isEmpty {
-                Text("Processed invoices:")
+            switch selectedTab {
+            case 0:
+                // Unprocessed Invoices Section
+                Text(unprocessedInvoices.isEmpty ? "You have no pending invoices." : "Pending invoices:")
                     .font(.title2)
                     .padding(.top)
                 
-                CustomListView(
-                    items: processedInvoices,
-                    deleteAction: { offsets in
-                        deleteProcessedInvoices(at: offsets)
-                    },
-                    itemContent: { invoice in
-                        (category: invoice.title, amount: invoice.amount, date: invoice.expiryDate)
-                    },
-                    isCurrent: true,
-                    showNegativeAmount: false,
-                    alignAmountInMiddle: true,
-                    isInvoice: false,
-                    onMarkProcessed: nil
-                )
+                if !unprocessedInvoices.isEmpty {
+                    CustomListView(
+                        items: unprocessedInvoices,
+                        deleteAction: { offsets in
+                            deleteUnprocessedInvoices(at: offsets)
+                        },
+                        itemContent: { invoice in
+                            (category: invoice.title, amount: invoice.amount, date: invoice.expiryDate)
+                        },
+                        isCurrent: true,
+                        showNegativeAmount: false,
+                        alignAmountInMiddle: true,
+                        isInvoice: true,
+                        onMarkProcessed: { item in
+                            if let invoice = item as? Invoice {
+                                Task {
+                                    do {
+                                        try await budgetfb.updateInvoiceStatus(invoiceId: invoice.id, processed: true)
+                                        await loadInvoices()
+                                    } catch {
+                                        print("Error updating invoice: \(error.localizedDescription)")
+                                    }
+                                }
+                            }
+                        }
+                    )
+                }
+            case 1:
+                // Processed Invoices Section
+                if !processedInvoices.isEmpty {
+                    Text("Processed invoices:")
+                        .font(.title2)
+                        .padding(.top)
+                    
+                    CustomListView(
+                        items: processedInvoices,
+                        deleteAction: { offsets in
+                            deleteProcessedInvoices(at: offsets)
+                        },
+                        itemContent: { invoice in
+                            (category: invoice.title, amount: invoice.amount, date: invoice.expiryDate)
+                        },
+                        isCurrent: true,
+                        showNegativeAmount: false,
+                        alignAmountInMiddle: true,
+                        isInvoice: false,
+                        onMarkProcessed: nil
+                    )
+                }
+            default:
+                EmptyView()
             }
         }
         .task {
