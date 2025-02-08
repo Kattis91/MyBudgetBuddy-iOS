@@ -20,6 +20,8 @@ struct InvoiceReminderView: View {
     
     @State private var selectedTab = 0
     
+    @State var errorMessage = ""
+    
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
@@ -35,8 +37,8 @@ struct InvoiceReminderView: View {
                     .font(.title3)
                     .padding(.bottom, 45)
                 
-                CustomTextFieldView(placeholder: "Title", text: $title, systemName: "bell.badge")
-                CustomTextFieldView(placeholder: "Amount", text: $amount, systemName: "dollarsign.circle")
+                CustomTextFieldView(placeholder: "Title", text: $title, onChange: { errorMessage = ""}, systemName: "bell.badge")
+                CustomTextFieldView(placeholder: "Amount", text: $amount, onChange: { errorMessage = ""}, systemName: "dollarsign.circle")
                 
                 HStack {
                     Image(systemName: "clock")
@@ -71,10 +73,30 @@ struct InvoiceReminderView: View {
                 .tint(.pink)
                 .padding(.horizontal, 25)
                 
+                ErrorMessageView(errorMessage: errorMessage, height: 15)
+                
                 Button(action: {
-                    if let invoiceAmount = Double(amount) {
-                        budgetfb.saveInvoiceReminder(title: title, amount: invoiceAmount, expiryDate: expiryDate)
+                    
+                    if title.isEmpty {
+                        errorMessage = "Please enter a title"
+                        return
                     }
+                    
+                    guard let invoiceAmount = Double(amount) else {
+                        errorMessage = "Amount must be a number"
+                        return
+                    }
+                    
+                    if invoiceAmount <= 0.00 {
+                        errorMessage = "Amount must be greater than zero"
+                        return
+                    }
+                    
+                    budgetfb.saveInvoiceReminder(title: title, amount: invoiceAmount, expiryDate: expiryDate)
+                    
+                    title = ""
+                    amount = ""
+                    
                     Task {
                         await loadInvoices()
                     }
