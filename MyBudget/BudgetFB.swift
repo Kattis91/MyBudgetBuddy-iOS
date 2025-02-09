@@ -648,17 +648,25 @@ import FirebaseAuth
     }
     
     func saveHistoricalPeriods(_ budgetPeriod: BudgetPeriod, completion: @escaping (Bool) -> Void = { _ in }) {
+        guard let userId = Auth.auth().currentUser?.uid else { return }
+        let ref = Database.database().reference()
         
+        // If the period is empty, just remove it from budgetPeriods without saving to historical
         if budgetPeriod.incomes.isEmpty &&
            budgetPeriod.fixedExpenses.isEmpty &&
            budgetPeriod.variableExpenses.isEmpty {
-            print("Period is empty, skipping save to historical periods")
-            completion(true)
+            let currentPeriodRef = ref.child("budgetPeriods").child(userId).child(budgetPeriod.id)
+            currentPeriodRef.removeValue { error, _ in
+                if let error = error {
+                    print("Error removing empty period: \(error.localizedDescription)")
+                    completion(false)
+                } else {
+                    print("Successfully removed empty period")
+                    completion(true)
+                }
+            }
             return
         }
-        
-        guard let userId = Auth.auth().currentUser?.uid else { return }
-        let ref = Database.database().reference()
         
         // Generate a new unique ID for this historical period
         let periodRef = ref.child("historicalPeriods").child(userId).child(budgetPeriod.id)
