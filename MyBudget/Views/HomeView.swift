@@ -74,7 +74,7 @@ struct HomeView: View {
                                 await budgetfb.loadExpenseData(isfixed: false)
                             }
                         }
-                        .accentColor(Color("TextColor"))
+                        .accentColor(Color("PrimaryTextColor"))
                     } else {
                         NoCurrentPeriodView(onPeriodCreated: {
                             hasCurrentPeriod = true

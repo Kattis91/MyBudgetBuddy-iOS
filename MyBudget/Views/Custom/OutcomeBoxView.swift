@@ -36,6 +36,7 @@ struct OutcomeBoxView: View {
                     .foregroundColor(isNegative ? Color("ButtonsBackground") : Color("CustomGreen"))
                 Text("Outcome")
                     .font(.headline)
+                    .foregroundStyle(Color("SecondaryTextColor"))
                 Spacer()
                 Text("\(percentage, specifier: "%.1f")%")
                     .font(.subheadline)
@@ -59,6 +60,7 @@ struct OutcomeBoxView: View {
             Text("\(outcome, specifier: "%.2f")")
                 .font(.title2)
                 .fontWeight(.bold)
+                .foregroundStyle(Color("SecondaryTextColor"))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()

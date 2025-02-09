@@ -27,10 +27,12 @@ struct ExpensesTabView: View {
                     Text("Current Period:")
                         .font(.headline)
                         .padding(.bottom, 10)
+                        .foregroundStyle(Color("SecondaryTextColor"))
                     Text(DateUtils.formattedDateRange(
                        startDate: budgetManager.currentPeriod.startDate,
-                       endDate: budgetManager.currentPeriod.endDate
-                   ))
+                       endDate: budgetManager.currentPeriod.endDate)
+                    )
+                    .foregroundStyle(Color("SecondaryTextColor"))
                 }
                 .padding()
                 .background(
@@ -71,7 +73,7 @@ struct ExpensesTabView: View {
                             .background(selectedView == .fixed ? Color.buttonsBackground : Color.white)
                             .cornerRadius(10)
                             .padding(.leading, 33)
-                            .foregroundStyle(selectedView == .fixed ? Color.white : Color("TextColor"))
+                            .foregroundStyle(selectedView == .fixed ? Color.white : Color("SecondaryTextColor"))
                     }
                     
                     Spacer()
@@ -85,7 +87,7 @@ struct ExpensesTabView: View {
                             .background(selectedView == .variable ? Color.buttonsBackground : Color.white)
                             .cornerRadius(10)
                             .padding(.trailing, 33)
-                            .foregroundStyle(selectedView == .variable ? Color.white : Color("TextColor"))
+                            .foregroundStyle(selectedView == .variable ? Color.white : Color("SecondaryTextColor"))
                     }
                 }
                 .padding(.bottom, 10)

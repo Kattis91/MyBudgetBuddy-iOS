@@ -55,20 +55,25 @@ struct CustomListView<T: Identifiable>: View {
                     
                     HStack {
                         Text(content.category)
+                            .foregroundStyle(Color("SecondaryTextColor"))
 
                         if content.date != nil {
                             Spacer()
                             Text(showNegativeAmount ? "- \(content.amount ?? 0, specifier: "%.2f")" : "\(content.amount ?? 0, specifier: "%.2f")")
+                                .foregroundStyle(Color("SecondaryTextColor"))
                             Spacer()
                             Text(dateFormatter.string(from: content.date!))
+                                .foregroundStyle(Color("SecondaryTextColor"))
                         } else {
                             if alignAmountInMiddle {
                                 Spacer()
                                 Text(showNegativeAmount ? "- \(content.amount ?? 0, specifier: "%.2f")" : "\(content.amount ?? 0, specifier: "%.2f")")
+                                    .foregroundStyle(Color("SecondaryTextColor"))
                                 Spacer()
                             } else {
                                 Spacer()
                                 Text(showNegativeAmount ? "- \(content.amount ?? 0, specifier: "%.2f")" : "\(content.amount ?? 0, specifier: "%.2f")")
+                                    .foregroundStyle(Color("SecondaryTextColor"))
                             }
                         }
                     }

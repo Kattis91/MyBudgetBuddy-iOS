@@ -37,6 +37,7 @@ struct ForgotPasswordView: View {
             
             Text("Reset Password")
                 .font(.title2)
+                .foregroundStyle(Color("SecondaryTextColor"))
             
             VStack {
                 if errorMessage != "" {

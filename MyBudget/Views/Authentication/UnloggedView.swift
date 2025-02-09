@@ -28,9 +28,9 @@ struct UnloggedView: View {
                     Text("MyBudgetBuddy")
                         .font(.largeTitle)
                         .padding(.top, 50)
-                        .foregroundStyle(Color("TextColor"))
+                        .foregroundStyle(Color("PrimaryTextColor"))
                     Text("Managing money shouldn’t be hard")
-                        .foregroundStyle(Color("TextColor"))
+                        .foregroundStyle(Color("PrimaryTextColor"))
                         .font(.title3)
                         .multilineTextAlignment(.leading)
                 }

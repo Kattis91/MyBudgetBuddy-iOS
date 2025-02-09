@@ -17,8 +17,10 @@ struct SummaryBoxView: View {
                 Text(isCurrent ? "Current Period" : "")
                     .font(.title3)
                     .fontWeight(.bold)
+                    .foregroundStyle(Color("SecondaryTextColor"))
                 Text(DateUtils.formattedDateRange(startDate: period.startDate, endDate: period.endDate))
                     .fontWeight(isCurrent ? .medium : .bold)
+                    .foregroundStyle(Color("SecondaryTextColor"))
             }
             .frame(maxWidth: .infinity, alignment: .center)
             
@@ -29,6 +31,7 @@ struct SummaryBoxView: View {
                         .fontWeight(.bold)
                         .font(.title3)
                     Text("Income")
+                        .foregroundStyle(Color("SecondaryTextColor"))
                 }
                 VStack {
                     Text("\(period.totalFixedExpenses + period.totalVariableExpenses, specifier: "%.2f")")
@@ -36,6 +39,7 @@ struct SummaryBoxView: View {
                         .fontWeight(.bold)
                         .font(.title3)
                     Text("Expenses")
+                        .foregroundStyle(Color("SecondaryTextColor"))
                 }
                 .padding(.horizontal, 6)
                 VStack {
@@ -43,7 +47,8 @@ struct SummaryBoxView: View {
                         .foregroundStyle(Color(red: 67/255, green: 135/255, blue: 221/255))
                         .fontWeight(.bold)
                         .font(.title3)
-                    Text("Balance")
+                    Text("Outcome")
+                        .foregroundStyle(Color("SecondaryTextColor"))
                 }
             }
             .padding(.vertical, 10)

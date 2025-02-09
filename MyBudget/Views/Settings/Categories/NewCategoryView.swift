@@ -33,6 +33,7 @@ struct NewCategoryView: View {
             Text("Add Category")
                 .font(.title3)
                 .padding(.vertical, 15)
+                .foregroundStyle(Color("SecondaryTextColor"))
             
             // Input field
             CustomTextFieldView(

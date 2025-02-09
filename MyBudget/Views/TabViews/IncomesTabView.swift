@@ -36,10 +36,12 @@ struct IncomesTabView: View {
                     Text("Current Period:")
                         .font(.headline)
                         .padding(.bottom, 10)
+                        .foregroundStyle(Color("SecondaryTextColor"))
                     Text(DateUtils.formattedDateRange(
                        startDate: budgetManager.currentPeriod.startDate,
                        endDate: budgetManager.currentPeriod.endDate
                    ))
+                    .foregroundStyle(Color("SecondaryTextColor"))
                 }
                 .padding()
                 .background(

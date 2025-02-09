@@ -30,23 +30,24 @@ struct PeriodCardView: View {
         VStack(spacing: 12) {
             Text("Current Budget Period")
                 .font(.headline)
-                .foregroundColor(.secondary)
+                .foregroundColor(Color("SecondaryTextColor"))
             
             Text(DateUtils.formattedDateRange(startDate: startDate, endDate: endDate))
                 .font(.title2)
                 .fontWeight(.bold)
+                .foregroundColor(Color("SecondaryTextColor"))
             
             // Only show if days remaining is positive
             if isPeriodActive {
                 Text("~ \(daysRemaining) days remaining ~")
                     .font(.headline)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(Color("SecondaryTextColor"))
                     .padding(.horizontal, 12)
                     .padding(.vertical, 8)
             } else {
                 Text("~ Next period starts in \(daysUntilNextPeriod) days ~")
                     .font(.headline)
-                    .foregroundColor(.secondary)
+                    .foregroundColor(Color("SecondaryTextColor"))
                     .fontWeight(.bold)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 8)

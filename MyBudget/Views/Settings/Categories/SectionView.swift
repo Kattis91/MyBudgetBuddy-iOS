@@ -20,7 +20,7 @@ struct SectionView: View {
                 HStack {
                     Text(category)
                         .font(.system(size: 16, weight: .medium))
-                        .foregroundColor(.primary)
+                        .foregroundStyle(Color("SecondaryTextColor"))
                     Spacer()
                     HStack(spacing: 16) {
                         Button(action: { onEdit(category) }) {

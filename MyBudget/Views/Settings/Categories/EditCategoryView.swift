@@ -32,8 +32,10 @@ struct EditCategoryView: View {
             Text("Editing Category")
                 .font(.title3)
                 .padding(.vertical, 15)
+                .foregroundStyle(Color("SecondaryTextColor"))
             
             CustomTextFieldView(placeholder: "Category name", text: $categoryName, systemName: "folder", forget: true)
+                .foregroundStyle(Color("SecondaryTextColor"))
             
             HStack {
                 Button(action: {

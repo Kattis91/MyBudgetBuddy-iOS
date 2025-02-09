@@ -21,11 +21,13 @@ struct StatBoxView: View {
                     .foregroundColor(isIncome ? Color("CustomGreen") : Color("ButtonsBackground"))
                 Text(title)
                     .font(.subheadline)
+                    .foregroundStyle(Color("SecondaryTextColor"))
             }
             
             Text(showNegativeAmount && amount > 0 ? "- \(amount, specifier: "%.2f")" : "\(amount, specifier: "%.2f")")
                 .font(.title2)
                 .fontWeight(.bold)
+                .foregroundStyle(Color("SecondaryTextColor"))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
