@@ -30,8 +30,12 @@ struct CustomTextFieldView: View {
             // Conditionally render SecureField or TextField
             if isSecure {
                 SecureField("", text: $text, prompt: Text(placeholder).foregroundStyle(.black.opacity(0.5)))
+                    .foregroundColor(Color.black)
+                    .tint(.black)
             } else {
                 TextField("", text: $text, prompt: Text(placeholder).foregroundStyle(.black.opacity(0.5)))
+                    .foregroundColor(Color.black)
+                    .tint(.black)
             }
         }
         .frame(height: 51)
