@@ -17,7 +17,7 @@ enum CategoryType: String {
         case .income:
             return ["Salary", "Study grant", "Child benefit", "Housing insurance", "Sickness insurance", "Business"]
         case .fixedExpense:
-            return ["Rent", "Water", "Heat", "Electricity", "Insurance", "Mobile", "Netflix", "WiFi"]
+            return ["Rent", "Water", "Heat", "Electricity", "Insurance", "WiFi"]
         case .variableExpense:
             return ["Groceries", "Dining Out", "Shopping", "Entertainment", "Transport", "Savings"]
         }
