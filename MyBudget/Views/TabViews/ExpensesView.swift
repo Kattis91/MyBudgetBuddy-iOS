@@ -30,7 +30,7 @@ struct ExpensesView: View {
     var body: some View {
         
         VStack {
-            CustomTextFieldView(placeholder: "Expense amount", text: $expenseAmount, isSecure: false, onChange: {
+            CustomTextFieldView(placeholder: String(localized: "Expense amount"), text: $expenseAmount, isSecure: false, onChange: {
                 errorMessage = ""
             }, leadingPadding: 33, trailingPadding: 33, systemName: "minus.circle")
             
@@ -62,7 +62,7 @@ struct ExpensesView: View {
                     }
                 } label: {
                     HStack {
-                        Text(selectedCategory.isEmpty ? "Choose Category" : selectedCategory)
+                        Text(selectedCategory.isEmpty ? String(localized: "Choose Category") : selectedCategory)
                             .foregroundColor(selectedCategory.isEmpty ? .black.opacity(0.5) : .black)
                         Spacer()
                         Image(systemName: "chevron.down")
@@ -117,12 +117,12 @@ struct ExpensesView: View {
                                     }
                                 } else {
                                     await MainActor.run {
-                                        errorMessage = "Failed to add category"
+                                        errorMessage = String(localized: "Failed to add category")
                                     }
                                 }
                             }
                         } else {
-                            errorMessage = "Please add a category"
+                            errorMessage = String(localized: "Please add a category")
                         }
                     } else {
                         if !selectedCategory.isEmpty {
@@ -131,17 +131,17 @@ struct ExpensesView: View {
                             budgetfb.saveExpenseData(amount: expense, category: categoryToUse, isfixed: ( viewtype == .fixed )) 
                             selectedCategory = ""
                         } else {
-                            errorMessage = "Please select a category."
+                            errorMessage = String(localized: "Please select a category.")
                         }
                     }
                 } else {
-                    errorMessage = "Amount must be greater than zero."
+                    errorMessage = String(localized: "Amount must be greater than zero.")
                 }
             } else {
-                errorMessage = "Amount must be a number."
+                errorMessage = String(localized: "Amount must be a number.")
             }
         }) {
-            ButtonView(buttontext: "Add expense", expenseButton: true, leadingPadding: 33, trailingPadding: 33 )
+            ButtonView(buttontext: String(localized: "Add expense"), expenseButton: true, leadingPadding: 33, trailingPadding: 33 )
         }
         .task {
             await loadCategories()

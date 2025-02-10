@@ -30,14 +30,14 @@ struct HomeTabView: View {
                         
                         HStack {
                             StatBoxView(
-                                title: "Total Income",
+                                title: String(localized: "Total Income"),
                                 amount: budgetfb.totalIncome,
                                 isIncome: true,
                                 showNegativeAmount: false
                             )
                             
                             StatBoxView(
-                                title: "Total Expense",
+                                title: String(localized: "Total Expense"),
                                 amount: budgetfb.totalExpenses,
                                 isIncome: false,
                                 showNegativeAmount: true
@@ -54,7 +54,7 @@ struct HomeTabView: View {
                                 showingNewPeriod.toggle()
                             }
                         }) {
-                            Text("Add New Period")
+                            Text(String(localized: "Add New Period"))
                                 .font(.headline)
                                 .foregroundColor(.white)
                                 .shadow(radius: 10)

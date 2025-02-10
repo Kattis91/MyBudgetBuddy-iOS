@@ -104,12 +104,93 @@
         }
       }
     },
+    "Add expense" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilføj udgift"
+          }
+        }
+      }
+    },
+    "Add income" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilføj indkomst"
+          }
+        }
+      }
+    },
     "Add New Period" : {
       "localizations" : {
         "da" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tilføj ny periode"
+          }
+        }
+      }
+    },
+    "Add your income and expenses, with expenses categorized as fixed or variable." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilføj dine indtægter og udgifter, med udgifter kategoriseret som faste eller variable"
+          }
+        }
+      }
+    },
+    "Amount" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beløb"
+          }
+        }
+      }
+    },
+    "Amount must be a number" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beløbet skal være et tal."
+          }
+        }
+      }
+    },
+    "Amount must be a number." : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beløbet skal være et tal."
+          }
+        }
+      }
+    },
+    "Amount must be greater than zero" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beløbet skal være større end nul."
+          }
+        }
+      }
+    },
+    "Amount must be greater than zero." : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beløbet skal være større end nul."
           }
         }
       }
@@ -164,12 +245,32 @@
         }
       }
     },
+    "Category name" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategorinavn"
+          }
+        }
+      }
+    },
     "Category Name" : {
       "localizations" : {
         "da" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kategorinavn"
+          }
+        }
+      }
+    },
+    "Choose Category" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vælg Kategori"
           }
         }
       }
@@ -220,6 +321,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nuværende periode:"
+          }
+        }
+      }
+    },
+    "Customize your own budget periods: choose from monthly, weekly, or even 5-day periods to match your needs." : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilpas dine egne budgetperioder: Vælg mellem månedlige, ugentlige eller endda 5-dages perioder for at matche dine behov."
           }
         }
       }
@@ -294,6 +405,26 @@
         }
       }
     },
+    "Enter Income" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indtast indkomst"
+          }
+        }
+      }
+    },
+    "Expense amount" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udgiftsbeløb"
+          }
+        }
+      }
+    },
     "Expenses" : {
       "localizations" : {
         "da" : {
@@ -314,12 +445,32 @@
         }
       }
     },
+    "Failed to add category" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunne ikke tilføje kategori"
+          }
+        }
+      }
+    },
     "Fixed" : {
       "localizations" : {
         "da" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Faste"
+          }
+        }
+      }
+    },
+    "Fixed Expense" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Faste udgifter"
           }
         }
       }
@@ -380,6 +531,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hvordan det virker"
+          }
+        }
+      }
+    },
+    "I’m Ekaterina Durneva Svedmark, the creator of this app and an aspiring app developer. This is my third project and my first independent app, built from concept to launch." : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jeg er Ekaterina Durneva Svedmark, skaberen af ​​denne app og en håbefuld app-udvikler. Dette er mit tredje projekt og min første uafhængige app, bygget fra koncept til lancering."
           }
         }
       }
@@ -464,6 +625,16 @@
         }
       }
     },
+    "Keep track of your entire budget history, so you can see exactly where your money goes." : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hold styr på hele din budgethistorik, så du kan se præcis, hvor dine penge går hen."
+          }
+        }
+      }
+    },
     "Manage Categories" : {
       "localizations" : {
         "da" : {
@@ -504,6 +675,16 @@
         }
       }
     },
+    "Mark as processed" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Markér som behandlet"
+          }
+        }
+      }
+    },
     "MyBudgetBuddy" : {
       "localizations" : {
         "da" : {
@@ -514,12 +695,42 @@
         }
       }
     },
+    "Never Miss a Payment – Invoice reminders ensure you stay on track and stress-free when it comes to due dates." : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gå aldrig glip af en betaling – Fakturapåmindelser sikrer, at du forbliver på sporet og stressfri, når det kommer til forfaldsdatoer."
+          }
+        }
+      }
+    },
+    "New period created successfully!" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ny periode oprettet med succes!"
+          }
+        }
+      }
+    },
     "OK" : {
       "localizations" : {
         "da" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
+          }
+        }
+      }
+    },
+    "Organize your finances better by adding your own categories, or stick with the default ones." : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organiser din økonomi bedre ved at tilføje dine egne kategorier, eller hold dig til standardkategorierne."
           }
         }
       }
@@ -570,6 +781,46 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Periode Datoer"
+          }
+        }
+      }
+    },
+    "Please add a category" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilføj venligst en kategori"
+          }
+        }
+      }
+    },
+    "Please enter a category" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vælg venligst en kategori."
+          }
+        }
+      }
+    },
+    "Please enter a title" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indtast venligst en titel"
+          }
+        }
+      }
+    },
+    "Please select a category." : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vælg venligst en kategori."
           }
         }
       }
@@ -644,12 +895,55 @@
         }
       }
     },
+    "Start New Period" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start ny periode"
+          }
+        }
+      }
+    },
+    "Stay in Control – Get timely reminders when your budget period is ending, so you can plan ahead with confidence." : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bevar kontrollen – Få rettidige påmindelser, når din budgetperiode slutter, så du kan planlægge fremad med tillid."
+          }
+        }
+      }
+    },
     "The Developer" : {
       "localizations" : {
         "da" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Udvikleren"
+          }
+        }
+      }
+    },
+    "The icon used in the app is made by Stickers at " : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikonet, der bruges i appen, er lavet af Stickers på "
+          }
+        }
+      }
+    },
+    "The Process" : {
+
+    },
+    "Title" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Titel"
           }
         }
       }
@@ -664,12 +958,32 @@
         }
       }
     },
+    "Total Expense" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Samlet udgift"
+          }
+        }
+      }
+    },
     "Total expenses:" : {
       "localizations" : {
         "da" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Samlede udgifter:"
+          }
+        }
+      }
+    },
+    "Total Income" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Samlet indkomst"
           }
         }
       }
@@ -700,6 +1014,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Variable"
+          }
+        }
+      }
+    },
+    "Variable Expense" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Variable Udgift"
           }
         }
       }

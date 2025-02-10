@@ -37,7 +37,7 @@ struct NewCategoryView: View {
             
             // Input field
             CustomTextFieldView(
-                placeholder: "Category name",
+                placeholder: String(localized: "Category name"),
                 text: $categoryName,
                 systemName: "folder",
                 forget: true
@@ -51,7 +51,7 @@ struct NewCategoryView: View {
             HStack {
                 Button(action: {
                     if categoryName.isEmpty {
-                        errorMessage = "Please enter a category"
+                        errorMessage = String(localized: "Please enter a category")
                     } else {
                         Task {
                             _ = await budgetfb.addCategory(name: categoryName, type: categoryType)
@@ -60,7 +60,7 @@ struct NewCategoryView: View {
                         }
                     }
                 }) {
-                    ButtonView(buttontext: "Save", maxWidth: 150)
+                    ButtonView(buttontext: String(localized: "Save"), maxWidth: 150)
                 }
             }
         }

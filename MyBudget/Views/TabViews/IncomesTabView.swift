@@ -74,7 +74,7 @@ struct IncomesTabView: View {
                 
                 VStack {
                     
-                    CustomTextFieldView(placeholder: "Enter Income", text: $incomeAmount, isSecure: false, onChange: {
+                    CustomTextFieldView(placeholder: String(localized: "Enter Income"), text: $incomeAmount, isSecure: false, onChange: {
                         errorMessage = ""
                     }, leadingPadding: 33, trailingPadding: 33, systemName: "plus.circle")
                     
@@ -107,7 +107,7 @@ struct IncomesTabView: View {
                             }
                         } label: {
                             HStack {
-                                Text(selectedCategory.isEmpty ? "Choose Category" : selectedCategory)
+                                Text(selectedCategory.isEmpty ? String(localized: "Choose Category") : selectedCategory)
                                     .foregroundColor(selectedCategory.isEmpty ? .black.opacity(0.5) : .black)
                                 Spacer()
                                 Image(systemName: "chevron.down")
@@ -162,12 +162,12 @@ struct IncomesTabView: View {
                                             }
                                         } else {
                                             await MainActor.run {
-                                                errorMessage = "Failed to add category"
+                                                errorMessage = String(localized: "Failed to add category")
                                             }
                                         }
                                     }
                                 } else {
-                                    errorMessage = "Please add a category"
+                                    errorMessage = String(localized: "Please add a category")
                                 }
                             } else {
                                 if !selectedCategory.isEmpty {
@@ -176,17 +176,17 @@ struct IncomesTabView: View {
                                     budgetfb.saveIncomeData(amount: income, category: categoryToUse)
                                     selectedCategory = ""
                                 } else {
-                                    errorMessage = "Please select a category."
+                                    errorMessage = String(localized: "Please select a category.")
                                 }
                             }
                         } else {
-                            errorMessage = "Amount must be greater than zero."
+                            errorMessage = String(localized: "Amount must be greater than zero.")
                         }
                     } else {
-                        errorMessage = "Amount must be a number."
+                        errorMessage = String(localized: "Amount must be a number.")
                     }
                 }) {
-                    ButtonView(buttontext: "Add income", incomeButton: true, leadingPadding: 33, trailingPadding: 33)
+                    ButtonView(buttontext: String(localized: "Add income"), incomeButton: true, leadingPadding: 33, trailingPadding: 33)
                 }
                 
                 CustomListView(

@@ -215,7 +215,7 @@ struct NewBudgetPeriodView: View {
                     }
                 }
             }) {
-                ButtonView(buttontext: "Start New Period", maxWidth: 180)
+                ButtonView(buttontext: String(localized: "Start New Period"), maxWidth: 180)
                     .padding(.bottom, 25)
             }
         }
@@ -226,7 +226,7 @@ struct NewBudgetPeriodView: View {
         }
         .overlay(alignment: .center) {
             if showToast {
-                ToastView(message: "New period created successfully!")
+                ToastView(message: String(localized: "New period created successfully!"))
                     .transition(.move(edge: .bottom))
                     .animation(.spring(), value: showToast)
             }

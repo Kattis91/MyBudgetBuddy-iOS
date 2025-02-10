@@ -88,7 +88,7 @@ struct CustomListView<T: Identifiable>: View {
                         Button(action: {
                             onMarkProcessed?(item)
                         }) {
-                            ButtonView(buttontext: "Mark as processed", maxWidth: 210, incomeButton: true, height: 25)
+                            ButtonView(buttontext: String(localized: "Mark as processed"), maxWidth: 210, incomeButton: true, height: 25)
                         }
                         .buttonStyle(BorderlessButtonStyle())
                         Spacer()
