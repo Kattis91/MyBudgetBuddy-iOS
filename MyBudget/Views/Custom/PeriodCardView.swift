@@ -18,17 +18,21 @@ struct PeriodCardView: View {
     
     private var daysRemaining: Int {
         let calendar = Calendar.current
-        return calendar.dateComponents([.day], from: Date(), to: endDate).day ?? 0
+        let startOfToday = calendar.startOfDay(for: Date())
+        let startOfEndDate = calendar.startOfDay(for: endDate)
+        return calendar.dateComponents([.day], from: startOfToday, to: startOfEndDate).day ?? 0
     }
     
     private var daysUntilNextPeriod: Int {
         let calendar = Calendar.current
-        return calendar.dateComponents([.day], from: Date(), to: startDate).day ?? 0
+        let startOfToday = calendar.startOfDay(for: Date())
+        let startOfNextPeriod = calendar.startOfDay(for: startDate)
+        return calendar.dateComponents([.day], from: startOfToday, to: startOfNextPeriod).day ?? 0
     }
     
     var body: some View {
         VStack(spacing: 12) {
-            Text("Current Budget Period")
+            Text(isPeriodActive ? "Current Budget Period" : "Coming Budget Period")
                 .font(.headline)
                 .foregroundColor(Color("SecondaryTextColor"))
             
@@ -40,17 +44,15 @@ struct PeriodCardView: View {
             // Only show if days remaining is positive
             if isPeriodActive {
                 Text("~ \(daysRemaining) days remaining ~")
-                    .font(.headline)
                     .foregroundColor(Color("SecondaryTextColor"))
                     .padding(.horizontal, 12)
                     .padding(.vertical, 8)
             } else {
                 Text("~ Next period starts in \(daysUntilNextPeriod) days ~")
-                    .font(.headline)
                     .foregroundColor(Color("SecondaryTextColor"))
-                    .fontWeight(.bold)
                     .padding(.horizontal, 12)
-                    .padding(.vertical, 8)
+                    .padding(.bottom, 8)
+                    .padding(.vertical, 3)
             }
         }
         .frame(maxWidth: .infinity, alignment: .center)
