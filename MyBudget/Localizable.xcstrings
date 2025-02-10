@@ -1,0 +1,759 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "" : {
+
+    },
+    "- %.2f" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "- %.2f"
+          }
+        }
+      }
+    },
+    "%.1f%%" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%.1f%%"
+          }
+        }
+      }
+    },
+    "%.2f" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%.2f"
+          }
+        }
+      }
+    },
+    "%@ categories" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ kategorier"
+          }
+        }
+      }
+    },
+    "+ Add new category" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+ Tilføj ny kategori"
+          }
+        }
+      }
+    },
+    "~ %lld days remaining ~" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "~ %lld dage tilbage ~"
+          }
+        }
+      }
+    },
+    "~ Next period starts in %lld days ~" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "~ Næste periode starter om %lld dage ~"
+          }
+        }
+      }
+    },
+    "About The App" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Om appen"
+          }
+        }
+      }
+    },
+    "Add %@ Category" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilføj %@ kategori"
+          }
+        }
+      }
+    },
+    "Add Category" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilføj kategori"
+          }
+        }
+      }
+    },
+    "Add New Period" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilføj ny periode"
+          }
+        }
+      }
+    },
+    "Are you sure you want to delete %@?" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Er du sikker på, at du vil slette %@?"
+          }
+        }
+      }
+    },
+    "Are you sure you want to sign out?" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Er du sikker på, at du vil logge ud?"
+          }
+        }
+      }
+    },
+    "Budgeting made easy, so you can focus on what matters most to you!" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Budgettering gjort let, så du kan fokusere på det, der betyder mest for dig!"
+          }
+        }
+      }
+    },
+    "Cancel" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ophæve"
+          }
+        }
+      }
+    },
+    "Category" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategori"
+          }
+        }
+      }
+    },
+    "Category Name" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategorinavn"
+          }
+        }
+      }
+    },
+    "Coming Budget Period" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kommende budgetperiode"
+          }
+        }
+      }
+    },
+    "Credits" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tak til"
+          }
+        }
+      }
+    },
+    "Current Budget Period" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nuværende budgetperiode"
+          }
+        }
+      }
+    },
+    "Current Period" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nuværende periode"
+          }
+        }
+      }
+    },
+    "Current Period:" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nuværende periode:"
+          }
+        }
+      }
+    },
+    "Delete" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slet"
+          }
+        }
+      }
+    },
+    "Development" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udvikling"
+          }
+        }
+      }
+    },
+    "Done" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Færdig"
+          }
+        }
+      }
+    },
+    "Due to:" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forfaldsdato:"
+          }
+        }
+      }
+    },
+    "Edit Category" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rediger kategori"
+          }
+        }
+      }
+    },
+    "Editing Category" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Redigere Kategori"
+          }
+        }
+      }
+    },
+    "End Date" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slutdato"
+          }
+        }
+      }
+    },
+    "Expenses" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udgifter"
+          }
+        }
+      }
+    },
+    "Extra features" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ekstra funktioner"
+          }
+        }
+      }
+    },
+    "Fixed" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Faste"
+          }
+        }
+      }
+    },
+    "Fixed expenses" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Faste udgifter"
+          }
+        }
+      }
+    },
+    "Forgot password?" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Glemt adgangskode?"
+          }
+        }
+      }
+    },
+    "Go Back" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gå Tilbage"
+          }
+        }
+      }
+    },
+    "Historical Periods" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Historiske Perioder"
+          }
+        }
+      }
+    },
+    "Home" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hjem"
+          }
+        }
+      }
+    },
+    "How it works" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hvordan det virker"
+          }
+        }
+      }
+    },
+    "Include Fast Expenses" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inkluder Faste Udgifter"
+          }
+        }
+      }
+    },
+    "Include Incomes" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inkluder Indkomster"
+          }
+        }
+      }
+    },
+    "Income" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indkomst"
+          }
+        }
+      }
+    },
+    "Incomes" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indkomster"
+          }
+        }
+      }
+    },
+    "Info" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Info"
+          }
+        }
+      }
+    },
+    "Invalid Budget Period" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ugyldig budgetperiode"
+          }
+        }
+      }
+    },
+    "Invoice Reminders" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fakturapåmindelser"
+          }
+        }
+      }
+    },
+    "Invoices" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fakturaer"
+          }
+        }
+      }
+    },
+    "Manage Categories" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Administrer Kategorier"
+          }
+        }
+      }
+    },
+    "Manage your categories:" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Administrer dine kategorier:"
+          }
+        }
+      }
+    },
+    "Manage your invoices:" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Administrer dine fakturaer:"
+          }
+        }
+      }
+    },
+    "Managing money shouldn’t be hard" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Det burde ikke være svært at administrere penge"
+          }
+        }
+      }
+    },
+    "MyBudgetBuddy" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MyBudgetBuddy"
+          }
+        }
+      }
+    },
+    "OK" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
+    },
+    "Outcome" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udfald"
+          }
+        }
+      }
+    },
+    "Outcome: %.2f" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udfald: %.2f"
+          }
+        }
+      }
+    },
+    "Overview" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oversigt"
+          }
+        }
+      }
+    },
+    "Pending Invoices" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ubehandlede Fakturaer"
+          }
+        }
+      }
+    },
+    "Period Dates" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Periode Datoer"
+          }
+        }
+      }
+    },
+    "Processed Invoices" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Behandlede Fakturaer"
+          }
+        }
+      }
+    },
+    "Processed invoices:" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Behandlede Fakturaer:"
+          }
+        }
+      }
+    },
+    "Reset Password" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nulstil adgangskode"
+          }
+        }
+      }
+    },
+    "Save" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spare"
+          }
+        }
+      }
+    },
+    "Sign Out" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log ud"
+          }
+        }
+      }
+    },
+    "Start a new period to continue tracking your budget" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start en ny periode for at fortsætte med at spore dit budget"
+          }
+        }
+      }
+    },
+    "Start Date" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Startdato"
+          }
+        }
+      }
+    },
+    "The Developer" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udvikleren"
+          }
+        }
+      }
+    },
+    "To start tracking your budget, you'll need to create your first budget period." : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "For at begynde at spore dit budget, skal du oprette din første budgetperiode."
+          }
+        }
+      }
+    },
+    "Total expenses:" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Samlede udgifter:"
+          }
+        }
+      }
+    },
+    "Total Income:" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Samlet indkomst:"
+          }
+        }
+      }
+    },
+    "Transfer Settings" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Overførselsindstillinger"
+          }
+        }
+      }
+    },
+    "Variable" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Variable"
+          }
+        }
+      }
+    },
+    "Variable expenses" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Variable udgifter"
+          }
+        }
+      }
+    },
+    "Welcome to MyBudgetBuddy!" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Velkommen til MyBudgetBuddy!"
+          }
+        }
+      }
+    },
+    "You have no historical periods right now." : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du har ingen historiske perioder lige nu."
+          }
+        }
+      }
+    },
+    "You have no pending invoices." : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du har i øjeblikket ingen udestående fakturaer."
+          }
+        }
+      }
+    },
+    "Your last budget period has ended" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Din sidste budgetperiode er slut"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
