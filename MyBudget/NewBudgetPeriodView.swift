@@ -234,6 +234,7 @@ struct NewBudgetPeriodView: View {
         .scrollContentBackground(.hidden)
         .frame(maxWidth: .infinity)
         .background(Color("TabColor"))
+        .cornerRadius(12)
     }
 }
 struct ToastView: View {

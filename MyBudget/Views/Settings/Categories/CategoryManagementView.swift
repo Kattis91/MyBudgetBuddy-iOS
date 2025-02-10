@@ -155,11 +155,6 @@ struct CategoryManagementView: View {
                         category: editingCategory!,
                         onComplete: { await loadAllCategories() }
                     )
-                    .frame(height: 270)
-                    .background(Color.white)
-                    .padding(.horizontal, 24)
-                    .cornerRadius(12)
-                    .shadow(radius: 10)
                 }
                 
                 if let categoryType = selectedCategoryType, showNewCategoryField {

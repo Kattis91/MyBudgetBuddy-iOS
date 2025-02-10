@@ -83,6 +83,7 @@ struct ForgotPasswordView: View {
         .frame(maxWidth: .infinity)
         .frame(height: 330)
         .background(Color("TabColor"))
+        .cornerRadius(12)
     }
 }
 

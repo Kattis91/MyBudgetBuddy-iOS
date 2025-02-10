@@ -107,9 +107,7 @@ struct HomeTabView: View {
                 if showingNewPeriod {
                     NewBudgetPeriodView(isPresented: $showingNewPeriod, isLandingPage: false)
                         .navigationBarBackButtonHidden(true)
-                        .background(Color.white)
                         .padding(.horizontal, 24)
-                        .cornerRadius(12)
                         .shadow(radius: 10)
                 }
             }
