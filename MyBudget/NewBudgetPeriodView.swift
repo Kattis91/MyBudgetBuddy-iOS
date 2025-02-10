@@ -9,6 +9,11 @@ import SwiftUI
 
 struct NewBudgetPeriodView: View {
     
+    @Environment(\.colorScheme) var colorScheme
+    var isDarkMode: Bool {
+        return colorScheme == .dark
+    }
+    
     @EnvironmentObject var budgetManager: BudgetManager
     @Binding var isPresented: Bool
     @State private var showToast = false
@@ -80,6 +85,7 @@ struct NewBudgetPeriodView: View {
                     .fontDesign(.rounded)
                     .tracking(1.5)
                     .font(.title2)
+                    .foregroundStyle(Color("SecondaryTextColor"))
                 
                 DatePicker("Start Date",
                     selection: $startDate,
@@ -87,6 +93,8 @@ struct NewBudgetPeriodView: View {
                 )
                 .padding(.vertical, 5)
                 .font(.title3)
+                .foregroundStyle(Color("SecondaryTextColor"))
+                .colorMultiply(Color("SecondaryTextColor"))
                 
                 DatePicker("End Date",
                     selection: $endDate,
@@ -95,16 +103,19 @@ struct NewBudgetPeriodView: View {
                 )
                 .padding(.vertical, 5)
                 .font(.title3)
+                .foregroundStyle(Color("SecondaryTextColor"))
+                .colorMultiply(Color("SecondaryTextColor"))
             }
             .padding(.horizontal, 45)
             
             if !isLandingPage {
-                if !budgetManager.incomeList.isEmpty && !budgetManager.fixedExpenseList.isEmpty {
+                if !budgetManager.incomeList.isEmpty || !budgetManager.fixedExpenseList.isEmpty {
                     HStack {
                         Text("Transfer Settings")
                             .fontDesign(.rounded)
                             .tracking(1.5)
                             .font(.title2)
+                            .foregroundStyle(Color("SecondaryTextColor"))
                         Spacer()
                     }
                     .padding(.horizontal, 45)
@@ -115,6 +126,7 @@ struct NewBudgetPeriodView: View {
                     Toggle("Include Incomes", isOn: $includeIncomes)
                         .tint(Color("CustomGreen"))
                         .padding(.horizontal, 45)
+                        .foregroundStyle(Color("SecondaryTextColor"))
                     
                     if includeIncomes {
                         VStack(alignment: .leading, spacing: 10) {
@@ -129,6 +141,7 @@ struct NewBudgetPeriodView: View {
                                         .padding()
                                         .background(Color.white)
                                         .cornerRadius(16)
+                                        .foregroundStyle(Color("SecondaryTextColor"))
                                     }
                                 }
                             }
@@ -143,6 +156,7 @@ struct NewBudgetPeriodView: View {
                         .tint(Color("CustomGreen"))
                         .padding(.horizontal, 45)
                         .padding(.bottom, 10)
+                        .foregroundStyle(Color("SecondaryTextColor"))
                     
                     if includeFixedExpenses {
                         VStack(alignment: .leading, spacing: 10) {
@@ -157,6 +171,7 @@ struct NewBudgetPeriodView: View {
                                         .padding()
                                         .background(Color.white)
                                         .cornerRadius(16)
+                                        .foregroundStyle(Color("SecondaryTextColor"))
                                     }
                                 }
                             }

@@ -43,13 +43,17 @@ struct PeriodRowView: View {
                             VStack (spacing: 8) {
                                 Text(DateUtils.formattedDateRange(startDate: period.startDate, endDate: period.endDate))
                                     .fontWeight(.bold)
-                                    .foregroundStyle(.black)
-                                Text("Balance: \(period.totalIncome - (period.totalFixedExpenses + period.totalVariableExpenses), specifier: "%.2f")")
-                                    .foregroundStyle(.black)
+                                    .foregroundStyle(Color("SecondaryTextColor"))
+                                Text("Outcome: \(period.totalIncome - (period.totalFixedExpenses + period.totalVariableExpenses), specifier: "%.2f")")
+                                    .foregroundStyle(Color("SecondaryTextColor"))
                             }
                             Spacer()
+                            
+                            Image(systemName: "info.circle.fill")
+                                .foregroundStyle(Color("SecondaryTextColor"))
                         }
                     }
+                    .buttonStyle(PlainButtonStyle())
                 }
                 .padding()
             }

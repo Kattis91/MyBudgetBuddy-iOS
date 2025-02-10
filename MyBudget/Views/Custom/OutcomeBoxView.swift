@@ -40,7 +40,7 @@ struct OutcomeBoxView: View {
                 Spacer()
                 Text("\(percentage, specifier: "%.1f")%")
                     .font(.subheadline)
-                    .foregroundColor(.black)
+                    .foregroundStyle(Color("SecondaryTextColor"))
                     .fontWeight(.bold)
             }
             

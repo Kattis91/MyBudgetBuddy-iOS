@@ -31,16 +31,19 @@ struct InfoPageView: View {
                     .fontWeight(.bold)
                     .padding(.top, 20)
                     .padding(.horizontal, 10)
+                    .foregroundStyle(Color("PrimaryTextColor"))
                 
                 Text("Budgeting made easy, so you can focus on what matters most to you!")
                     .padding(.horizontal, 10)
                     .padding(.bottom, 20)
+                    .foregroundStyle(Color("PrimaryTextColor"))
                 
                 // "How it works" Section
                 VStack(alignment: .leading, spacing: 12) {
                     Text("How it works")
                         .font(.headline)
                         .padding(.horizontal, 10)
+                        .foregroundStyle(Color("PrimaryTextColor"))
                     
                     ForEach(features, id: \.title) { feature in
                         FeatureCardView(icon: feature.icon, text: feature.title)
@@ -54,6 +57,7 @@ struct InfoPageView: View {
                     Text("Extra Features")
                         .font(.headline)
                         .padding(.horizontal, 10)
+                        .foregroundStyle(Color("PrimaryTextColor"))
                     
                     ForEach(extraFeatures, id: \.title) { feature in
                         FeatureCardView(icon: feature.icon, text: feature.title)

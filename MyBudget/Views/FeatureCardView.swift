@@ -26,6 +26,7 @@ struct FeatureCardView: View {
             Text(text)
                 .font(.body)
                 .multilineTextAlignment(.leading)
+                .foregroundStyle(Color("PrimaryTextColor"))
         }
         .padding()
         .frame(maxWidth: .infinity) // Ensures all cards have the same width

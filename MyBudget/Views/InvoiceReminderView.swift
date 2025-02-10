@@ -51,6 +51,8 @@ struct InvoiceReminderView: View {
                         displayedComponents: [.date]
                     )
                     .datePickerStyle(.automatic)
+                    .foregroundStyle(Color("SecondaryTextColor"))
+                    .colorMultiply(Color("SecondaryTextColor"))
                 }
                 .padding(.horizontal)
                 .padding(.vertical, 10)
