@@ -63,7 +63,7 @@ struct ExpensesView: View {
                 } label: {
                     HStack {
                         Text(selectedCategory.isEmpty ? "Choose Category" : selectedCategory)
-                            .foregroundColor(selectedCategory.isEmpty ? .black.opacity(0.5) : .primary)
+                            .foregroundColor(selectedCategory.isEmpty ? .black.opacity(0.5) : .black)
                         Spacer()
                         Image(systemName: "chevron.down")
                             .foregroundColor(.gray)
