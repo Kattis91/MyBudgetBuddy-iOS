@@ -25,30 +25,9 @@ struct CustomSettingsMenu: View {
             showPopover.toggle()
         } label: {
             Image(systemName: "gearshape")
-                .font(.title2)
-                .foregroundColor(Color("SecondaryTextColor"))
-                .padding(3)
-                .background(
-                    LinearGradient(
-                        gradient: Gradient(colors: [
-                            Color(red: 245/255, green: 247/255, blue: 245/255),
-                            Color(red: 240/255, green: 242/255, blue: 240/255)
-                        ]),
-                        startPoint: .leading,
-                        endPoint: .trailing
-                    )
-                )
-                .cornerRadius(8)
-                .shadow(
-                    color: .black.opacity(0.25),
-                    radius: 1,
-                    x: -2,
-                    y: 4
-                )
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.white.opacity(0.4), lineWidth: 0.8)
-                )
+                .resizable()
+                .frame(width: 25, height: 25)
+                .foregroundColor(Color("PrimaryTextColor"))
         }
         .popover(isPresented: $showPopover, attachmentAnchor: .point(.bottom)) {
             VStack(spacing: 0) {
@@ -95,7 +74,7 @@ struct CustomSettingsMenu: View {
                    
                 }
             }
-            .frame(width: 250)
+            .frame(width: 280)
             .background(
                 LinearGradient(
                     gradient: Gradient(colors: [
