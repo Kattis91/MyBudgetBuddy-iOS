@@ -10,6 +10,13 @@ import SwiftUI
 struct InfoPageView: View {
     
     @Environment(\.dismiss) var dismiss
+    
+    @Environment(\.colorScheme) var colorScheme
+    var isDarkMode: Bool {
+        return colorScheme == .dark
+    }
+    
+    @State private var selectedTab = 0
 
     let features: [(icon: String, title: String)] = [
         ("list.bullet.rectangle", "Add your income and expenses, with expenses categorized as fixed or variable."),
@@ -19,9 +26,11 @@ struct InfoPageView: View {
     ]
     
     let extraFeatures: [(icon: String, title: String)] = [
-        ("timer", "Get reminders when your budget period is nearing its end, so you’re always in control."),
-        ("doc.text", "Invoice reminders will soon be available to help you never miss a payment again!")
+        ("timer", "Stay in Control – Get timely reminders when your budget period is ending, so you can plan ahead with confidence."),
+        ("doc.text", "Never Miss a Payment – Invoice reminders ensure you stay on track and stress-free when it comes to due dates.")
     ]
+    
+    let aboutTheDeveloper: [(icon: String, title: String)] = [("laptopcomputer", "I’m Ekaterina Durneva Svedmark, the creator of this app and an aspiring app developer. This is my third project and my first independent app, built from concept to launch.")]
     
     var body: some View {
         ScrollView {
@@ -34,37 +43,83 @@ struct InfoPageView: View {
                     .foregroundStyle(Color("PrimaryTextColor"))
                 
                 Text("Budgeting made easy, so you can focus on what matters most to you!")
+                    .padding(.top, 5)
                     .padding(.horizontal, 10)
-                    .padding(.bottom, 20)
                     .foregroundStyle(Color("PrimaryTextColor"))
                 
-                // "How it works" Section
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("How it works")
-                        .font(.headline)
-                        .padding(.horizontal, 10)
-                        .foregroundStyle(Color("PrimaryTextColor"))
-                    
-                    ForEach(features, id: \.title) { feature in
-                        FeatureCardView(icon: feature.icon, text: feature.title)
-                    }
+                Picker("Info", selection: $selectedTab) {
+                    Text("About The App").tag(0)
+                    Text("Development").tag(1)
                 }
-                .padding(.bottom, 20)
-                .padding(.horizontal, 5)
+                .pickerStyle(SegmentedPickerStyle())
+                .padding(.horizontal, 28)
+                .padding(.top, 20)
                 
-                // "Extra Features" Section
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Extra Features")
-                        .font(.headline)
-                        .padding(.horizontal, 10)
-                        .foregroundStyle(Color("PrimaryTextColor"))
-                    
-                    ForEach(extraFeatures, id: \.title) { feature in
-                        FeatureCardView(icon: feature.icon, text: feature.title)
+                switch selectedTab {
+                case 0:
+                    // "How it works" Section
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("How it works")
+                            .font(.headline)
+                            .padding(.horizontal, 10)
+                            .padding(.top, 15)
+                            .foregroundStyle(Color("PrimaryTextColor"))
+                        
+                        ForEach(features, id: \.title) { feature in
+                            FeatureCardView(icon: feature.icon, text: feature.title)
+                        }
                     }
+                    .padding(.bottom, 20)
+                    .padding(.horizontal, 5)
+                    
+                    // "Extra Features" Section
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("Extra features")
+                            .font(.headline)
+                            .padding(.horizontal, 10)
+                            .padding(.top, 15)
+                            .foregroundStyle(Color("PrimaryTextColor"))
+                        
+                        ForEach(extraFeatures, id: \.title) { feature in
+                            FeatureCardView(icon: feature.icon, text: feature.title)
+                        }
+                    }
+                    .padding(.bottom, 20)
+                    .padding(.horizontal, 5)
+                    
+                case 1:
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("The Developer")
+                            .font(.headline)
+                            .padding(.horizontal, 10)
+                            .padding(.top, 15)
+                            .foregroundStyle(Color("PrimaryTextColor"))
+                        
+                        ForEach(aboutTheDeveloper, id: \.title) { feature in
+                            FeatureCardView(icon: feature.icon, text: feature.title)
+                        }
+                    }
+                    .padding(.bottom, 20)
+                    .padding(.horizontal, 5)
+                    
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("Credits")
+                            .font(.headline)
+                            .padding(.horizontal, 10)
+                            .foregroundStyle(Color("PrimaryTextColor"))
+                        
+                        FeatureCardView(
+                            icon: "star.fill",
+                            attributedText: creditsText()
+                        )
+                    }
+                    .padding(.bottom, 20)
+                    .padding(.horizontal, 5)
+                    
+                default:
+                    EmptyView()
                 }
-                .padding(.horizontal, 5)
-                
+                    
                 // Close Button
                 Button(action: {
                     dismiss()
@@ -75,6 +130,14 @@ struct InfoPageView: View {
             }
             .padding(.horizontal)
         }
+    }
+    
+    func creditsText() -> AttributedString {
+        var string = AttributedString("The icon used in the app is made by Stickers at ")
+        var link = AttributedString("Flaticon.")
+        link.link = URL(string: "https://www.flaticon.com")
+        string.append(link)
+        return string
     }
 }
 

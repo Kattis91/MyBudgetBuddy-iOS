@@ -9,7 +9,8 @@ import SwiftUI
 
 struct FeatureCardView: View {
     let icon: String
-    let text: String
+    var text: String?
+    var attributedText: AttributedString?
     
     @Environment(\.colorScheme) var colorScheme
     var isDarkMode: Bool {
@@ -23,10 +24,17 @@ struct FeatureCardView: View {
                 .foregroundColor(Color("ButtonsBackground"))
                 .frame(width: 30, height: 30)
             
-            Text(text)
-                .font(.body)
-                .multilineTextAlignment(.leading)
-                .foregroundStyle(Color("PrimaryTextColor"))
+            if let attributedText = attributedText {
+                Text(attributedText)
+                    .font(.body)
+                    .multilineTextAlignment(.leading)
+                    .foregroundStyle(Color("PrimaryTextColor"))
+            } else if let text = text {
+                Text(text)
+                    .font(.body)
+                    .multilineTextAlignment(.leading)
+                    .foregroundStyle(Color("PrimaryTextColor"))
+            }
         }
         .padding()
         .frame(maxWidth: .infinity) // Ensures all cards have the same width
