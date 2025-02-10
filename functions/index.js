@@ -122,6 +122,11 @@ exports.sendBudgetNotification = functions.https.onRequest(async (req, res) => {
         Object.entries(userInvoices).forEach(([invoiceId, invoiceData]) => {
           console.log(`Raw invoice data for ${invoiceId}:`, invoiceData);
 
+          if (invoiceData.processed) {
+            console.log(`Invoice ${invoiceId} is already processed, skipping.`);
+            return;
+          }
+
           const expiryTimestamp = Number(invoiceData.expiryDate);
           console.log(`Expiry timestamp: ${expiryTimestamp}`);
 
