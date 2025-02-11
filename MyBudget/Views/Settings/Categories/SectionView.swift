@@ -13,6 +13,7 @@ struct SectionView: View {
     let onEdit: (String) -> Void
     let onDelete: (String) -> Void
     let onAdd: () -> Void
+    let headerText: String
 
     var body: some View {
         Section {
@@ -72,7 +73,7 @@ struct SectionView: View {
                     Image(systemName: "plus.circle.fill")
                         .foregroundColor(.blue)
                         .font(.system(size: 20)) // Match other icons size
-                    Text("Add \(title) Category")
+                    Text("Add \(title)")
                         .font(.system(size: 16, weight: .medium))
                         .foregroundColor(.blue)
                 }
@@ -101,7 +102,7 @@ struct SectionView: View {
                 .shadow(color: .black.opacity(0.4), radius: 1, x: -2, y: 4)
             }
         } header: {
-            Text("\(title) categories")
+            Text(headerText)
                 .font(.title2)
                 .textCase(nil)  // This will override any inherited text transformation
                 .shadow(color: .black.opacity(0.15), radius: 4, x: 0, y: 2)
@@ -117,6 +118,7 @@ struct SectionView: View {
         categories: ["A", "B", "C"],
         onEdit: { _ in },
         onDelete: { _ in },
-        onAdd: { }
+        onAdd: { },
+        headerText: "Incomes categorier"
     )
 }

@@ -34,16 +34,6 @@
         }
       }
     },
-    "%@ categories" : {
-      "localizations" : {
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ kategorier"
-          }
-        }
-      }
-    },
     "+ Add new category" : {
       "localizations" : {
         "da" : {
@@ -84,12 +74,12 @@
         }
       }
     },
-    "Add %@ Category" : {
+    "Add %@" : {
       "localizations" : {
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tilføj %@ kategori"
+            "value" : "Tilføj %@"
           }
         }
       }
@@ -465,12 +455,22 @@
         }
       }
     },
-    "Fixed Expense" : {
+    "Fixed Expense categories" : {
       "localizations" : {
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Faste udgifter"
+            "value" : "Faste udgiftskategorier"
+          }
+        }
+      }
+    },
+    "Fixed Expense category" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fast udgiftskategori"
           }
         }
       }
@@ -571,6 +571,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Indkomst"
+          }
+        }
+      }
+    },
+    "Income categories" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indkomstkategorier"
+          }
+        }
+      }
+    },
+    "Income category" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indkomstkategori"
           }
         }
       }
@@ -1018,12 +1038,22 @@
         }
       }
     },
-    "Variable Expense" : {
+    "Variable Expense categories" : {
       "localizations" : {
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Variable Udgift"
+            "value" : "Variable udgiftskategorier"
+          }
+        }
+      }
+    },
+    "Variable Expense category" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Variabel udgiftskategori"
           }
         }
       }

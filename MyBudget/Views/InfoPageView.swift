@@ -115,21 +115,6 @@ struct InfoPageView: View {
                     }
                     .padding(.bottom, 20)
                     .padding(.horizontal, 5)
-                    
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("The Process")
-                            .font(.headline)
-                            .padding(.horizontal, 10)
-                            .foregroundStyle(Color("PrimaryTextColor"))
-                        
-                        FeatureCardView(
-                            icon: "star.fill",
-                            attributedText: creditsText()
-                        )
-                    }
-                    .padding(.bottom, 20)
-                    .padding(.horizontal, 5)
-                    
                 default:
                     EmptyView()
                 }
