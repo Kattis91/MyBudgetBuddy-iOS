@@ -88,7 +88,6 @@ exports.sendBudgetNotification = functions.https.onRequest(async (req, res) => {
                 payload: {
                   aps: {
                     sound: "default",
-                    badge: 1,
                   },
                 },
               },
@@ -174,7 +173,6 @@ exports.sendBudgetNotification = functions.https.onRequest(async (req, res) => {
                 payload: {
                   aps: {
                     sound: "default",
-                    badge: 1,
                   },
                 },
               },
