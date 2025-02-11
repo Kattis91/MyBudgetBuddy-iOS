@@ -117,7 +117,7 @@ struct InvoiceReminderView: View {
                
                 
                 Picker("Invoices", selection: $selectedTab) {
-                    Text("Pending Invoices").tag(0)
+                    Text("Unprocessed Invoices").tag(0)
                     Text("Processed Invoices").tag(1)
                 }
                 .pickerStyle(SegmentedPickerStyle())
@@ -128,7 +128,7 @@ struct InvoiceReminderView: View {
                 case 0:
                     // Unprocessed Invoices Section
                     if unprocessedInvoices.isEmpty {
-                        Text("You have no pending invoices." )
+                        Text("You have no unprocessed invoices right now." )
                             .font(.title2)
                             .padding(.top)
                     }
@@ -155,11 +155,13 @@ struct InvoiceReminderView: View {
                     }
                 case 1:
                     // Processed Invoices Section
-                    if !processedInvoices.isEmpty {
-                        Text("Processed invoices:")
+                    if processedInvoices.isEmpty {
+                        Text("You have no processed invoices right now")
                             .font(.title2)
                             .padding(.top)
-                        
+                    }
+                    
+                    if !processedInvoices.isEmpty {
                         CustomListView(
                             items: processedInvoices,
                             deleteAction: { offsets in
