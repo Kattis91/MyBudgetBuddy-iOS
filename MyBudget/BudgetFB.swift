@@ -846,43 +846,50 @@ import FirebaseAuth
         return periods
     }
     
-    func deleteHistoricalPeriod(at offsets: IndexSet, from periods: [BudgetPeriod]) {
+    func deleteHistoricalPeriod(at offsets: IndexSet, from periods: [BudgetPeriod]) async {
         guard let userId = Auth.auth().currentUser?.uid else { return }
         let ref = Database.database().reference()
         
-        // Get a snapshot of the current data to find the correct key to delete
-        ref.child("historicalPeriods").child(userId).getData { error, snapshot in
-            guard let snapshot = snapshot else { return }
+        // Since the UI shows periods in reverse order, we need to adjust the indices
+        let reversedPeriods = Array(periods.reversed())
+        let periodsToDelete = offsets.map { reversedPeriods[$0] }
+        
+        do {
+            // Get a snapshot of all historical periods
+            let snapshot = try await ref.child("historicalPeriods").child(userId).getData()
             
-            // Convert the periods at the specified offsets to an array of dates for comparison
-            let periodsToDelete = offsets.map { periods[$0] }
+            guard let snapshot = snapshot.value as? [String: [String: Any]] else { return }
             
-            // Iterate through the snapshot to find matching periods
-            for case let historicalSnap as DataSnapshot in snapshot.children {
-                guard let historicalData = historicalSnap.value as? [String: Any],
-                      let startDate = historicalData["startDate"] as? TimeInterval,
-                      let endDate = historicalData["endDate"] as? TimeInterval else {
+            // Find and delete matching periods
+            for (key, periodData) in snapshot {
+                guard let startDate = periodData["startDate"] as? TimeInterval,
+                      let endDate = periodData["endDate"] as? TimeInterval else {
                     continue
                 }
                 
-                // Check if this snapshot matches any of our periods to delete
+                // Check if this period matches any of our periods to delete
                 for periodToDelete in periodsToDelete {
                     if startDate == periodToDelete.startDate.timeIntervalSince1970 &&
                        endDate == periodToDelete.endDate.timeIntervalSince1970 {
-                        // Found a match, delete this node
-                        ref.child("historicalPeriods").child(userId).child(historicalSnap.key).removeValue { error, _ in
-                            if let error = error {
-                                print("Error deleting period: \(error.localizedDescription)")
-                            } else {
-                                print("Period deleted successfully")
-                            }
-                        }
+                        // Delete from Firebase
+                        try await ref.child("historicalPeriods").child(userId).child(key).removeValue()
+                        print("Successfully deleted period with key: \(key)")
                     }
                 }
             }
+            
+            // Reload the historical periods to update the UI
+            let updatedPeriods = await loadHistoricalPeriods()
+            
+            // Notify BudgetManager of the update
+            NotificationCenter.default.post(
+                name: .init("HistoricalPeriodsUpdated"),
+                object: updatedPeriods
+            )
+        } catch {
+            print("Error deleting period: \(error.localizedDescription)")
         }
     }
-
     
     // Add category management functions
     func loadCategories(type: CategoryType) async -> [String] {

@@ -36,7 +36,9 @@ struct OverviewTabView: View {
                                 .listRowInsets(EdgeInsets(top: 0, leading: 4, bottom: 8, trailing: 4))
                         }
                         .onDelete { offsets in
-                            budgetfb.deleteHistoricalPeriod(at: offsets, from: budgetManager.historicalPeriods)
+                            Task {
+                                await budgetfb.deleteHistoricalPeriod(at: offsets, from: budgetManager.historicalPeriods)
+                            }
                         }
                         .listRowSeparator(.hidden)
                     } header: {
@@ -51,6 +53,11 @@ struct OverviewTabView: View {
                 }
             }
             .scrollContentBackground(.hidden)
+            .onReceive(NotificationCenter.default.publisher(for: .init("HistoricalPeriodsUpdated"))) { notification in
+                if let updatedPeriods = notification.object as? [BudgetPeriod] {
+                    budgetManager.historicalPeriods = updatedPeriods
+                }
+            }
             .onAppear {
                 Task {
                     await budgetfb.loadHistoricalPeriods()

@@ -13,6 +13,10 @@ extension Notification.Name {
     static let periodUpdated = Notification.Name("periodUpdated")
 }
 
+extension Notification.Name {
+    static let HistoricalPeriodsUpdated = Notification.Name("HistoricalPeriodsUpdated")
+}
+
 class BudgetManager: ObservableObject {
     
     var budgetfb = BudgetFB()
