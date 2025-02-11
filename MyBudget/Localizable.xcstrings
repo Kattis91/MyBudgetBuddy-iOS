@@ -195,6 +195,16 @@
         }
       }
     },
+    "Are you sure you want to mark %@ as processed?" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Er du sikker på, at du vil markere %@ som behandlet?"
+          }
+        }
+      }
+    },
     "Are you sure you want to sign out?" : {
       "localizations" : {
         "da" : {
@@ -785,16 +795,6 @@
         }
       }
     },
-    "Pending Invoices" : {
-      "localizations" : {
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ubehandlede Fakturaer"
-          }
-        }
-      }
-    },
     "Period Dates" : {
       "localizations" : {
         "da" : {
@@ -851,16 +851,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Behandlede Fakturaer"
-          }
-        }
-      }
-    },
-    "Processed invoices:" : {
-      "localizations" : {
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Behandlede Fakturaer:"
           }
         }
       }
@@ -955,9 +945,6 @@
         }
       }
     },
-    "The Process" : {
-
-    },
     "Title" : {
       "localizations" : {
         "da" : {
@@ -1028,6 +1015,16 @@
         }
       }
     },
+    "Unprocessed Invoices" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ubehandlede Fakturaer"
+          }
+        }
+      }
+    },
     "Variable" : {
       "localizations" : {
         "da" : {
@@ -1078,6 +1075,16 @@
         }
       }
     },
+    "Yes" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ja"
+          }
+        }
+      }
+    },
     "You have no historical periods right now." : {
       "localizations" : {
         "da" : {
@@ -1088,7 +1095,17 @@
         }
       }
     },
-    "You have no pending invoices." : {
+    "You have no processed invoices right now" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du har i øjeblikket ingen behandlede fakturaer."
+          }
+        }
+      }
+    },
+    "You have no unprocessed invoices right now." : {
       "localizations" : {
         "da" : {
           "stringUnit" : {
