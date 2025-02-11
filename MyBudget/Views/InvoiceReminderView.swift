@@ -42,7 +42,7 @@ struct InvoiceReminderView: View {
                 VStack {
                     Text("Manage your invoices:")
                         .font(.title3)
-                        .padding(.bottom, 45)
+                        .padding(.bottom, 30)
                     
                     CustomTextFieldView(placeholder: String(localized: "Title"), text: $title, onChange: { errorMessage = ""}, systemName: "bell.badge", maxLength: 50)
                     CustomTextFieldView(placeholder: String(localized: "Amount"), text: $amount, onChange: { errorMessage = ""}, systemName: "dollarsign.circle", maxLength: 15)

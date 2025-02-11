@@ -77,7 +77,6 @@ struct NoCurrentPeriodView: View {
                             onPeriodCreated()
                         }, isLandingPage: true)
                         .navigationBarBackButtonHidden(true)
-                        .background(Color.white)
                         .padding(.horizontal, 24)
                         .cornerRadius(12)
                         .shadow(radius: 10)
