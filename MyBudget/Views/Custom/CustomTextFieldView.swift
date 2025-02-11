@@ -17,6 +17,7 @@ struct CustomTextFieldView: View {
     var trailingPadding: CGFloat = 24
     var systemName: String?
     var forget: Bool = false
+    var maxLength: Int? = nil
     
     var body: some View {
         HStack {
@@ -32,10 +33,22 @@ struct CustomTextFieldView: View {
                 SecureField("", text: $text, prompt: Text(placeholder).foregroundStyle(.black.opacity(0.5)))
                     .foregroundColor(Color.black)
                     .tint(.black)
+                    .onChange(of: text) { oldValue, newValue in
+                        if let maxLength = maxLength, newValue.count > maxLength {
+                            text = String(newValue.prefix(maxLength))
+                        }
+                        onChange?()
+                    }
             } else {
                 TextField("", text: $text, prompt: Text(placeholder).foregroundStyle(.black.opacity(0.5)))
                     .foregroundColor(Color.black)
                     .tint(.black)
+                    .onChange(of: text) { oldValue, newValue in
+                        if let maxLength = maxLength, newValue.count > maxLength {
+                            text = String(newValue.prefix(maxLength))
+                        }
+                        onChange?()
+                    }
             }
         }
         .frame(height: 51)

@@ -32,11 +32,11 @@ struct ExpensesView: View {
         VStack {
             CustomTextFieldView(placeholder: String(localized: "Expense amount"), text: $expenseAmount, isSecure: false, onChange: {
                 errorMessage = ""
-            }, leadingPadding: 33, trailingPadding: 33, systemName: "minus.circle")
+            }, leadingPadding: 33, trailingPadding: 33, systemName: "minus.circle", maxLength: 15)
             
             if showNewCategoryField {
                 HStack {
-                    CustomTextFieldView(placeholder: "New category", text: $newCategory, isSecure: false, leadingPadding: 33, systemName: "tag")
+                    CustomTextFieldView(placeholder: "New category", text: $newCategory, isSecure: false, leadingPadding: 33, systemName: "tag", maxLength: 30)
                     Button(action: {
                         showNewCategoryField = false
                         selectedCategory = ""

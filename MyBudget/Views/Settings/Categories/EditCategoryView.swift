@@ -34,7 +34,7 @@ struct EditCategoryView: View {
                 .padding(.vertical, 15)
                 .foregroundStyle(Color("SecondaryTextColor"))
             
-            CustomTextFieldView(placeholder: String(localized: "Category name"), text: $categoryName, systemName: "folder", forget: true)
+            CustomTextFieldView(placeholder: String(localized: "Category name"), text: $categoryName, systemName: "folder", forget: true, maxLength: 30)
                 .foregroundStyle(Color("SecondaryTextColor"))
             
             HStack {

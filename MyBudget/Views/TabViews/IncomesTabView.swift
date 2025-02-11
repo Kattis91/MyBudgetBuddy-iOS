@@ -76,11 +76,11 @@ struct IncomesTabView: View {
                     
                     CustomTextFieldView(placeholder: String(localized: "Enter Income"), text: $incomeAmount, isSecure: false, onChange: {
                         errorMessage = ""
-                    }, leadingPadding: 33, trailingPadding: 33, systemName: "plus.circle")
+                    }, leadingPadding: 33, trailingPadding: 33, systemName: "plus.circle", maxLength: 15)
                     
                     if showNewCategoryField {
                         HStack {
-                            CustomTextFieldView(placeholder: "New category", text: $newCategory, isSecure: false, leadingPadding: 33, systemName: "tag")
+                            CustomTextFieldView(placeholder: "New category", text: $newCategory, isSecure: false, leadingPadding: 33, systemName: "tag", maxLength: 30)
                             Button(action: {
                                 showNewCategoryField = false
                                 selectedCategory = ""

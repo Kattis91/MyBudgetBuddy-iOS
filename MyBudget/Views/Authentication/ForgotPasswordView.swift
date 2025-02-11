@@ -53,7 +53,7 @@ struct ForgotPasswordView: View {
             
             CustomTextFieldView(placeholder: "Email", text: $email, onChange: {
                 errorMessage = ""
-            }, systemName: "envelope", forget: true)
+            }, systemName: "envelope", forget: true, maxLength: 50)
         
             
             HStack {

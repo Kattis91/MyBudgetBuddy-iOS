@@ -32,7 +32,7 @@ struct LoginView: View {
                     
                     CustomTextFieldView(placeholder: "Email", text: $email, onChange: {
                             emailErrorMessage = ""
-                    }, leadingPadding: 45, trailingPadding: 45, systemName: "envelope")
+                    }, leadingPadding: 45, trailingPadding: 45, systemName: "envelope", maxLength: 50)
                     
                     ErrorMessageView(errorMessage: emailErrorMessage, height: 15, padding: 30)
                     

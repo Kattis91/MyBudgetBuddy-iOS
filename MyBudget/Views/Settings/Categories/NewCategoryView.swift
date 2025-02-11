@@ -40,7 +40,8 @@ struct NewCategoryView: View {
                 placeholder: String(localized: "Category name"),
                 text: $categoryName,
                 systemName: "folder",
-                forget: true
+                forget: true,
+                maxLength: 30
             )
             
             // Error message
