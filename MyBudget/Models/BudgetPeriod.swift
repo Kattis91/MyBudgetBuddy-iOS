@@ -18,13 +18,15 @@ struct BudgetPeriod: Identifiable {
     var totalFixedExpenses: Double
     var totalVariableExpenses: Double
     var expired: Bool
+    let becameHistoricalDate: Date
     
     init(startDate: Date,
          endDate: Date,
          incomes: [Income] = [],
          fixedExpenses: [Expense] = [],
          variableExpenses: [Expense] = [],
-         expired: Bool = false
+         expired: Bool = false,
+         becameHistoricalDate: Date? = nil
     ) {
         self.startDate = startDate
         self.endDate = endDate
@@ -35,6 +37,7 @@ struct BudgetPeriod: Identifiable {
         self.totalFixedExpenses = fixedExpenses.reduce(0) { $0 + $1.amount }
         self.totalVariableExpenses = variableExpenses.reduce(0) { $0 + $1.amount }
         self.expired = expired
+        self.becameHistoricalDate = becameHistoricalDate ?? Date()
     }
 }
 
@@ -49,6 +52,12 @@ extension BudgetPeriod {
         else {
             print("Failed to get required date timestamps")
             return nil
+        }
+        
+        if let historicalDateTimestamp = dict["becameHistoricalDate"] as? TimeInterval {
+            self.becameHistoricalDate = Date(timeIntervalSince1970: historicalDateTimestamp)
+        } else {
+            self.becameHistoricalDate = Date() // Default to current date if not found
         }
         
         // Convert dates
@@ -125,6 +134,7 @@ extension BudgetPeriod {
             "id": id,
             "startDate": startDate.timeIntervalSince1970,
             "endDate": endDate.timeIntervalSince1970,
+            "becameHistoricalDate": becameHistoricalDate.timeIntervalSince1970,
             "totalIncome": totalIncome,
             "totalFixedExpenses": totalFixedExpenses,
             "totalVariableExpenses": totalVariableExpenses,

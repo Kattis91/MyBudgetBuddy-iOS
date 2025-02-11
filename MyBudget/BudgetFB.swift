@@ -682,6 +682,7 @@ import FirebaseAuth
             let periodData: [String: Any] = [
                 "startDate": budgetPeriod.startDate.timeIntervalSince1970,
                 "endDate": budgetPeriod.endDate.timeIntervalSince1970,
+                "becameHistoricalDate": budgetPeriod.becameHistoricalDate.timeIntervalSince1970, // Add this line
                 "expired": true,
                 "incomes": budgetPeriod.incomes.map { [
                     "id": $0.id,
@@ -762,6 +763,14 @@ import FirebaseAuth
             let startDate = Date(timeIntervalSince1970: historicalDataDict["startDate"] as? TimeInterval ?? 0)
             let endDate = Date(timeIntervalSince1970: historicalDataDict["endDate"] as? TimeInterval ?? 0)
             
+            let becameHistoricalDate: Date
+                if let timestamp = historicalDataDict["becameHistoricalDate"] as? TimeInterval {
+                    becameHistoricalDate = Date(timeIntervalSince1970: timestamp)
+                } else {
+                    // If not found, use the older of startDate or current date as fallback
+                    becameHistoricalDate = min(startDate, Date())
+                }
+            
             // Process incomes with complete data
             let incomes = (historicalDataDict["incomes"] as? [[String: Any]])?.compactMap { incomeData -> Income? in
                 guard let id = incomeData["id"] as? String,
@@ -837,13 +846,14 @@ import FirebaseAuth
                 endDate: endDate,
                 incomes: incomes,
                 fixedExpenses: fixedExpenses,
-                variableExpenses: variableExpenses
+                variableExpenses: variableExpenses,
+                becameHistoricalDate: becameHistoricalDate
             )
             
             periods.append(period)
         }
         
-        return periods
+        return periods.sorted { $0.becameHistoricalDate < $1.becameHistoricalDate }
     }
     
     func deleteHistoricalPeriod(at offsets: IndexSet, from periods: [BudgetPeriod]) async {
@@ -881,11 +891,12 @@ import FirebaseAuth
             // Reload the historical periods to update the UI
             let updatedPeriods = await loadHistoricalPeriods()
             
-            // Notify BudgetManager of the update
-            NotificationCenter.default.post(
-                name: .init("HistoricalPeriodsUpdated"),
-                object: updatedPeriods
-            )
+            await MainActor.run {
+                NotificationCenter.default.post(
+                    name: .init("HistoricalPeriodsUpdated"),
+                    object: updatedPeriods
+                )
+            }
         } catch {
             print("Error deleting period: \(error.localizedDescription)")
         }

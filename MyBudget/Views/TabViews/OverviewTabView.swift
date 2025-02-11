@@ -37,7 +37,17 @@ struct OverviewTabView: View {
                         }
                         .onDelete { offsets in
                             Task {
-                                await budgetfb.deleteHistoricalPeriod(at: offsets, from: budgetManager.historicalPeriods)
+                                // Convert offsets from filtered array to original array indices
+                                let filteredPeriods = budgetManager.historicalPeriods.filter {
+                                    !$0.incomes.isEmpty || !$0.fixedExpenses.isEmpty || !$0.variableExpenses.isEmpty
+                                }
+                                // Get the IDs of periods to delete
+                                let periodsToDelete = offsets.map { filteredPeriods[$0] }
+                                // Find corresponding indices in the original array
+                                let originalIndices = IndexSet(periodsToDelete.compactMap { period in
+                                    budgetManager.historicalPeriods.firstIndex(where: { $0.id == period.id })
+                                })
+                                await budgetfb.deleteHistoricalPeriod(at: originalIndices, from: budgetManager.historicalPeriods)
                             }
                         }
                         .listRowSeparator(.hidden)
