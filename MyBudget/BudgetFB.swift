@@ -1069,6 +1069,9 @@ import FirebaseAuth
                         invoices.append(invoice)
                     }
                 }
+                   
+                // Sort invoices by expiry date
+                invoices.sort { $0.expiryDate < $1.expiryDate }
                 
                 continuation.resume(returning: invoices)
             }
@@ -1096,6 +1099,9 @@ import FirebaseAuth
                         invoices.append(invoice)
                     }
                 }
+                
+                // Sort invoices by expiry date
+                invoices.sort { $0.expiryDate < $1.expiryDate }
                 
                 continuation.resume(returning: invoices)
             }
