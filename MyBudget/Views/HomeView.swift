@@ -44,6 +44,8 @@ struct HomeView: View {
     @State private var fixedExpenseErrorMessage = ""
     @State private var variableExpenseErrorMessage = ""
     
+    @State private var showingNewPeriod = false
+    
     var body: some View {
         
         Group {
@@ -54,7 +56,7 @@ struct HomeView: View {
                     if hasCurrentPeriod {
                         VStack {
                             TabView(selection: $selectedTab) {
-                                HomeTabView(budgetfb: budgetfb)
+                                HomeTabView(showingNewPeriod: $showingNewPeriod, budgetfb: budgetfb)
                                     .tabItem {
                                         Label("Home", systemImage: "house")
                                     }
@@ -86,6 +88,7 @@ struct HomeView: View {
                             incomeErrorMessage = ""
                             fixedExpenseErrorMessage = ""
                             variableExpenseErrorMessage = ""
+                            showingNewPeriod = false
                         }
                         .onReceive(NotificationCenter.default.publisher(for: .periodUpdated)) { _ in
                             Task {

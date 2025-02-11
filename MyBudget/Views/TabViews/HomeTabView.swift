@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeTabView: View {
     
-    @State var showingNewPeriod = false
+    @Binding var showingNewPeriod: Bool
     @State var showingSignOutAlert = false
     
     var budgetfb = BudgetFB()
@@ -130,6 +130,6 @@ struct HomeTabView: View {
 }
 
 #Preview {
-    HomeTabView()
+    HomeTabView(showingNewPeriod: .constant(false))
         .environmentObject(BudgetManager())
 }
