@@ -18,6 +18,9 @@ struct ExpensesTabView: View {
     
     @State var showSettings = false
     @State private var refreshTrigger = UUID()
+    
+    @Binding var fixedErrorMessage: String
+    @Binding var variableErrorMessage: String
 
     var body: some View {
         
@@ -97,6 +100,7 @@ struct ExpensesTabView: View {
                     ExpensesView(
                         viewtype: .fixed,
                         selectedCategory: "",
+                        errorMessage: $fixedErrorMessage,
                         totalExpenses: $budgetfb.totalExpenses,
                         expenseList: $budgetfb.fixedExpenseList,
                         budgetfb: budgetfb
@@ -106,6 +110,7 @@ struct ExpensesTabView: View {
                     ExpensesView(
                         viewtype: .variable,
                         selectedCategory: "",
+                        errorMessage: $variableErrorMessage,
                         totalExpenses: $budgetfb.totalExpenses,
                         expenseList: $budgetfb.variableExpenseList,
                         budgetfb: budgetfb
@@ -139,6 +144,10 @@ struct ExpensesTabView: View {
 }
 
 #Preview {
-    ExpensesTabView(budgetfb: BudgetFB())
-        .environmentObject(BudgetManager())
+    ExpensesTabView(
+        budgetfb: BudgetFB(),
+        fixedErrorMessage: .constant(""),
+        variableErrorMessage: .constant("")
+    )
+    .environmentObject(BudgetManager())
 }

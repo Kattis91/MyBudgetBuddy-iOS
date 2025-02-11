@@ -18,7 +18,7 @@ struct ExpensesView: View {
     @State var newCategory: String = ""
     
     @State var expenseAmount: String = ""
-    @State var errorMessage = ""
+    @Binding var errorMessage: String
     
     @Binding var totalExpenses: Double
     @Binding var expenseList: [Expense]
@@ -195,7 +195,7 @@ struct ExpensesView: View {
     ExpensesView(
         viewtype: .fixed, 
         selectedCategory: "Rent",
-        totalExpenses: .constant(100.0), expenseList: .constant([]),
+        errorMessage: .constant(""), totalExpenses: .constant(100.0), expenseList: .constant([]),
         budgetfb: BudgetFB()
     )
 }

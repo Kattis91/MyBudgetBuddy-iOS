@@ -39,6 +39,11 @@ struct HomeView: View {
     @State private var hasCurrentPeriod = false
     @State var showNewPeriodSheet = false
     
+    @State private var selectedTab = 0
+    @State private var incomeErrorMessage = ""
+    @State private var fixedExpenseErrorMessage = ""
+    @State private var variableExpenseErrorMessage = ""
+    
     var body: some View {
         
         Group {
@@ -48,24 +53,39 @@ struct HomeView: View {
                 if hasExistingPeriods {
                     if hasCurrentPeriod {
                         VStack {
-                            TabView {
-                                Tab("Home", systemImage: "house") {
-                                    HomeTabView(budgetfb: budgetfb)
-                                }
+                            TabView(selection: $selectedTab) {
+                                HomeTabView(budgetfb: budgetfb)
+                                    .tabItem {
+                                        Label("Home", systemImage: "house")
+                                    }
+                                    .tag(0)
                                 
-                                Tab("Incomes", systemImage: "plus.circle") {
-                                    IncomesTabView(budgetfb: budgetfb)
-                                }
+                                IncomesTabView(budgetfb: budgetfb, errorMessage: $incomeErrorMessage)
+                                    .tabItem {
+                                        Label("Incomes", systemImage: "plus.circle")
+                                    }
+                                    .tag(1)
                                 
-                                Tab("Expenses", systemImage: "minus.circle") {
-                                    ExpensesTabView(budgetfb: budgetfb)
-                                }
+                                ExpensesTabView(budgetfb: budgetfb,
+                                    fixedErrorMessage: $fixedExpenseErrorMessage,
+                                    variableErrorMessage: $variableExpenseErrorMessage)
+                                    .tabItem {
+                                        Label("Expenses", systemImage: "minus.circle")
+                                    }
+                                    .tag(2)
                                 
-                                Tab("Overview", systemImage: "chart.bar") {
-                                    OverviewTabView()
-                                }
-                                
+                                OverviewTabView()
+                                    .tabItem {
+                                        Label("Overview", systemImage: "chart.bar")
+                                    }
+                                    .tag(3)
                             }
+                        }
+                        .onChange(of: selectedTab) {
+                            // Clear error messages directly
+                            incomeErrorMessage = ""
+                            fixedExpenseErrorMessage = ""
+                            variableExpenseErrorMessage = ""
                         }
                         .onReceive(NotificationCenter.default.publisher(for: .periodUpdated)) { _ in
                             Task {

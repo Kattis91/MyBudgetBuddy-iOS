@@ -22,7 +22,7 @@ struct IncomesTabView: View {
     @State private var isIncomeAdded: Bool = false
     
     @State private var incomeAmount: String = ""
-    @State var errorMessage = ""
+    @Binding var errorMessage: String 
     
     @State var showSettings = false
     
@@ -246,7 +246,10 @@ struct IncomesTabView: View {
 
 struct IncomesTabView_Previews: PreviewProvider {
     static var previews: some View {
-        IncomesTabView(budgetfb: BudgetFB())
-            .environmentObject(BudgetManager()) // Lägg till BudgetManager här
+        IncomesTabView(
+            budgetfb: BudgetFB(),
+            errorMessage: .constant("")  // Add this line
+        )
+        .environmentObject(BudgetManager())
     }
 }
