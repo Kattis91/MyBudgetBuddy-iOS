@@ -27,6 +27,10 @@ struct InvoiceReminderView: View {
     @State var showingMarkAsProcessedAlert = false
     @State private var invoiceToMarkAsProcessed: Invoice?
     
+    @State private var showScanner = false
+    @State private var scannedDueDate: String = ""
+    @State private var scannedAmount: String = ""
+    
     let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
@@ -84,6 +88,33 @@ struct InvoiceReminderView: View {
                     .padding(.bottom, 10)
                     
                     ErrorMessageView(errorMessage: errorMessage, height: 15)
+                    
+                    Button(action: {
+                        showScanner = true
+                    }) {
+                        HStack {
+                            Image(systemName: "qrcode.viewfinder")
+                            Text("Or scan the invoice")
+                        }
+                    }
+                    .sheet(isPresented: $showScanner, onDismiss: {
+                        // Improved date conversion
+                        if !scannedDueDate.isEmpty {
+                            let scanFormatter = DateFormatter()
+                            scanFormatter.dateFormat = "yyyy-MM-dd"
+                            if let date = scanFormatter.date(from: scannedDueDate) {
+                                expiryDate = date
+                                print("Successfully updated expiryDate to: \(date)")
+                            }
+                        }
+                        
+                        // Handle amount if needed
+                        if !scannedAmount.isEmpty {
+                            amount = scannedAmount
+                        }
+                    }) {
+                        InvoiceScannerView(scannedAmount: $scannedAmount, scannedDueDate: $scannedDueDate)
+                    }
                     
                     Button(action: {
                         
