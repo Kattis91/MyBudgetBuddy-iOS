@@ -77,7 +77,8 @@ struct CustomListView<T: Identifiable>: View {
                             }
                         }
                     }
-                    .padding()
+                    .padding(.horizontal)
+                    .padding(.vertical, 14)
                 }
                 .padding(.horizontal, 10)
                 .padding(.vertical, 3)

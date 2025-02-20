@@ -66,7 +66,7 @@ struct InvoiceReminderView: View {
                         .colorMultiply(Color("SecondaryTextColor"))
                     }
                     .padding(.horizontal)
-                    .padding(.vertical, 10)
+                    .padding(.vertical, 4)
                     .background(
                         LinearGradient(
                             gradient: Gradient(colors: [
@@ -77,7 +77,7 @@ struct InvoiceReminderView: View {
                             endPoint: .trailing
                         )
                     )
-                    .cornerRadius(16)
+                    .cornerRadius(18)
                     .shadow(color: .black.opacity(0.25), radius: 1, x: -2, y: 4)
                     .overlay(
                         RoundedRectangle(cornerRadius: 16)
@@ -86,8 +86,6 @@ struct InvoiceReminderView: View {
                     .tint(.pink)
                     .padding(.horizontal, 25)
                     .padding(.bottom, 10)
-                    
-                    ErrorMessageView(errorMessage: errorMessage, height: 15)
                     
                     Button(action: {
                         showScanner = true
@@ -116,6 +114,8 @@ struct InvoiceReminderView: View {
                         InvoiceScannerView(scannedAmount: $scannedAmount, scannedDueDate: $scannedDueDate)
                     }
                     
+                    ErrorMessageView(errorMessage: errorMessage, height: 15)
+                    
                     Button(action: {
                         
                         if title.isEmpty {
@@ -142,7 +142,7 @@ struct InvoiceReminderView: View {
                             await loadInvoices()
                         }
                     }) {
-                        ButtonView(buttontext: String(localized: "Save").uppercased(), expenseButton: true)
+                        ButtonView(buttontext: String(localized: "Save").uppercased(), expenseButton: true, height: 41, topPadding: 0)
                     }
                 }
                
@@ -160,8 +160,10 @@ struct InvoiceReminderView: View {
                     // Unprocessed Invoices Section
                     if unprocessedInvoices.isEmpty {
                         Text("You have no unprocessed invoices right now." )
-                            .font(.title2)
+                            .font(.title3)
                             .padding(.top)
+                            .padding(.horizontal, 20)
+                            .multilineTextAlignment(.center)
                     }
                     
                     if !unprocessedInvoices.isEmpty {
@@ -188,8 +190,10 @@ struct InvoiceReminderView: View {
                     // Processed Invoices Section
                     if processedInvoices.isEmpty {
                         Text("You have no processed invoices right now")
-                            .font(.title2)
+                            .font(.title3)
                             .padding(.top)
+                            .padding(.horizontal, 20)
+                            .multilineTextAlignment(.center)
                     }
                     
                     if !processedInvoices.isEmpty {
@@ -235,10 +239,13 @@ struct InvoiceReminderView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Done") {
+                    Button(action: {
                         Task {
                             dismiss()
                         }
+                    }) {
+                        Image(systemName: "xmark")
+                            .foregroundStyle(.red)
                     }
                 }
             }

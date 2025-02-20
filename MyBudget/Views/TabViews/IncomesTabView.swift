@@ -35,15 +35,24 @@ struct IncomesTabView: View {
                 VStack {
                     Text("Current Period:")
                         .font(.headline)
-                        .padding(.bottom, 10)
+                        .padding(.bottom, 3)
                         .foregroundStyle(Color("SecondaryTextColor"))
                     Text(DateUtils.formattedDateRange(
                        startDate: budgetManager.currentPeriod.startDate,
                        endDate: budgetManager.currentPeriod.endDate
                    ))
                     .foregroundStyle(Color("SecondaryTextColor"))
+                    .padding(.bottom, 5)
+                    Text("Total Income:")
+                        .font(.headline)
+                        .padding(.bottom, 3)
+                        .foregroundStyle(Color("SecondaryTextColor"))
+                    Text("\(budgetfb.totalIncome, specifier: "%.2f")")
+                        .foregroundStyle(Color(red: 78/255, green: 177/255, blue: 181/255))
+                        .fontWeight(.bold)
                 }
-                .padding()
+                .padding(.horizontal)
+                .padding(.vertical, 5)
                 .background(
                     LinearGradient(
                         gradient: Gradient(colors: [.backgroundTintLight, .backgroundTintDark]),
@@ -65,18 +74,11 @@ struct IncomesTabView: View {
                 )
                 
                 VStack {
-                    Text("Total Income:")
-                    Text("\(budgetfb.totalIncome, specifier: "%.2f")")
-                }
-                .font(.title)
-                .bold()
-                .padding()
-                
-                VStack {
                     
                     CustomTextFieldView(placeholder: String(localized: "Enter Income"), text: $incomeAmount, isSecure: false, onChange: {
                         errorMessage = ""
                     }, leadingPadding: 33, trailingPadding: 33, systemName: "plus.circle", maxLength: 15)
+                    .padding(.top, 20)
                     
                     if showNewCategoryField {
                         HStack {
@@ -113,7 +115,8 @@ struct IncomesTabView: View {
                                 Image(systemName: "chevron.down")
                                     .foregroundColor(.gray)
                             }
-                            .padding()
+                            .padding(.vertical, 10)
+                            .padding(.horizontal)
                             .background(
                                 LinearGradient(
                                     gradient: Gradient(colors: [
@@ -124,7 +127,7 @@ struct IncomesTabView: View {
                                     endPoint: .trailing
                                 )
                             )
-                            .cornerRadius(16)
+                            .cornerRadius(18)
                             .shadow(
                                 color: .black.opacity(0.25),
                                 radius: 1,
@@ -136,7 +139,7 @@ struct IncomesTabView: View {
                                     .stroke(Color.white.opacity(0.4), lineWidth: 0.8)
                             )
                         }
-                        .padding(.bottom, 10)
+                        .padding(.bottom, 3)
                         .padding(.horizontal, 31)
                     }
                 }
@@ -186,7 +189,7 @@ struct IncomesTabView: View {
                         errorMessage = String(localized: "Amount must be a number.")
                     }
                 }) {
-                    ButtonView(buttontext: String(localized: "Add income"), incomeButton: true, leadingPadding: 33, trailingPadding: 33)
+                    ButtonView(buttontext: String(localized: "Add income"), incomeButton: true, height: 41, leadingPadding: 33, trailingPadding: 33, topPadding: 5)
                 }
                 
                 CustomListView(

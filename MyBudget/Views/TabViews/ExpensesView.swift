@@ -68,7 +68,8 @@ struct ExpensesView: View {
                         Image(systemName: "chevron.down")
                             .foregroundColor(.gray)
                     }
-                    .padding()
+                    .padding(.vertical, 10)
+                    .padding(.horizontal)
                     .background(
                         LinearGradient(
                             gradient: Gradient(colors: [
@@ -79,7 +80,7 @@ struct ExpensesView: View {
                             endPoint: .trailing
                         )
                     )
-                    .cornerRadius(16)
+                    .cornerRadius(18)
                     .shadow(
                         color: .black.opacity(0.25),
                         radius: 1,
@@ -91,7 +92,7 @@ struct ExpensesView: View {
                             .stroke(Color.white.opacity(0.4), lineWidth: 0.8)
                     )
                 }
-                .padding(.bottom)
+                .padding(.bottom, 3)
                 .padding(.horizontal, 31)
             }
         }
@@ -141,7 +142,7 @@ struct ExpensesView: View {
                 errorMessage = String(localized: "Amount must be a number.")
             }
         }) {
-            ButtonView(buttontext: String(localized: "Add expense"), expenseButton: true, leadingPadding: 33, trailingPadding: 33 )
+            ButtonView(buttontext: String(localized: "Add expense"), expenseButton: true, height: 41, leadingPadding: 33, trailingPadding: 33, topPadding: 5)
         }
         .task {
             await loadCategories()

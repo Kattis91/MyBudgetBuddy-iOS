@@ -51,7 +51,7 @@ struct CustomTextFieldView: View {
                     }
             }
         }
-        .frame(height: 51)
+        .frame(height: 41)
         .textFieldStyle(PlainTextFieldStyle())
         .padding(.horizontal)
         .background(
@@ -61,7 +61,7 @@ struct CustomTextFieldView: View {
                 endPoint: .bottomTrailing
             )
         )
-        .cornerRadius(16)
+        .cornerRadius(18)
         .shadow(color: .black.opacity(0.4), radius: 4, x: -3, y: 4)
         // Add subtle border for more definition
         .overlay(

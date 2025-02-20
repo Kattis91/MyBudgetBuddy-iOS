@@ -171,12 +171,13 @@ struct CategoryManagementView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Done") {
+                    Button(action: {
                         Task {
-                            await loadAllCategories()
-                            await onCategoriesUpdate()
                             dismiss()
                         }
+                    }) {
+                        Image(systemName: "xmark")
+                            .foregroundStyle(.red)
                     }
                 }
             }

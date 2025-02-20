@@ -21,6 +21,8 @@ struct ExpensesTabView: View {
     
     @Binding var fixedErrorMessage: String
     @Binding var variableErrorMessage: String
+    
+    @State private var selectedTab = 0
 
     var body: some View {
         
@@ -29,15 +31,24 @@ struct ExpensesTabView: View {
                 VStack {
                     Text("Current Period:")
                         .font(.headline)
-                        .padding(.bottom, 10)
+                        .padding(.bottom, 3)
                         .foregroundStyle(Color("SecondaryTextColor"))
                     Text(DateUtils.formattedDateRange(
                        startDate: budgetManager.currentPeriod.startDate,
                        endDate: budgetManager.currentPeriod.endDate)
                     )
                     .foregroundStyle(Color("SecondaryTextColor"))
+                    .padding(.bottom, 5)
+                    Text("Total expenses:")
+                        .font(.headline)
+                        .padding(.bottom, 3)
+                        .foregroundStyle(Color("SecondaryTextColor"))
+                    Text("\(budgetfb.totalExpenses,  specifier: "%.2f")")
+                        .foregroundStyle(Color(red: 174/255, green: 41/255, blue: 114/255))
+                        .fontWeight(.bold)
                 }
-                .padding()
+                .padding(.horizontal)
+                .padding(.vertical, 5)
                 .background(
                     LinearGradient(
                         gradient: Gradient(colors: [.backgroundTintLight, .backgroundTintDark]),
@@ -58,45 +69,17 @@ struct ExpensesTabView: View {
                         .stroke(Color.white.opacity(0.3), lineWidth: 0.5)
                 )
                 
-                VStack {
-                    Text("Total expenses:")
-                    Text("\(budgetfb.totalExpenses,  specifier: "%.2f")")
+                Picker("Expense types", selection: $selectedTab) {
+                    Text("Fixed Expenses").tag(0)
+                    Text("Variable Expenses").tag(1)
                 }
-                .font(.title)
-                .bold()
-                .padding()
-                
-                HStack {
-                    Button(action: {
-                        selectedView = .fixed
-                    }) {
-                        Text("Fixed expenses")
-                            .padding(.vertical, 5)
-                            .padding(.horizontal, 10)
-                            .background(selectedView == .fixed ? Color.buttonsBackground : Color.white)
-                            .cornerRadius(10)
-                            .padding(.leading, 33)
-                            .foregroundStyle(selectedView == .fixed ? Color.white : Color("SecondaryTextColor"))
-                    }
-                    
-                    Spacer()
-                    
-                    Button(action: {
-                        selectedView = .variable
-                    }) {
-                        Text("Variable expenses")
-                            .padding(.vertical, 5)
-                            .padding(.horizontal, 10)
-                            .background(selectedView == .variable ? Color.buttonsBackground : Color.white)
-                            .cornerRadius(10)
-                            .padding(.trailing, 33)
-                            .foregroundStyle(selectedView == .variable ? Color.white : Color("SecondaryTextColor"))
-                    }
-                }
+                .pickerStyle(SegmentedPickerStyle())
+                .padding(.horizontal, 33)
+                .padding(.top, 20)
                 .padding(.bottom, 10)
                 
-                // Display the selected view
-                if selectedView == .fixed {
+                switch selectedTab {
+                case 0:
                     ExpensesView(
                         viewtype: .fixed,
                         selectedCategory: "",
@@ -106,7 +89,7 @@ struct ExpensesTabView: View {
                         budgetfb: budgetfb
                     )
                     .id(refreshTrigger)
-                } else {
+                case 1:
                     ExpensesView(
                         viewtype: .variable,
                         selectedCategory: "",
@@ -116,6 +99,8 @@ struct ExpensesTabView: View {
                         budgetfb: budgetfb
                     )
                     .id(refreshTrigger)
+                default:
+                    EmptyView()
                 }
             }
             .task {

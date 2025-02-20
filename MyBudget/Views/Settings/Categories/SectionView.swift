@@ -71,35 +71,24 @@ struct SectionView: View {
             Button(action: onAdd) {
                 HStack {
                     Image(systemName: "plus.circle.fill")
-                        .foregroundColor(.blue)
+                        .foregroundColor(.white)
                         .font(.system(size: 20)) // Match other icons size
                     Text("Add \(title)")
                         .font(.system(size: 16, weight: .medium))
-                        .foregroundColor(.blue)
+                        .foregroundColor(.white)
                 }
-                .frame(maxWidth: .infinity)
+                .frame(maxWidth: .infinity, maxHeight: 20)
                 .padding()
                 .background(
                     LinearGradient(
-                        gradient: Gradient(colors: [
-                            /*
-                            Color(red: 240/255, green: 242/255, blue: 250/255), // Slightly bluer tint
-                            Color(red: 235/255, green: 237/255, blue: 245/255)
-                            */
-                            /*
-                            Color(red: 240/255, green: 242/255, blue: 255/255), // More blue tint
-                            Color(red: 235/255, green: 237/255, blue: 250/255)
-                            */
-                           
-                            Color(red: 215/255, green: 220/255, blue: 255/255),  // Darker blue
-                            Color(red: 200/255, green: 205/255, blue: 245/255)
-                        ]),
+                        gradient: Gradient(colors: [.buttonGradientLight, .buttonGradientDark]),
                         startPoint: .leading,
                         endPoint: .trailing
                     )
                 )
                 .cornerRadius(16)
                 .shadow(color: .black.opacity(0.4), radius: 1, x: -2, y: 4)
+                .padding(.top, 15)
             }
         } header: {
             Text(headerText)
