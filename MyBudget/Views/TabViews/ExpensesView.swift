@@ -100,7 +100,10 @@ struct ExpensesView: View {
         ErrorMessageView(errorMessage: errorMessage, height: 15)
     
         Button(action: {
-            if let expense = Double(expenseAmount) {
+            // Replace comma with period to handle European decimal format
+            let normalizedAmount = expenseAmount.replacingOccurrences(of: ",", with: ".")
+            
+            if let expense = Double(normalizedAmount) {
                 if expense > 0.00 {
                     if showNewCategoryField {
                         if !newCategory.isEmpty {

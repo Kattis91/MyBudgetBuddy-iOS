@@ -123,7 +123,10 @@ struct InvoiceReminderView: View {
                             return
                         }
                         
-                        guard let invoiceAmount = Double(amount) else {
+                        // Replace comma with period to handle European decimal format
+                        let normalizedAmount = amount.replacingOccurrences(of: ",", with: ".")
+                       
+                        guard let invoiceAmount = Double(normalizedAmount) else {
                             errorMessage = String(localized: "Amount must be a number")
                             return
                         }

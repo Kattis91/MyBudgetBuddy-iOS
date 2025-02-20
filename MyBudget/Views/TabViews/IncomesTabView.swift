@@ -147,7 +147,10 @@ struct IncomesTabView: View {
                 ErrorMessageView(errorMessage: errorMessage, height: 15)
                 
                 Button(action: {
-                    if let income = Double(incomeAmount) { // Convert incomeAmount (String) to Double
+                    // Replace comma with period to handle European decimal format
+                    let normalizedAmount = incomeAmount.replacingOccurrences(of: ",", with: ".")
+    
+                    if let income = Double(normalizedAmount) { // Convert incomeAmount (String) to Double
                         if income > 0.00 {
                             if showNewCategoryField {
                                 if !newCategory.isEmpty {
