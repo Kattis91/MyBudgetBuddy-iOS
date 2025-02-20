@@ -109,20 +109,49 @@ struct DataScannerView: UIViewControllerRepresentable {
         private func processScannedText(_ text: String) {
             let cleanText = text.trimmingCharacters(in: .whitespacesAndNewlines)
             
-            // Check for date pattern
-            if cleanText.matches(of: #/\d{4}-\d{2}-\d{2}/#).count > 0 {
-                scannedDueDate.wrappedValue = cleanText
-                print("Found date: \(cleanText)")
-                return
+            // Enhanced date pattern checking
+            let datePattern = #/(\d{4}[-/.]\d{2}[-/.]\d{2}|\d{2}[-/.]\d{2}[-/.]\d{4})/#
+            if cleanText.matches(of: datePattern).count > 0 {
+                if let formattedDate = formatDate(cleanText) {
+                    scannedDueDate.wrappedValue = formattedDate
+                    print("Found date: \(formattedDate)")
+                    return
+                }
             }
             
-            // Check for amount pattern (handles both 50,00 and 440,25 formats)
+            // Existing amount pattern check remains the same
             if cleanText.matches(of: #/^\d+[,\.]\d{2}$/#).count > 0 {
                 let numericText = cleanText.replacingOccurrences(of: "[^0-9,.]", with: "", options: .regularExpression)
                 scannedAmount.wrappedValue = numericText
                 print("Found amount: \(numericText)")
                 return
             }
+        }
+
+        private func formatDate(_ dateString: String) -> String? {
+            let dateFormatter = DateFormatter()
+            dateFormatter.locale = Locale(identifier: "en_US")
+            
+            // Try different date formats
+            let formats = [
+                "yyyy-MM-dd",
+                "dd-MM-yyyy",
+                "yyyy/MM/dd",
+                "dd/MM/yyyy",
+                "yyyy.MM.dd",
+                "dd.MM.yyyy",
+            ]
+            
+            for format in formats {
+                dateFormatter.dateFormat = format
+                if let date = dateFormatter.date(from: dateString) {
+                    // Output in the format expected by the parent view
+                    dateFormatter.dateFormat = "yyyy-MM-dd"
+                    return dateFormatter.string(from: date)
+                }
+            }
+            
+            return nil
         }
     }
 }
