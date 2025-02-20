@@ -110,6 +110,9 @@ struct InvoiceReminderView: View {
                         if !scannedAmount.isEmpty {
                             amount = scannedAmount
                         }
+                        
+                        scannedAmount = ""
+                        scannedDueDate = ""
                     }) {
                         InvoiceScannerView(scannedAmount: $scannedAmount, scannedDueDate: $scannedDueDate)
                     }
