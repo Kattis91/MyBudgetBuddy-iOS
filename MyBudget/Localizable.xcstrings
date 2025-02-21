@@ -2,7 +2,14 @@
   "sourceLanguage" : "en",
   "strings" : {
     "" : {
-
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(Tom streng)"
+          }
+        }
+      }
     },
     "- %.2f" : {
       "localizations" : {
@@ -285,6 +292,16 @@
         }
       }
     },
+    "Confirm Deletion" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bekræft sletning"
+          }
+        }
+      }
+    },
     "Credits" : {
       "localizations" : {
         "da" : {
@@ -345,6 +362,26 @@
         }
       }
     },
+    "Delete account" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slette Konto"
+          }
+        }
+      }
+    },
+    "Delete Account" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slette Konto"
+          }
+        }
+      }
+    },
     "Development" : {
       "localizations" : {
         "da" : {
@@ -395,6 +432,16 @@
         }
       }
     },
+    "Email field cannot be empty." : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-mail-feltet må ikke være tomt."
+          }
+        }
+      }
+    },
     "End Date" : {
       "localizations" : {
         "da" : {
@@ -421,6 +468,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Udgiftsbeløb"
+          }
+        }
+      }
+    },
+    "Expense types" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udgiftstyper"
           }
         }
       }
@@ -485,12 +542,12 @@
         }
       }
     },
-    "Fixed expenses" : {
+    "Fixed Expenses" : {
       "localizations" : {
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Faste udgifter"
+            "value" : "Faste Udgifter"
           }
         }
       }
@@ -635,6 +692,16 @@
         }
       }
     },
+    "Invalid email format." : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ugyldigt e-mail-format."
+          }
+        }
+      }
+    },
     "Invoice Reminders" : {
       "localizations" : {
         "da" : {
@@ -755,6 +822,16 @@
         }
       }
     },
+    "Or scan the invoice" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eller scan fakturaen"
+          }
+        }
+      }
+    },
     "Organize your finances better by adding your own categories, or stick with the default ones." : {
       "localizations" : {
         "da" : {
@@ -791,6 +868,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Oversigt"
+          }
+        }
+      }
+    },
+    "Password field cannot be empty." : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adgangskodefeltet må ikke være tomt."
+          }
+        }
+      }
+    },
+    "Password must be 6+ characters." : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adgangskoden skal være på 6+ tegn."
+          }
+        }
+      }
+    },
+    "Passwords do not match." : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adgangskoder stemmer ikke overens."
           }
         }
       }
@@ -875,6 +982,26 @@
         }
       }
     },
+    "Scan Invoice" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan Faktura"
+          }
+        }
+      }
+    },
+    "Scanning not supported on this device" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scanning understøttes ikke på denne enhed"
+          }
+        }
+      }
+    },
     "Sign Out" : {
       "localizations" : {
         "da" : {
@@ -925,6 +1052,46 @@
         }
       }
     },
+    "Swipe left to delete expenses" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stryg til venstre for at slette udgifter"
+          }
+        }
+      }
+    },
+    "Swipe left to delete incomes" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stryg til venstre for at slette indkomster"
+          }
+        }
+      }
+    },
+    "Tap the amount" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tryk på beløbet"
+          }
+        }
+      }
+    },
+    "Tap the due date" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tryk på forfaldsdatoen"
+          }
+        }
+      }
+    },
     "The Developer" : {
       "localizations" : {
         "da" : {
@@ -941,6 +1108,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ikonet, der bruges i appen, er lavet af Stickers på "
+          }
+        }
+      }
+    },
+    "This action cannot be undone. All your data will be permanently deleted." : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Denne handling kan ikke fortrydes. Alle dine data vil blive slettet permanent."
           }
         }
       }
@@ -1055,12 +1232,22 @@
         }
       }
     },
-    "Variable expenses" : {
+    "Variable Expenses" : {
       "localizations" : {
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Variable udgifter"
+            "value" : "Variable Udgifter"
+          }
+        }
+      }
+    },
+    "Warning: Account Deletion" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Advarsel: Sletning af konto"
           }
         }
       }

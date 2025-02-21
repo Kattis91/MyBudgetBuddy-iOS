@@ -29,36 +29,36 @@ struct ValidationUtils {
     
     static func validateEmail(email: String) -> String? {
         if !isNotEmpty(email) {
-            return "Email field cannot be empty."
+            return String(localized:"Email field cannot be empty.")
         } else if !isValidEmail(email) {
-            return "Invalid email format."
+            return String(localized: "Invalid email format.")
         }
         return nil
     }
     
     static func validatePassword(password: String) -> String? {
         if !isNotEmpty(password) {
-            return "Password field cannot be empty."
+            return String(localized: "Password field cannot be empty.")
         } else if !isValidPassword(password) {
-            return "Password must be 6+ characters."
+            return String(localized: "Password must be 6+ characters.")
         }
         return nil
     }
     
     static func validateConfirmPassword(password: String, confirmPassword: String) -> String? {
         if !isNotEmpty(password) {
-            return "Password field cannot be empty."
+            return String(localized: "Password field cannot be empty.")
         } else if password != confirmPassword {
-            return "Passwords do not match."
+            return String(localized: "Passwords do not match.")
         }
         return nil
     }
     
     static func validateReset(email: String) -> String? {
         if !isNotEmpty(email) {
-            return "Email field cannot be empty."
+            return String(localized: "Email field cannot be empty.")
         } else if !isValidEmail(email) {
-            return "Invalid email format."
+            return String(localized: "Invalid email format.")
         }
         return nil
     }
