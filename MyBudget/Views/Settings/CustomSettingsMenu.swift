@@ -13,6 +13,7 @@ struct CustomSettingsMenu: View {
     @State private var showPopover = false
     @State var showCategoryManagement = false
     @State private var showInvoiceReminders = false
+    @State var showDeleteAccount = false
     @State private var selectedItem: Int? = nil
     
     @Environment(\.colorScheme) var colorScheme
@@ -48,7 +49,6 @@ struct CustomSettingsMenu: View {
                     }
                     .padding(.horizontal, 16)
                     .padding(.vertical, 12)
-                    .background(selectedItem == 0 ? Color.gray.opacity(0.1) : Color.clear)
                 }
                 
                 Divider()
@@ -71,7 +71,28 @@ struct CustomSettingsMenu: View {
                     }
                     .padding(.horizontal, 16)
                     .padding(.vertical, 12)
-                   
+                }
+                
+                Divider()
+                    .background(Color.gray.opacity(0.4))
+                
+                Button(action: {
+                    withAnimation(.spring(response: 0.3)) {
+                        selectedItem = 2
+                    }
+                    showPopover = false
+                    showDeleteAccount = true
+                }) {
+                    HStack {
+                        Image(systemName: "person.crop.circle.badge.minus")
+                            .frame(width: 24)
+                            .foregroundColor(Color("ButtonsBackground"))
+                        Text("Delete account")
+                            .foregroundColor(Color("SecondaryTextColor"))
+                        Spacer()
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 12)
                 }
             }
             .frame(width: 280)
@@ -101,6 +122,9 @@ struct CustomSettingsMenu: View {
         }
         .sheet(isPresented: $showInvoiceReminders) {
             InvoiceReminderView()
+        }
+        .sheet(isPresented: $showDeleteAccount) {
+            DeleteAccountView()
         }
     }
 }
