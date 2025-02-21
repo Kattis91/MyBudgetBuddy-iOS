@@ -17,6 +17,8 @@ struct ForgotPasswordView: View {
     @State var errorMessage = ""
     @State var successMessage: String?
     
+    @State var deletingAccountReset: Bool
+    
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
@@ -38,22 +40,23 @@ struct ForgotPasswordView: View {
             Text("Reset Password")
                 .font(.title2)
                 .foregroundStyle(Color("SecondaryTextColor"))
+                .padding(.bottom, 50)
+            
+            CustomTextFieldView(placeholder: "Email", text: $email, onChange: {
+                errorMessage = ""
+            }, systemName: "envelope", forget: true, maxLength: 50)
             
             VStack {
                 if errorMessage != "" {
                     ErrorMessageView(errorMessage: errorMessage)
                 } else if let successMessage = successMessage {
                     Text(successMessage)
-                        .foregroundColor(.blue)
+                        .foregroundColor(Color(red: 51/255, green: 143/255, blue: 133/255))
                         .multilineTextAlignment(.center)
                         .padding(.horizontal)
                 }
             }
-            .frame(height: 50)
-            
-            CustomTextFieldView(placeholder: "Email", text: $email, onChange: {
-                errorMessage = ""
-            }, systemName: "envelope", forget: true, maxLength: 50)
+            .frame(height: 65)
         
             
             HStack {
@@ -67,19 +70,17 @@ struct ForgotPasswordView: View {
                                 errorMessage = firebaseError
                                 successMessage = nil
                             } else {
-                                successMessage = "If the email you provided is registered, we've sent a reset link to your inbox."
+                                successMessage = deletingAccountReset ? "Please check your email. Once password is reset, return to delete your account." : "If the email you provided is registered, we've sent a reset link to your inbox."
                                 email = ""
                                 errorMessage = firebaseError ?? "" // Clear error on success
                             }
                         }
                     }
                 }) {
-                    ButtonView(buttontext: "Send reset link", maxWidth: 180, expenseButton:  true)
+                    ButtonView(buttontext: "Send reset link", maxWidth: 180, expenseButton: true, topPadding: 0)
                 }
             }
-            .padding(.top, 25)
         }
-        .padding(.bottom, 50)
         .frame(maxWidth: .infinity)
         .frame(height: 330)
         .background(Color("TabColor"))
@@ -88,5 +89,5 @@ struct ForgotPasswordView: View {
 }
 
 #Preview {
-    ForgotPasswordView(isPresented: .constant(true))
+    ForgotPasswordView(isPresented: .constant(true), deletingAccountReset: false)
 }
