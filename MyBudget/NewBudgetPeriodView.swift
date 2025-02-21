@@ -84,7 +84,7 @@ struct NewBudgetPeriodView: View {
                 Text("Period Dates")
                     .fontDesign(.rounded)
                     .tracking(1.5)
-                    .font(.title2)
+                    .font(.title3)
                     .foregroundStyle(Color("SecondaryTextColor"))
                 
                 DatePicker("Start Date",
@@ -114,7 +114,7 @@ struct NewBudgetPeriodView: View {
                         Text("Transfer Settings")
                             .fontDesign(.rounded)
                             .tracking(1.5)
-                            .font(.title2)
+                            .font(.title3)
                             .foregroundStyle(Color("SecondaryTextColor"))
                         Spacer()
                     }
@@ -129,23 +129,40 @@ struct NewBudgetPeriodView: View {
                         .foregroundStyle(Color("SecondaryTextColor"))
                     
                     if includeIncomes {
-                        VStack(alignment: .leading, spacing: 10) {
+                        VStack(alignment: .leading, spacing: 18) {
                             ScrollView {
-                                VStack(alignment: .leading, spacing: 10) {
+                                VStack(alignment: .leading, spacing: 0) {
                                     ForEach(budgetManager.incomeList, id: \.id) { income in
                                         HStack {
                                             Text(income.category)
                                             Spacer()
                                             Text(String(format: "%.2f", income.amount))
                                         }
-                                        .padding()
+                                        .padding(.horizontal, 12) // Reduced horizontal padding
+                                        .padding(.vertical, 8)    // Reduced vertical padding
                                         .background(Color.white)
-                                        .cornerRadius(16)
-                                        .foregroundStyle(Color("SecondaryTextColor"))
+                                        
+                                        if income.id != budgetManager.incomeList.last?.id {
+                                            Divider()
+                                                .opacity(0.5)
+                                        }
                                     }
                                 }
                             }
-                            .frame(maxHeight: 62)
+                            .background(Color.white)
+                            .cornerRadius(16) // Added corner radius
+                            .frame(maxHeight: 110)
+                            
+                            // Scroll indicator with matching corner radius
+                            HStack {
+                                Spacer()
+                                Image(systemName: "chevron.down")
+                                    .foregroundColor(.gray)
+                                    .opacity(0.6)
+                                    .font(.caption)
+                                Spacer()
+                            }
+                            .offset(y: -12)
                         }
                         .padding(.horizontal, 42)
                     }
@@ -159,23 +176,39 @@ struct NewBudgetPeriodView: View {
                         .foregroundStyle(Color("SecondaryTextColor"))
                     
                     if includeFixedExpenses {
-                        VStack(alignment: .leading, spacing: 10) {
+                        VStack(alignment: .leading, spacing: 18) {
                             ScrollView {
-                                VStack(alignment: .leading, spacing: 10) {
+                                VStack(alignment: .leading, spacing: 0) {
                                     ForEach(budgetManager.fixedExpenseList, id: \.id) { expense in
                                         HStack {
                                             Text(expense.category)
                                             Spacer()
                                             Text(String(format: "%.2f", expense.amount))
                                         }
-                                        .padding()
+                                        .padding(.horizontal, 12)
+                                        .padding(.vertical, 8)
                                         .background(Color.white)
-                                        .cornerRadius(16)
-                                        .foregroundStyle(Color("SecondaryTextColor"))
+                                        
+                                        if expense.id != budgetManager.fixedExpenseList.last?.id {
+                                            Divider()
+                                                .opacity(0.5)
+                                        }
                                     }
                                 }
                             }
-                            .frame(maxHeight: 62)
+                            .background(Color.white)
+                            .cornerRadius(16) // Added corner radius
+                            .frame(maxHeight: 110)
+                            
+                            HStack {
+                                Spacer()
+                                Image(systemName: "chevron.down")
+                                    .foregroundColor(.gray)
+                                    .opacity(0.6)
+                                    .font(.caption)
+                                Spacer()
+                            }
+                            .offset(y: -12)
                         }
                         .padding(.horizontal, 42)
                     }
