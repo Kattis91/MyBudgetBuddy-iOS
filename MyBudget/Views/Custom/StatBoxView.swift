@@ -14,6 +14,11 @@ struct StatBoxView: View {
     let isIncome: Bool
     let showNegativeAmount: Bool
     
+    @Environment(\.colorScheme) var colorScheme
+    var isDarkMode: Bool {
+        return colorScheme == .dark
+    }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
@@ -21,34 +26,37 @@ struct StatBoxView: View {
                     .foregroundColor(isIncome ? Color("CustomGreen") : Color("ButtonsBackground"))
                 Text(title)
                     .font(.subheadline)
-                    .foregroundStyle(Color("SecondaryTextColor"))
+                    .foregroundStyle(Color("PrimaryTextColor"))
             }
             
             Text(showNegativeAmount && amount > 0 ? "- \(amount, specifier: "%.2f")" : "\(amount, specifier: "%.2f")")
                 .font(.title2)
                 .fontWeight(.bold)
-                .foregroundStyle(Color("SecondaryTextColor"))
+                .foregroundStyle(Color("PrimaryTextColor"))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
         .background(
             LinearGradient(
-                gradient: Gradient(colors: [.backgroundTintLight, .backgroundTintDark]),
+                gradient: Gradient(colors: isDarkMode ?
+                   [Color(.darkGray), Color(.black)]  :
+                   [.backgroundTintLight, .backgroundTintDark]
+                ),
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
         )
         .cornerRadius(12)
         .shadow(
-            color: .black.opacity(0.3),
-            radius: 2,
-            x: -2,
-            y: 4
+            color: isDarkMode ? Color.black.opacity(0.6) : Color.black.opacity(0.3),
+            radius: isDarkMode ? 6 : 2,
+            x: 0,
+            y: isDarkMode ? 6 : 4
         )
-        // Add subtle border for more definition
         .overlay(
             RoundedRectangle(cornerRadius: 12)
-                .stroke(Color.white.opacity(0.3), lineWidth: 0.5)
+                .stroke(isDarkMode ? Color.white.opacity(0.5) : Color.white.opacity(0.3), lineWidth: 0.4)
+                .shadow(color: isDarkMode ? Color.white.opacity(0.05) : Color.clear, radius: 5)
         )
     }
 }

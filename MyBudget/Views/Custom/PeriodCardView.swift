@@ -30,26 +30,31 @@ struct PeriodCardView: View {
         return calendar.dateComponents([.day], from: startOfToday, to: startOfNextPeriod).day ?? 0
     }
     
+    @Environment(\.colorScheme) var colorScheme
+    var isDarkMode: Bool {
+        return colorScheme == .dark
+    }
+    
     var body: some View {
         VStack(spacing: 12) {
             Text(isPeriodActive ? "Current Budget Period" : "Coming Budget Period")
                 .font(.headline)
-                .foregroundColor(Color("SecondaryTextColor"))
+                .foregroundColor(Color("PrimaryTextColor"))
             
             Text(DateUtils.formattedDateRange(startDate: startDate, endDate: endDate))
                 .font(.title2)
                 .fontWeight(.bold)
-                .foregroundColor(Color("SecondaryTextColor"))
+                .foregroundColor(Color("PrimaryTextColor"))
             
             // Only show if days remaining is positive
             if isPeriodActive {
                 Text("~ \(daysRemaining) days remaining ~")
-                    .foregroundColor(Color("SecondaryTextColor"))
+                    .foregroundColor(Color("PrimaryTextColor"))
                     .padding(.horizontal, 12)
                     .padding(.vertical, 8)
             } else {
                 Text("~ Next period starts in \(daysUntilNextPeriod) days ~")
-                    .foregroundColor(Color("SecondaryTextColor"))
+                    .foregroundColor(Color("PrimaryTextColor"))
                     .padding(.horizontal, 12)
                     .padding(.bottom, 8)
                     .padding(.vertical, 3)
@@ -59,22 +64,25 @@ struct PeriodCardView: View {
         .padding()
         .background(
             LinearGradient(
-                gradient: Gradient(colors: [.backgroundTintLight, .backgroundTintDark]),
+                gradient: Gradient(colors: isDarkMode ?
+                   [Color(.darkGray), Color(.black)]  :
+                   [.backgroundTintLight, .backgroundTintDark]
+                ),
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
         )
         .cornerRadius(12)
         .shadow(
-            color: .black.opacity(0.3),
-            radius: 2,
-            x: -2,
-            y: 4
+            color: isDarkMode ? Color.black.opacity(0.6) : Color.black.opacity(0.3),
+            radius: isDarkMode ? 6 : 2,
+            x: isDarkMode ? 0 : -2,
+            y: isDarkMode ? 6 : 4
         )
-        // Add subtle border for more definition
         .overlay(
             RoundedRectangle(cornerRadius: 12)
-                .stroke(Color.white.opacity(0.3), lineWidth: 0.5)
+                .stroke(isDarkMode ? Color.white.opacity(0.5) : Color.white.opacity(0.3), lineWidth: isDarkMode ? 0.4 : 0.5)
+                .shadow(color: isDarkMode ? Color.white.opacity(0.05) : Color.clear, radius: 5)
         )
     }
 }
