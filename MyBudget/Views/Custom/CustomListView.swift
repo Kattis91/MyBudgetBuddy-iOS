@@ -17,6 +17,7 @@ struct CustomListView<T: Identifiable>: View {
     let alignAmountInMiddle: Bool
     let isInvoice: Bool
     @State var budgetfb = BudgetFB()
+    @Environment(\.colorScheme) var colorScheme
     
     let onMarkProcessed: ((T) -> Void)?
     
@@ -34,46 +35,55 @@ struct CustomListView<T: Identifiable>: View {
                 
                 ZStack {
                     LinearGradient(
-                        gradient: Gradient(colors: [
-                            Color(red: 245/255, green: 247/255, blue: 245/255), // Light gray
-                            Color(red: 240/255, green: 242/255, blue: 240/255)  // Slightly darker gray
+                        gradient: Gradient(colors: colorScheme == .dark ? [
+                            Color(.darkGray), Color(.black)
+                        ] : [
+                            Color(red: 245/255, green: 247/255, blue: 245/255),
+                            Color(red: 240/255, green: 242/255, blue: 240/255)
                         ]),
                         startPoint: .leading,
                         endPoint: .trailing
                     )
                     .cornerRadius(16)
                     .shadow(
-                        color: .black.opacity(0.25),
-                        radius: 1,
+                        color: colorScheme == .dark ?
+                            .black.opacity(0.35) :
+                            .black.opacity(0.25),
+                        radius: colorScheme == .dark ? 2 : 1,
                         x: -2,
                         y: 4
                     )
                     .overlay(
                         RoundedRectangle(cornerRadius: 16)
-                            .stroke(Color.white.opacity(0.4), lineWidth: 0.8)
+                            .stroke(
+                                colorScheme == .dark ?
+                                    Color.white.opacity(0.2) :
+                                    Color.white.opacity(0.4),
+                                lineWidth: 0.8
+                            )
                     )
                     
                     HStack {
                         Text(content.category)
-                            .foregroundStyle(Color("SecondaryTextColor"))
+                            .foregroundStyle(Color("PrimaryTextColor"))
 
                         if content.date != nil {
                             Spacer()
                             Text(showNegativeAmount ? "- \(content.amount ?? 0, specifier: "%.2f")" : "\(content.amount ?? 0, specifier: "%.2f")")
-                                .foregroundStyle(Color("SecondaryTextColor"))
+                                .foregroundStyle(Color("PrimaryTextColor"))
                             Spacer()
                             Text(dateFormatter.string(from: content.date!))
-                                .foregroundStyle(Color("SecondaryTextColor"))
+                                .foregroundStyle(Color("PrimaryTextColor"))
                         } else {
                             if alignAmountInMiddle {
                                 Spacer()
                                 Text(showNegativeAmount ? "- \(content.amount ?? 0, specifier: "%.2f")" : "\(content.amount ?? 0, specifier: "%.2f")")
-                                    .foregroundStyle(Color("SecondaryTextColor"))
+                                    .foregroundStyle(Color("PrimaryTextColor"))
                                 Spacer()
                             } else {
                                 Spacer()
                                 Text(showNegativeAmount ? "- \(content.amount ?? 0, specifier: "%.2f")" : "\(content.amount ?? 0, specifier: "%.2f")")
-                                    .foregroundStyle(Color("SecondaryTextColor"))
+                                    .foregroundStyle(Color("PrimaryTextColor"))
                             }
                         }
                     }
@@ -99,9 +109,11 @@ struct CustomListView<T: Identifiable>: View {
             }
             .onDelete(perform: deleteAction)
             .listRowSeparator(.hidden)
-            .listRowInsets(EdgeInsets(top: 5, leading: 0, bottom: 5, trailing: 0))
+            .listRowInsets(EdgeInsets(top: 5, leading: 20, bottom: 5, trailing: 20))
         }
         .scrollContentBackground(.hidden)
+        .listStyle(PlainListStyle())
+        .background(Color.clear)
     }
 }
 
