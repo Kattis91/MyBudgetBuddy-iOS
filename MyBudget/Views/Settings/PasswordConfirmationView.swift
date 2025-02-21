@@ -7,6 +7,7 @@
 
 import SwiftUI
 import FirebaseAuth
+import Firebase
 
 struct PasswordConfirmationView: View {
     
@@ -59,7 +60,6 @@ struct PasswordConfirmationView: View {
     
     private func deleteAccount(password: String) {
         guard let user = Auth.auth().currentUser else {
-            // Handle the case where there is no current user
             print("No user is signed in.")
             return
         }
@@ -68,20 +68,44 @@ struct PasswordConfirmationView: View {
         
         user.reauthenticate(with: credential) { authResult, error in
             if let error = error {
-                // Handle re-authentication error
                 print("Re-authentication failed: \(error.localizedDescription)")
                 return
             }
             
-            // Re-authentication succeeded, proceed with account deletion
-            user.delete { error in
-                if let error = error {
-                    // Handle account deletion error
-                    print("Account deletion failed: \(error.localizedDescription)")
-                } else {
-                    // Account deletion succeeded
-                    print("Account successfully deleted.")
-                    isPresented = false // Dismiss the view
+            // Delete user data from Firebase Realtime Database
+            let userId = user.uid
+            let databaseRef = Database.database().reference()
+            
+            // Paths to delete
+            let paths = [
+                "budgetPeriods/\(userId)",
+                "categories/\(userId)",
+                "historicalPeriods/\(userId)",
+                "invoices/\(userId)",
+                "userTokens/\(userId)"
+            ]
+            
+            let group = DispatchGroup()
+            
+            for path in paths {
+                group.enter()
+                databaseRef.child(path).removeValue { error, _ in
+                    if let error = error {
+                        print("Failed to delete data at \(path): \(error.localizedDescription)")
+                    }
+                    group.leave()
+                }
+            }
+            
+            group.notify(queue: .main) {
+                // All data deleted, now delete the user account
+                user.delete { error in
+                    if let error = error {
+                        print("Account deletion failed: \(error.localizedDescription)")
+                    } else {
+                        print("Account successfully deleted.")
+                        isPresented = false // Dismiss the view
+                    }
                 }
             }
         }
