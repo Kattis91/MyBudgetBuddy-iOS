@@ -11,6 +11,7 @@ struct DeleteAccountView: View {
     @Environment(\.dismiss) var dismiss
     @State private var showingConfirmation = false
     @Environment(\.presentationMode) var presentationMode
+    @State var showForgotPassword = false
     
     var body: some View {
         
@@ -41,7 +42,9 @@ struct DeleteAccountView: View {
                     }
                     
                     Button(action: {
-                        
+                        withAnimation(.spring()) {
+                            showForgotPassword.toggle()
+                        }
                     }) {
                         ButtonView(buttontext: "Forgot password?", maxWidth: 250, expenseButton: true)
                     }
@@ -61,6 +64,14 @@ struct DeleteAccountView: View {
                 PasswordConfirmationView(isPresented: $showingConfirmation)
                     .navigationBarBackButtonHidden(true)
                     .frame(height: 350)
+                    .background(Color.white)
+                    .padding(.horizontal, 24)
+                    .cornerRadius(12)
+            }
+            if showForgotPassword {
+                ForgotPasswordView(isPresented: $showForgotPassword, deletingAccountReset: true)
+                    .navigationBarBackButtonHidden(true)
+                    .frame(height: 330)
                     .background(Color.white)
                     .padding(.horizontal, 24)
                     .cornerRadius(12)
