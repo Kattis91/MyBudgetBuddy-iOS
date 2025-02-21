@@ -26,6 +26,7 @@ struct PeriodDetailView: View {
             }
             .pickerStyle(SegmentedPickerStyle())
             .padding(.horizontal, 34)
+            .padding(.bottom, 15)
             
             // Add tab view content
             switch selectedTab {

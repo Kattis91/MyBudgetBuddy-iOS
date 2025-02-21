@@ -150,6 +150,16 @@ struct ExpensesView: View {
         .task {
             await loadCategories()
         }
+        .padding(.bottom, 15)
+        
+        HStack {
+            Image(systemName: "arrow.left.to.line")
+                .font(.caption)
+            Text("Swipe left to delete expenses")
+                .font(.caption)
+        }
+        .foregroundStyle(Color("PrimaryTextColor"))
+        .padding(.horizontal)
         
         if viewtype == .fixed {
             CustomListView(

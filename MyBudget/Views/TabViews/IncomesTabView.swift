@@ -194,6 +194,16 @@ struct IncomesTabView: View {
                 }) {
                     ButtonView(buttontext: String(localized: "Add income"), incomeButton: true, height: 41, leadingPadding: 33, trailingPadding: 33, topPadding: 5)
                 }
+                .padding(.bottom, 15)
+                
+                HStack {
+                    Image(systemName: "arrow.left.to.line")
+                        .font(.caption)
+                    Text("Swipe left to delete incomes")
+                        .font(.caption)
+                }
+                .foregroundStyle(Color("PrimaryTextColor"))
+                .padding(.horizontal)
                 
                 CustomListView(
                     items: budgetfb.incomeList,
