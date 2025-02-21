@@ -21,7 +21,7 @@ struct OverviewTabView: View {
             List {
                 Section {
                     PeriodRowView(period: budgetManager.currentPeriod, isCurrent: true)
-                            .listRowInsets(EdgeInsets(top: 10, leading: 4, bottom: 8, trailing: 4))
+                            .listRowInsets(EdgeInsets(top: 10, leading: 10, bottom: 8, trailing: 10))
                 } header: {
                     Text("Current Period")
                         .font(.title2)
@@ -33,7 +33,7 @@ struct OverviewTabView: View {
                     Section {
                         ForEach(nonEmptyPeriods.reversed()) { period in
                             PeriodRowView(period: period, isCurrent: false)
-                                .listRowInsets(EdgeInsets(top: 0, leading: 4, bottom: 8, trailing: 4))
+                                .listRowInsets(EdgeInsets(top: 0, leading: 10, bottom: 8, trailing: 10))
                         }
                         .onDelete { offsets in
                             Task {
@@ -63,6 +63,8 @@ struct OverviewTabView: View {
                 }
             }
             .scrollContentBackground(.hidden)
+            .listStyle(PlainListStyle())
+            .background(Color.clear)
             .onReceive(NotificationCenter.default.publisher(for: .init("HistoricalPeriodsUpdated"))) { notification in
                 if let updatedPeriods = notification.object as? [BudgetPeriod] {
                     budgetManager.historicalPeriods = updatedPeriods

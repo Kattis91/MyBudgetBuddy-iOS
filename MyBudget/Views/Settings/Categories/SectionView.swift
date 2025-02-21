@@ -14,6 +14,8 @@ struct SectionView: View {
     let onDelete: (String) -> Void
     let onAdd: () -> Void
     let headerText: String
+    
+    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         Section {
@@ -21,14 +23,14 @@ struct SectionView: View {
                 HStack {
                     Text(category)
                         .font(.system(size: 16, weight: .medium))
-                        .foregroundStyle(Color("SecondaryTextColor"))
+                        .foregroundStyle(Color("PrimaryTextColor"))
                     Spacer()
                     HStack(spacing: 16) {
                         Button(action: { onEdit(category) }) {
                             Image(systemName: "square.and.pencil")
                                 .resizable()
                                 .frame(width: 20, height: 20)
-                                .foregroundColor(.blue)
+                                .foregroundStyle(Color("PrimaryTextColor"))
                         }
                         .buttonStyle(BorderlessButtonStyle())
                         
@@ -44,7 +46,9 @@ struct SectionView: View {
                 .padding()
                 .background(
                     LinearGradient(
-                        gradient: Gradient(colors: [
+                        gradient: Gradient(colors: colorScheme == .dark ? [
+                            Color(.darkGray), Color(.black)
+                        ] : [
                             Color(red: 245/255, green: 247/255, blue: 245/255),
                             Color(red: 240/255, green: 242/255, blue: 240/255)
                         ]),
@@ -54,14 +58,21 @@ struct SectionView: View {
                 )
                 .cornerRadius(16)
                 .shadow(
-                    color: .black.opacity(0.25),
-                    radius: 1,
-                    x: 0,
+                    color: colorScheme == .dark ?
+                        .black.opacity(0.35) :
+                            .black.opacity(0.25),
+                    radius: colorScheme == .dark ? 2 : 1,
+                    x: -2,
                     y: 4
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: 16)
-                        .stroke(Color.white.opacity(0.4), lineWidth: 0.8)
+                        .stroke(
+                            colorScheme == .dark ?
+                            Color.white.opacity(0.2) :
+                                Color.white.opacity(0.4),
+                            lineWidth: 0.8
+                        )
                 )
             }
             .padding(.horizontal, 10)

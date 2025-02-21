@@ -11,6 +11,8 @@ struct PeriodRowView: View {
     let period: BudgetPeriod
     let isCurrent: Bool
     
+    @Environment(\.colorScheme) var colorScheme
+    
     var body: some View {
         
         if isCurrent {
@@ -18,23 +20,32 @@ struct PeriodRowView: View {
         } else {
             ZStack {
                 LinearGradient(
-                    gradient: Gradient(colors: [
-                        Color(red: 245/255, green: 247/255, blue: 245/255), // Light gray
-                        Color(red: 240/255, green: 242/255, blue: 240/255)  // Slightly darker gray
+                    gradient: Gradient(colors: colorScheme == .dark ? [
+                        Color(.darkGray), Color(.black)
+                    ] : [
+                        Color(red: 245/255, green: 247/255, blue: 245/255),
+                        Color(red: 240/255, green: 242/255, blue: 240/255)
                     ]),
                     startPoint: .leading,
                     endPoint: .trailing
                 )
                 .cornerRadius(16)
                 .shadow(
-                    color: .black.opacity(0.25),
-                    radius: 1,
+                    color: colorScheme == .dark ?
+                        .black.opacity(0.35) :
+                        .black.opacity(0.25),
+                    radius: colorScheme == .dark ? 2 : 1,
                     x: -2,
                     y: 4
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: 16)
-                        .stroke(Color.white.opacity(0.4), lineWidth: 0.8)
+                        .stroke(
+                            colorScheme == .dark ?
+                                Color.white.opacity(0.2) :
+                                Color.white.opacity(0.4),
+                            lineWidth: 0.8
+                        )
                 )
                 
                 VStack {
@@ -43,14 +54,14 @@ struct PeriodRowView: View {
                             VStack (spacing: 8) {
                                 Text(DateUtils.formattedDateRange(startDate: period.startDate, endDate: period.endDate))
                                     .fontWeight(.bold)
-                                    .foregroundStyle(Color("SecondaryTextColor"))
+                                    .foregroundStyle(Color("PrimaryTextColor"))
                                 Text("Outcome: \(period.totalIncome - (period.totalFixedExpenses + period.totalVariableExpenses), specifier: "%.2f")")
-                                    .foregroundStyle(Color("SecondaryTextColor"))
+                                    .foregroundStyle(Color("PrimaryTextColor"))
                             }
                             Spacer()
                             
                             Image(systemName: "info.circle.fill")
-                                .foregroundStyle(Color("SecondaryTextColor"))
+                                .foregroundStyle(Color("PrimaryTextColor"))
                         }
                     }
                     .buttonStyle(PlainButtonStyle())

@@ -159,7 +159,7 @@ struct InvoiceReminderView: View {
                 }
                 .pickerStyle(SegmentedPickerStyle())
                 .padding(.horizontal, 28)
-                .padding(.top, 30)
+                .padding(.vertical, 30)
                 
                 switch selectedTab {
                 case 0:
