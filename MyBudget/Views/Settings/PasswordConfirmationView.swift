@@ -16,11 +16,11 @@ struct PasswordConfirmationView: View {
     @State private var password = ""
     @State private var confirmationText = ""
     @Binding var isPresented: Bool
-    
+    @State var errorMessage = ""
     
     var body: some View {
         
-        VStack(spacing: 20) {
+        VStack {
             
             HStack {
                 Spacer()
@@ -28,28 +28,30 @@ struct PasswordConfirmationView: View {
                     isPresented = false
                 }) {
                     Image(systemName: "xmark")
-                        .foregroundStyle(.red)
+                        .foregroundStyle(Color("ButtonsBackground"))
                 }
             }
             .padding(.horizontal)
-            .padding(.top, 10)
+            .padding(.top, 30)
             
             Text("Confirm Deletion")
                 .font(.title2)
                 .foregroundStyle(Color("SecondaryTextColor"))
-                .padding(.bottom, 15)
+                .padding(.bottom, 35)
             
             CustomTextFieldView(placeholder: "Type DELETE to confirm", text: $confirmationText, systemName: "trash.circle")
+                .padding(.bottom, 10)
             
-            CustomTextFieldView(placeholder: "Current Password", text: $password, isSecure: true, systemName: "lock")
+            CustomTextFieldView(placeholder: "Current Password", text: $password, isSecure: true, onChange: { errorMessage = "" }, systemName: "lock")
+            
+            ErrorMessageView(errorMessage: errorMessage, height: 30)
             
             Button("Delete Account") {
                 deleteAccount(password: password)
             }
-            .disabled(confirmationText != "DELETE" || password.isEmpty)
+            .disabled(confirmationText != "DELETE")
             .buttonStyle(.borderedProminent)
-            .tint(.red)
-            .padding(.top, 20)
+            .tint(Color("ButtonsBackground"))
         }
         .padding(.bottom, 50)
         .frame(maxWidth: .infinity)
@@ -64,12 +66,21 @@ struct PasswordConfirmationView: View {
             return
         }
         
+        guard !password.isEmpty else {
+            errorMessage = "Please enter your password"
+            return
+        }
+        
+        errorMessage = ""
+        
         let credential = EmailAuthProvider.credential(withEmail: user.email ?? "", password: password)
         
         user.reauthenticate(with: credential) { authResult, error in
             if let error = error {
+                errorMessage = "Password is incorrect"
                 print("Re-authentication failed: \(error.localizedDescription)")
                 return
+                
             }
             
             // Delete user data from Firebase Realtime Database
