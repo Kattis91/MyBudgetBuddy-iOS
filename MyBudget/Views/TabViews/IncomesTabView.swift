@@ -28,6 +28,11 @@ struct IncomesTabView: View {
     
     @State var showNewCategoryField = false
     
+    @Environment(\.colorScheme) var colorScheme
+    var isDarkMode: Bool {
+        return colorScheme == .dark
+    }
+    
     var body: some View {
         
         NavigationStack {
@@ -36,17 +41,17 @@ struct IncomesTabView: View {
                     Text("Current Period:")
                         .font(.headline)
                         .padding(.bottom, 3)
-                        .foregroundStyle(Color("SecondaryTextColor"))
+                        .foregroundStyle(Color("PrimaryTextColor"))
                     Text(DateUtils.formattedDateRange(
                        startDate: budgetManager.currentPeriod.startDate,
                        endDate: budgetManager.currentPeriod.endDate
                    ))
-                    .foregroundStyle(Color("SecondaryTextColor"))
+                    .foregroundStyle(Color("PrimaryTextColor"))
                     .padding(.bottom, 5)
                     Text("Total Income:")
                         .font(.headline)
                         .padding(.bottom, 3)
-                        .foregroundStyle(Color("SecondaryTextColor"))
+                        .foregroundStyle(Color("PrimaryTextColor"))
                     Text("\(budgetfb.totalIncome, specifier: "%.2f")")
                         .foregroundStyle(Color(red: 78/255, green: 177/255, blue: 181/255))
                         .fontWeight(.bold)
@@ -55,22 +60,31 @@ struct IncomesTabView: View {
                 .padding(.vertical, 5)
                 .background(
                     LinearGradient(
-                        gradient: Gradient(colors: [.backgroundTintLight, .backgroundTintDark]),
+                        gradient: Gradient(colors: isDarkMode ?
+                            [.darkGradientStart, .darkGradientEnd] :
+                            [.backgroundTintLight, .backgroundTintDark]
+                        ),
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     )
                 )
                 .cornerRadius(16)
                 .shadow(
-                    color: .black.opacity(0.3),
-                    radius: 1,
+                    color: isDarkMode ?
+                        Color.black.opacity(0.25) :
+                        Color.black.opacity(0.3),
+                    radius: isDarkMode ? 3 : 1,
                     x: 0,
                     y: 3
                 )
-                // Add subtle border for more definition
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
-                        .stroke(Color.white.opacity(0.3), lineWidth: 0.5)
+                        .stroke(
+                            isDarkMode ?
+                                Color.white.opacity(0.08) :
+                                Color.white.opacity(0.3),
+                            lineWidth: 0.5
+                        )
                 )
                 
                 VStack {
