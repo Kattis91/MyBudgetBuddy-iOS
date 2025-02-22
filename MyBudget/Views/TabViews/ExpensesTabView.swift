@@ -77,6 +77,11 @@ struct ExpensesTabView: View {
                 .padding(.horizontal, 33)
                 .padding(.top, 20)
                 .padding(.bottom, 10)
+                .onChange(of: selectedTab) {
+                    // Clear both error messages when switching
+                    fixedErrorMessage = ""
+                    variableErrorMessage = ""
+                }
                 
                 switch selectedTab {
                 case 0:
