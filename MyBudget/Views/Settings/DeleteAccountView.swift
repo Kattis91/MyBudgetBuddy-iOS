@@ -14,67 +14,73 @@ struct DeleteAccountView: View {
     @State var showForgotPassword = false
     
     var body: some View {
-        
-        ZStack {
-            VStack(spacing: 20) {
-                VStack(spacing: 10) {
-                    Image(systemName: "exclamationmark.triangle.fill")
-                        .foregroundColor(.orange)
-                        .font(.largeTitle)
+        NavigationStack {
+            ZStack {
+                VStack(spacing: 20) {
+                    VStack(spacing: 10) {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .foregroundColor(.orange)
+                            .font(.largeTitle)
+                        
+                        Text("Warning: Account Deletion")
+                            .font(.headline)
+                            .foregroundColor(.orange)
+                        
+                        Text("This action cannot be undone. All your data will be permanently deleted.")
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(.gray)
+                    }
                     
-                    Text("Warning: Account Deletion")
-                        .font(.headline)
-                        .foregroundColor(.orange)
-                    
-                    Text("This action cannot be undone. All your data will be permanently deleted.")
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(.gray)
-                }
-                
-                VStack(spacing: 15) {
-                    
-                    Button(action: {
-                        withAnimation(.spring()) {
-                            showingConfirmation.toggle()
+                    VStack(spacing: 15) {
+                        
+                        Button(action: {
+                            withAnimation(.spring()) {
+                                showingConfirmation.toggle()
+                            }
+                        }) {
+                            ButtonView(buttontext: "Delete with password", maxWidth: 250, expenseButton: true)
                         }
-                    }) {
-                        ButtonView(buttontext: "Delete with password", maxWidth: 250, expenseButton: true)
-                    }
-                    
-                    Button(action: {
-                        withAnimation(.spring()) {
-                            showForgotPassword.toggle()
+                        
+                        Button(action: {
+                            withAnimation(.spring()) {
+                                showForgotPassword.toggle()
+                            }
+                        }) {
+                            ButtonView(buttontext: "Forgot password?", maxWidth: 250, expenseButton: true)
                         }
-                    }) {
-                        ButtonView(buttontext: "Forgot password?", maxWidth: 250, expenseButton: true)
                     }
                 }
-            }
-            .padding()
-            .navigationTitle("Delete Account")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
-                        dismiss()
+                .padding()
+                .navigationTitle("Delete Account")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button(action: {
+                            Task {
+                                dismiss()
+                            }
+                        }) {
+                            Image(systemName: "xmark")
+                                .foregroundStyle(Color("ButtonsBackground"))
+                        }
                     }
                 }
-            }
-            if showingConfirmation {
-                PasswordConfirmationView(isPresented: $showingConfirmation)
-                    .navigationBarBackButtonHidden(true)
-                    .frame(height: 350)
-                    .background(Color.white)
-                    .padding(.horizontal, 24)
-                    .cornerRadius(12)
-            }
-            if showForgotPassword {
-                ForgotPasswordView(isPresented: $showForgotPassword, deletingAccountReset: true)
-                    .navigationBarBackButtonHidden(true)
-                    .frame(height: 330)
-                    .background(Color.white)
-                    .padding(.horizontal, 24)
-                    .cornerRadius(12)
+                if showingConfirmation {
+                    PasswordConfirmationView(isPresented: $showingConfirmation)
+                        .navigationBarBackButtonHidden(true)
+                        .frame(height: 350)
+                        .background(Color.white)
+                        .padding(.horizontal, 24)
+                        .cornerRadius(12)
+                }
+                if showForgotPassword {
+                    ForgotPasswordView(isPresented: $showForgotPassword, deletingAccountReset: true)
+                        .navigationBarBackButtonHidden(true)
+                        .frame(height: 330)
+                        .background(Color.white)
+                        .padding(.horizontal, 24)
+                        .cornerRadius(12)
+                }
             }
         }
     }

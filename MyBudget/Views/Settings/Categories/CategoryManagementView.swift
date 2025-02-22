@@ -46,8 +46,6 @@ struct CategoryManagementView: View {
             ZStack {
                 if !showEditForm && !showNewCategoryField {
                     VStack {
-                        Text("Manage your categories:")
-                            .font(.title3)
                         List {
                             // Add segmented control
                             Picker("Category", selection: $selectedTab) {
@@ -56,6 +54,9 @@ struct CategoryManagementView: View {
                                 Text("Variable").tag(2)
                             }
                             .pickerStyle(SegmentedPickerStyle())
+                            .padding(.top, 10)
+                            .padding(.horizontal, 10)
+                            .listRowSeparator(.hidden)
                             
                             switch selectedTab {
                             case 0:
@@ -135,6 +136,8 @@ struct CategoryManagementView: View {
                             }
                         }
                         .scrollContentBackground(.hidden)
+                        .listStyle(PlainListStyle())
+                        .background(Color.clear)
                         .alert("Are you sure you want to delete \(selectedCategory?.0 ?? "this category")?", isPresented: $showingDeleteAlert) {
                             Button("Cancel", role: .cancel) { }
                             Button("Delete", role: .destructive) {
@@ -169,6 +172,8 @@ struct CategoryManagementView: View {
                     )
                 }
             }
+            .navigationTitle("Manage Categories")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
@@ -177,7 +182,7 @@ struct CategoryManagementView: View {
                         }
                     }) {
                         Image(systemName: "xmark")
-                            .foregroundStyle(.red)
+                            .foregroundStyle(Color("ButtonsBackground"))
                     }
                 }
             }

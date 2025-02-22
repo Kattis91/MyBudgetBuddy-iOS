@@ -44,11 +44,9 @@ struct InvoiceReminderView: View {
             VStack {
                 // Input Form Section
                 VStack {
-                    Text("Manage your invoices:")
-                        .font(.title3)
-                        .padding(.bottom, 30)
                     
                     CustomTextFieldView(placeholder: String(localized: "Title"), text: $title, onChange: { errorMessage = ""}, systemName: "bell.badge", maxLength: 50)
+                        .padding(.top, 10)
                     CustomTextFieldView(placeholder: String(localized: "Amount"), text: $amount, onChange: { errorMessage = ""}, systemName: "dollarsign.circle", maxLength: 15)
                     
                     HStack {
@@ -243,6 +241,8 @@ struct InvoiceReminderView: View {
             .task {
                 await loadInvoices()
             }
+            .navigationTitle("Manage Invoices")
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
@@ -251,7 +251,7 @@ struct InvoiceReminderView: View {
                         }
                     }) {
                         Image(systemName: "xmark")
-                            .foregroundStyle(.red)
+                            .foregroundStyle(Color("ButtonsBackground"))
                     }
                 }
             }
