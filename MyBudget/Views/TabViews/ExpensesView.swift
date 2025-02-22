@@ -152,14 +152,17 @@ struct ExpensesView: View {
         }
         .padding(.bottom, 15)
         
-        HStack {
-            Image(systemName: "arrow.left.to.line")
-                .font(.caption)
-            Text("Swipe left to delete expenses")
-                .font(.caption)
+        if viewtype == .fixed && !budgetfb.fixedExpenseList.isEmpty ||
+           viewtype == .variable && !budgetfb.variableExpenseList.isEmpty {
+            HStack {
+                Image(systemName: "arrow.left.to.line")
+                    .font(.caption)
+                Text("Swipe left to delete expenses")
+                    .font(.caption)
+            }
+            .foregroundStyle(Color("PrimaryTextColor"))
+            .padding(.horizontal)
         }
-        .foregroundStyle(Color("PrimaryTextColor"))
-        .padding(.horizontal)
         
         if viewtype == .fixed {
             CustomListView(

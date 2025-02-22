@@ -35,6 +35,16 @@ struct OverviewTabView: View {
                     }
                     .padding(.vertical, 20)
                     
+                    HStack {
+                        Image(systemName: "arrow.left.to.line")
+                            .font(.caption)
+                        Text("Swipe left to delete periods")
+                            .font(.caption)
+                    }
+                    .foregroundStyle(Color("PrimaryTextColor"))
+                    .padding(.horizontal)
+                    .padding(.bottom, 10)
+                    
                     // Historical Periods List
                     List {
                         ForEach(nonEmptyPeriods.reversed()) { period in

@@ -196,14 +196,16 @@ struct IncomesTabView: View {
                 }
                 .padding(.bottom, 15)
                 
-                HStack {
-                    Image(systemName: "arrow.left.to.line")
-                        .font(.caption)
-                    Text("Swipe left to delete incomes")
-                        .font(.caption)
+                if !budgetfb.incomeList.isEmpty {
+                    HStack {
+                        Image(systemName: "arrow.left.to.line")
+                            .font(.caption)
+                        Text("Swipe left to delete incomes")
+                            .font(.caption)
+                    }
+                    .foregroundStyle(Color("PrimaryTextColor"))
+                    .padding(.horizontal)
                 }
-                .foregroundStyle(Color("PrimaryTextColor"))
-                .padding(.horizontal)
                 
                 CustomListView(
                     items: budgetfb.incomeList,
