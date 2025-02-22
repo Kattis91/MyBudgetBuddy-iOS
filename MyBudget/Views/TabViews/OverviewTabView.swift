@@ -18,22 +18,30 @@ struct OverviewTabView: View {
         }
         
         NavigationView {
-            List {
-                Section {
-                    PeriodRowView(period: budgetManager.currentPeriod, isCurrent: true)
-                            .listRowInsets(EdgeInsets(top: 10, leading: 10, bottom: 8, trailing: 10))
-                } header: {
-                    Text("Current Period")
-                        .font(.title2)
-                        .textCase(nil)
-                        .padding(.leading, -10)
-                }
+            VStack(spacing: 0) {
+                PeriodRowView(period: budgetManager.currentPeriod, isCurrent: true)
+                    .padding(.horizontal, 10)
+                    .padding(.top, 20)
+                    .padding(.bottom, 8)
                 
                 if !nonEmptyPeriods.isEmpty {
-                    Section {
+                    HStack {
+                        Text("Historical Periods")
+                            .font(.title2)
+                            .textCase(nil)
+                            .padding(.leading, 10)
+                            .foregroundColor(Color("PrimaryTextColor"))
+                        Spacer()
+                    }
+                    .padding(.vertical, 20)
+                    
+                    // Historical Periods List
+                    List {
                         ForEach(nonEmptyPeriods.reversed()) { period in
                             PeriodRowView(period: period, isCurrent: false)
-                                .listRowInsets(EdgeInsets(top: 0, leading: 10, bottom: 8, trailing: 10))
+                                .listRowInsets(EdgeInsets())
+                                .padding(.horizontal, 10)
+                                .padding(.bottom, 15)
                         }
                         .onDelete { offsets in
                             Task {
@@ -51,19 +59,16 @@ struct OverviewTabView: View {
                             }
                         }
                         .listRowSeparator(.hidden)
-                    } header: {
-                        Text("Historical Periods")
-                            .font(.title2)
-                            .textCase(nil)
-                            .padding(.leading, -10)
+                        .listRowBackground(Color.clear)
                     }
-                    .padding(.bottom, 10)
+                    .listStyle(PlainListStyle())
+                    .scrollContentBackground(.hidden)
+                    .background(Color.clear)
                 } else {
                     Text("You have no historical periods right now.")
+                        .padding(.top, 20)
                 }
             }
-            .scrollContentBackground(.hidden)
-            .listStyle(PlainListStyle())
             .background(Color.clear)
             .onReceive(NotificationCenter.default.publisher(for: .init("HistoricalPeriodsUpdated"))) { notification in
                 if let updatedPeriods = notification.object as? [BudgetPeriod] {
