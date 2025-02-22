@@ -16,7 +16,9 @@ struct DeleteAccountView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                VStack(spacing: 20) {
+                if !showingConfirmation && !showForgotPassword {
+                    
+                    VStack(spacing: 20) {
                     VStack(spacing: 10) {
                         Image(systemName: "exclamationmark.triangle.fill")
                             .foregroundColor(.orange)
@@ -50,18 +52,19 @@ struct DeleteAccountView: View {
                         }
                     }
                 }
-                .padding()
-                .navigationTitle("Delete Account")
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button(action: {
-                            Task {
-                                dismiss()
+                    .padding()
+                    .navigationTitle("Delete Account")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button(action: {
+                                Task {
+                                    dismiss()
+                                }
+                            }) {
+                                Image(systemName: "xmark")
+                                    .foregroundStyle(Color("ButtonsBackground"))
                             }
-                        }) {
-                            Image(systemName: "xmark")
-                                .foregroundStyle(Color("ButtonsBackground"))
                         }
                     }
                 }
