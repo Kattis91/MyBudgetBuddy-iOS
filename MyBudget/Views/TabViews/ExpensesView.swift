@@ -26,6 +26,11 @@ struct ExpensesView: View {
     @State var showNewCategoryField = false
     
     @State var budgetfb = BudgetFB()
+    
+    @Environment(\.colorScheme) var colorScheme
+    var isDarkMode: Bool {
+        return colorScheme == .dark
+    }
    
     var body: some View {
         
@@ -63,7 +68,7 @@ struct ExpensesView: View {
                 } label: {
                     HStack {
                         Text(selectedCategory.isEmpty ? String(localized: "Choose Category") : selectedCategory)
-                            .foregroundColor(selectedCategory.isEmpty ? .black.opacity(0.5) : .black)
+                            .foregroundColor(isDarkMode ? .white.opacity(0.8) : .black)
                         Spacer()
                         Image(systemName: "chevron.down")
                             .foregroundColor(.gray)
@@ -72,12 +77,11 @@ struct ExpensesView: View {
                     .padding(.horizontal)
                     .background(
                         LinearGradient(
-                            gradient: Gradient(colors: [
-                                Color(red: 245/255, green: 247/255, blue: 245/255), // Light gray
-                                Color(red: 240/255, green: 242/255, blue: 240/255)  // Slightly darker gray
-                            ]),
-                            startPoint: .leading,
-                            endPoint: .trailing
+                            gradient: Gradient(colors: isDarkMode ?
+                                [.inputGradientLight, .inputGradientDark] :
+                                [.backgroundTintLight, .backgroundTintDark]),
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
                         )
                     )
                     .cornerRadius(18)

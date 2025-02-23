@@ -141,6 +141,7 @@ struct NewBudgetPeriodView: View {
                                         .padding(.horizontal, 12) // Reduced horizontal padding
                                         .padding(.vertical, 8)    // Reduced vertical padding
                                         .background(Color.white)
+                                        .foregroundColor(Color("SecondaryTextColor"))
                                         
                                         if income.id != budgetManager.incomeList.last?.id {
                                             Divider()
@@ -188,6 +189,7 @@ struct NewBudgetPeriodView: View {
                                         .padding(.horizontal, 12)
                                         .padding(.vertical, 8)
                                         .background(Color.white)
+                                        .foregroundColor(Color("SecondaryTextColor"))
                                         
                                         if expense.id != budgetManager.fixedExpenseList.last?.id {
                                             Divider()

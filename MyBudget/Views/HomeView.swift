@@ -13,21 +13,42 @@ struct HomeView: View {
     init() {
         let appearance = UITabBarAppearance()
         appearance.configureWithOpaqueBackground()
-        // Set the background color of the tab bar
-        appearance.backgroundColor = UIColor(red: 255/255, green: 242/255, blue: 230/255, alpha: 1.0)
         
-        // Set the appearance for inactive tabs
-        appearance.stackedLayoutAppearance.normal.iconColor = UIColor(red: 170 / 255, green: 170 / 255, blue: 216 / 255, alpha: 1.0)
+        // Create dynamic background color
+        let dynamicBackground = UIColor { traitCollection in
+            return traitCollection.userInterfaceStyle == .dark
+                ? UIColor(red: 28/255, green: 28/255, blue: 30/255, alpha: 1.0)  // Dark mode
+                : UIColor(red: 255/255, green: 242/255, blue: 230/255, alpha: 1.0)  // Light mode
+        }
+        appearance.backgroundColor = dynamicBackground
         
+        // Create dynamic colors for unselected items
+        let dynamicNormalColor = UIColor { traitCollection in
+            return traitCollection.userInterfaceStyle == .dark
+                ? UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1.0)  // Dark mode
+                : UIColor(red: 170/255, green: 170/255, blue: 216/255, alpha: 1.0)  // Light mode
+        }
+        
+        // Create dynamic colors for selected items
+        let dynamicSelectedColor = UIColor { traitCollection in
+            return traitCollection.userInterfaceStyle == .dark
+                ? UIColor.white  // Dark mode
+                : UIColor(red: 0/255, green: 51/255, blue: 102/255, alpha: 1.0)  // Light mode
+        }
+        
+        // Apply colors to normal state
+        appearance.stackedLayoutAppearance.normal.iconColor = dynamicNormalColor
         appearance.stackedLayoutAppearance.normal.titleTextAttributes = [
-            .foregroundColor: UIColor(red: 148 / 255, green: 148 / 255, blue: 194 / 255, alpha: 1.0)
-        ]
-
-        appearance.stackedLayoutAppearance.selected.iconColor = UIColor(red: 0 / 255, green: 51 / 255, blue: 102 / 255, alpha: 1.0)
-        appearance.stackedLayoutAppearance.selected.titleTextAttributes = [
-            .foregroundColor: UIColor(red: 0 / 255, green: 51 / 255, blue: 102 / 255, alpha: 1.0)
+            .foregroundColor: dynamicNormalColor
         ]
         
+        // Apply colors to selected state
+        appearance.stackedLayoutAppearance.selected.iconColor = dynamicSelectedColor
+        appearance.stackedLayoutAppearance.selected.titleTextAttributes = [
+            .foregroundColor: dynamicSelectedColor
+        ]
+        
+        // Apply the appearance settings
         UITabBar.appearance().standardAppearance = appearance
         UITabBar.appearance().scrollEdgeAppearance = appearance
     }

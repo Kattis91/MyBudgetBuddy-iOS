@@ -32,6 +32,12 @@ extension Color {
     static let backgroundTintLight = Color(red: 252/255, green: 242/255, blue: 230/255)  // Darker warm tone
     static let backgroundTintDark = Color(red: 245/255, green: 235/255, blue: 220/255)
     
+    static let darkGradientStart = Color(red: 40/255, green: 40/255, blue: 45/255)
+    static let darkGradientEnd = Color(red: 28/255, green: 28/255, blue: 32/255)
+    
+    static let inputGradientLight = Color(red: 102/255, green: 102/255, blue: 104/255)  // #666668
+    static let inputGradientDark = Color(red: 92/255, green: 92/255, blue: 94/255)      // #5C5C5E
+    
     // MARK: - Button Colors
     static let buttonGradientLight = Color(red: 190/255, green: 195/255, blue: 255/255)  // More saturated blue
     static let buttonGradientDark = Color(red: 170/255, green: 175/255, blue: 240/255)

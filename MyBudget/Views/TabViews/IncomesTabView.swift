@@ -124,21 +124,21 @@ struct IncomesTabView: View {
                         } label: {
                             HStack {
                                 Text(selectedCategory.isEmpty ? String(localized: "Choose Category") : selectedCategory)
-                                    .foregroundColor(selectedCategory.isEmpty ? .black.opacity(0.5) : .black)
+                                    .foregroundColor(isDarkMode ? .white.opacity(0.8) : .black)
                                 Spacer()
                                 Image(systemName: "chevron.down")
                                     .foregroundColor(.gray)
                             }
                             .padding(.vertical, 10)
                             .padding(.horizontal)
+                            //.background(Color(red: 92/255, green: 92/255, blue: 94/255))
                             .background(
                                 LinearGradient(
-                                    gradient: Gradient(colors: [
-                                        Color(red: 245/255, green: 247/255, blue: 245/255), // Light gray
-                                        Color(red: 240/255, green: 242/255, blue: 240/255)  // Slightly darker gray
-                                    ]),
-                                    startPoint: .leading,
-                                    endPoint: .trailing
+                                    gradient: Gradient(colors: isDarkMode ?
+                                        [.inputGradientLight, .inputGradientDark] :
+                                        [.backgroundTintLight, .backgroundTintDark]),
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
                                 )
                             )
                             .cornerRadius(18)

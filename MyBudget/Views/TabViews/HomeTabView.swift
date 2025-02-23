@@ -16,6 +16,11 @@ struct HomeTabView: View {
     @EnvironmentObject var budgetManager: BudgetManager
     @State var showInfo = false
     
+    @Environment(\.colorScheme) var colorScheme
+    var isDarkMode: Bool {
+        return colorScheme == .dark
+    }
+    
     var body: some View {
         
         ZStack {
@@ -62,7 +67,7 @@ struct HomeTabView: View {
                                 .padding()
                                 .background(
                                     LinearGradient(
-                                        gradient: Gradient(colors: [.buttonGradientLight, .buttonGradientDark]),
+                                        gradient: Gradient(colors: isDarkMode ? [.inputGradientLight, .inputGradientDark] : [.buttonGradientLight, .buttonGradientDark]),
                                         startPoint: .leading,
                                         endPoint: .trailing
                                     )

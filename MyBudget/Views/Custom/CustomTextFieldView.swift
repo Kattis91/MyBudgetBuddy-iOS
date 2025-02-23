@@ -19,18 +19,23 @@ struct CustomTextFieldView: View {
     var forget: Bool = false
     var maxLength: Int? = nil
     
+    @Environment(\.colorScheme) var colorScheme
+    var isDarkMode: Bool {
+        return colorScheme == .dark
+    }
+    
     var body: some View {
         HStack {
             // Add the icon
             Image(systemName: systemName ?? "")
-                .foregroundColor(Color.black.opacity(0.5))
+                .foregroundColor(isDarkMode ? Color.white.opacity(0.5) : Color.black.opacity(0.8))
                 .padding(.horizontal, 5)
                 .scaledToFit()
                 .frame(width: 20, height: 20)
             
             // Conditionally render SecureField or TextField
             if isSecure {
-                SecureField("", text: $text, prompt: Text(placeholder).foregroundStyle(.black.opacity(0.5)))
+                SecureField("", text: $text, prompt: isDarkMode ? Text(placeholder).foregroundStyle(.white.opacity(0.8)) : Text(placeholder).foregroundStyle(.black.opacity(0.5)))
                     .foregroundColor(Color.black)
                     .tint(.black)
                     .onChange(of: text) { oldValue, newValue in
@@ -40,7 +45,7 @@ struct CustomTextFieldView: View {
                         onChange?()
                     }
             } else {
-                TextField("", text: $text, prompt: Text(placeholder).foregroundStyle(.black.opacity(0.5)))
+                TextField("", text: $text, prompt: isDarkMode ? Text(placeholder).foregroundStyle(.white.opacity(0.8)) : Text(placeholder).foregroundStyle(.black.opacity(0.5)))
                     .foregroundColor(Color.black)
                     .tint(.black)
                     .onChange(of: text) { oldValue, newValue in
@@ -56,7 +61,9 @@ struct CustomTextFieldView: View {
         .padding(.horizontal)
         .background(
             LinearGradient(
-                gradient: Gradient(colors: [.backgroundTintLight, .backgroundTintDark]),
+                gradient: Gradient(colors: isDarkMode ?
+                    [.inputGradientLight, .inputGradientDark] :
+                    [.backgroundTintLight, .backgroundTintDark]),
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )
