@@ -88,7 +88,7 @@ struct ExpensesTabView: View {
                     Text("Variable Expenses").tag(1)
                 }
                 .pickerStyle(SegmentedPickerStyle())
-                .padding(.horizontal, 33)
+                .padding(.horizontal, isDarkMode ? 15 : 20)
                 .padding(.top, 20)
                 .padding(.bottom, 10)
                 .onChange(of: selectedTab) {

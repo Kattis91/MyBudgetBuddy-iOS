@@ -28,7 +28,7 @@ struct CustomTextFieldView: View {
         HStack {
             // Add the icon
             Image(systemName: systemName ?? "")
-                .foregroundColor(isDarkMode ? Color.white.opacity(0.5) : Color.black.opacity(0.8))
+                .foregroundColor(isDarkMode ? Color.white.opacity(0.5) : Color.black.opacity(0.5))
                 .padding(.horizontal, 5)
                 .scaledToFit()
                 .frame(width: 20, height: 20)

@@ -11,12 +11,18 @@ struct PeriodDetailView: View {
     let period: BudgetPeriod
     @State private var selectedTab = 0
     
+    @Environment(\.colorScheme) var colorScheme
+    var isDarkMode: Bool {
+        return colorScheme == .dark
+    }
+    
     var body: some View {
         VStack {
             // Summary card
             SummaryBoxView(period: period, isCurrent: false)
-                .padding(.horizontal, 34)
-                .padding(.vertical, 30)
+                .padding(.horizontal, isDarkMode ? 10 : 20)
+                .padding(.bottom, 30)
+                .padding(.top, 15)
             
             // Add segmented control
             Picker("Category", selection: $selectedTab) {
@@ -25,7 +31,7 @@ struct PeriodDetailView: View {
                 Text("Variable").tag(2)
             }
             .pickerStyle(SegmentedPickerStyle())
-            .padding(.horizontal, 34)
+            .padding(.horizontal, isDarkMode ? 10 : 20)
             .padding(.bottom, 15)
             
             // Add tab view content

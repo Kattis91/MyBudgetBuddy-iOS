@@ -35,9 +35,9 @@ struct ExpensesView: View {
     var body: some View {
         
         VStack {
-            CustomTextFieldView(placeholder: String(localized: "Expense amount"), text: $expenseAmount, isSecure: false, onChange: {
+            CustomTextFieldView(placeholder: String(localized: "Enter Expense"), text: $expenseAmount, isSecure: false, onChange: {
                 errorMessage = ""
-            }, leadingPadding: 33, trailingPadding: 33, systemName: "minus.circle", maxLength: 15)
+            }, leadingPadding: isDarkMode ? 15 : 20, trailingPadding: isDarkMode ? 15 : 20, systemName: "minus.circle", maxLength: 15)
             
             if showNewCategoryField {
                 HStack {
@@ -68,7 +68,7 @@ struct ExpensesView: View {
                 } label: {
                     HStack {
                         Text(selectedCategory.isEmpty ? String(localized: "Choose Category") : selectedCategory)
-                            .foregroundColor(isDarkMode ? .white.opacity(0.8) : .black)
+                            .foregroundColor(isDarkMode ? .white.opacity(0.8) : .black.opacity(0.5))
                         Spacer()
                         Image(systemName: "chevron.down")
                             .foregroundColor(.gray)
@@ -97,7 +97,7 @@ struct ExpensesView: View {
                     )
                 }
                 .padding(.bottom, 3)
-                .padding(.horizontal, 31)
+                .padding(.horizontal, isDarkMode ? 15 : 20)
             }
         }
         
@@ -149,7 +149,7 @@ struct ExpensesView: View {
                 errorMessage = String(localized: "Amount must be a number.")
             }
         }) {
-            ButtonView(buttontext: String(localized: "Add expense"), expenseButton: true, height: 41, leadingPadding: 33, trailingPadding: 33, topPadding: 5)
+            ButtonView(buttontext: String(localized: "Add expense"), expenseButton: true, height: 41, leadingPadding: isDarkMode ? 15 : 20, trailingPadding: isDarkMode ? 15 : 20, topPadding: 5)
         }
         .task {
             await loadCategories()

@@ -91,7 +91,7 @@ struct IncomesTabView: View {
                     
                     CustomTextFieldView(placeholder: String(localized: "Enter Income"), text: $incomeAmount, isSecure: false, onChange: {
                         errorMessage = ""
-                    }, leadingPadding: 33, trailingPadding: 33, systemName: "plus.circle", maxLength: 15)
+                    }, leadingPadding: isDarkMode ? 15 : 20, trailingPadding: isDarkMode ? 15 : 20, systemName: "plus.circle", maxLength: 15)
                     .padding(.top, 20)
                     
                     if showNewCategoryField {
@@ -124,7 +124,7 @@ struct IncomesTabView: View {
                         } label: {
                             HStack {
                                 Text(selectedCategory.isEmpty ? String(localized: "Choose Category") : selectedCategory)
-                                    .foregroundColor(isDarkMode ? .white.opacity(0.8) : .black)
+                                    .foregroundColor(isDarkMode ? .white.opacity(0.8) : .black.opacity(0.5))
                                 Spacer()
                                 Image(systemName: "chevron.down")
                                     .foregroundColor(.gray)
@@ -154,7 +154,7 @@ struct IncomesTabView: View {
                             )
                         }
                         .padding(.bottom, 3)
-                        .padding(.horizontal, 31)
+                        .padding(.horizontal, isDarkMode ? 15 : 20)
                     }
                 }
                 
@@ -206,7 +206,7 @@ struct IncomesTabView: View {
                         errorMessage = String(localized: "Amount must be a number.")
                     }
                 }) {
-                    ButtonView(buttontext: String(localized: "Add income"), incomeButton: true, height: 41, leadingPadding: 33, trailingPadding: 33, topPadding: 5)
+                    ButtonView(buttontext: String(localized: "Add income"), incomeButton: true, height: 41, leadingPadding: isDarkMode ? 15 : 20, trailingPadding: isDarkMode ? 15 : 20, topPadding: 5)
                 }
                 .padding(.bottom, 15)
                 

@@ -10,6 +10,11 @@ import SwiftUI
 struct OverviewTabView: View {
     @EnvironmentObject var budgetManager: BudgetManager
     @State var budgetfb = BudgetFB()
+    
+    @Environment(\.colorScheme) var colorScheme
+    var isDarkMode: Bool {
+        return colorScheme == .dark
+    }
 
     var body: some View {
         
@@ -20,7 +25,7 @@ struct OverviewTabView: View {
         NavigationView {
             VStack(spacing: 0) {
                 PeriodRowView(period: budgetManager.currentPeriod, isCurrent: true)
-                    .padding(.horizontal, 10)
+                    .padding(.horizontal, isDarkMode ? 10 : 20)
                     .padding(.top, 20)
                     .padding(.bottom, 8)
                 
@@ -29,7 +34,7 @@ struct OverviewTabView: View {
                         Text("Historical Periods")
                             .font(.title2)
                             .textCase(nil)
-                            .padding(.leading, 10)
+                            .padding(.leading, isDarkMode ? 10 : 20)
                             .foregroundColor(Color("PrimaryTextColor"))
                         Spacer()
                     }
@@ -50,7 +55,7 @@ struct OverviewTabView: View {
                         ForEach(nonEmptyPeriods.reversed()) { period in
                             PeriodRowView(period: period, isCurrent: false)
                                 .listRowInsets(EdgeInsets())
-                                .padding(.horizontal, 10)
+                                .padding(.horizontal, isDarkMode ? 10 : 20)
                                 .padding(.bottom, 15)
                         }
                         .onDelete { offsets in

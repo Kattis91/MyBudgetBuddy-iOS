@@ -17,7 +17,6 @@ struct CustomListView<T: Identifiable>: View {
     let alignAmountInMiddle: Bool
     let isInvoice: Bool
     @State var budgetfb = BudgetFB()
-    @Environment(\.colorScheme) var colorScheme
     
     let onMarkProcessed: ((T) -> Void)?
     
@@ -26,6 +25,11 @@ struct CustomListView<T: Identifiable>: View {
         formatter.dateStyle = .short
         return formatter
     }()
+    
+    @Environment(\.colorScheme) var colorScheme
+    var isDarkMode: Bool {
+        return colorScheme == .dark
+    }
     
     var body: some View {
         
@@ -90,7 +94,6 @@ struct CustomListView<T: Identifiable>: View {
                     .padding(.horizontal)
                     .padding(.vertical, 14)
                 }
-                .padding(.horizontal, 10)
                 .padding(.vertical, 3)
                 
                 if isInvoice {
@@ -109,7 +112,7 @@ struct CustomListView<T: Identifiable>: View {
             }
             .onDelete(perform: deleteAction)
             .listRowSeparator(.hidden)
-            .listRowInsets(EdgeInsets(top: 5, leading: 20, bottom: 5, trailing: 20))
+            .listRowInsets(EdgeInsets(top: 5, leading: isDarkMode ? 10 : 20, bottom: 5, trailing: isDarkMode ? 10 : 20))
         }
         .scrollContentBackground(.hidden)
         .listStyle(PlainListStyle())
