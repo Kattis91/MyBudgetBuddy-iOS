@@ -136,7 +136,8 @@ struct IncomesTabView: View {
                                 LinearGradient(
                                     gradient: Gradient(colors: isDarkMode ?
                                         [.inputGradientLight, .inputGradientDark] :
-                                        [.backgroundTintLight, .backgroundTintDark]),
+                                        [Color(red: 245/255, green: 247/255, blue: 245/255),
+                                         Color(red: 240/255, green: 242/255, blue: 240/255)]),
                                     startPoint: .topLeading,
                                     endPoint: .bottomTrailing
                                 )
