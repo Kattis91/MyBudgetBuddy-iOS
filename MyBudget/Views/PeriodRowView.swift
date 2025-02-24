@@ -17,6 +17,7 @@ struct PeriodRowView: View {
         
         if isCurrent {
             SummaryBoxView(period: period, isCurrent: true)
+                .listRowSeparator(.hidden)
         } else {
             ZStack {
                 LinearGradient(

@@ -35,12 +35,22 @@ struct InfoPageView: View {
     var body: some View {
         ScrollView {
             VStack {
-                Text("MyBudgetBuddy")
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .padding(.top, 20)
-                    .padding(.horizontal, 10)
-                    .foregroundStyle(Color("PrimaryTextColor"))
+                HStack {
+                    Spacer()
+                    Text("MyBudgetBuddy")
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .padding(.top, 20)
+                        .padding(.horizontal, 10)
+                        .foregroundStyle(Color("PrimaryTextColor"))
+                    Spacer()
+                    Button(action: {
+                        dismiss()
+                    }) {
+                        Image(systemName: "xmark")
+                            .foregroundColor(Color("ButtonsBackground"))
+                    }
+                }
                 
                 Text("Budgeting made easy, so you can focus on what matters most to you!")
                     .padding(.top, 5)
@@ -52,7 +62,7 @@ struct InfoPageView: View {
                     Text("Development").tag(1)
                 }
                 .pickerStyle(SegmentedPickerStyle())
-                .padding(.horizontal, 28)
+                .padding(.horizontal, 7)
                 .padding(.top, 20)
                 
                 switch selectedTab {

@@ -26,7 +26,7 @@ struct HomeTabView: View {
         ZStack {
             NavigationStack {
                 if !showingNewPeriod {
-                    VStack (spacing: 20) {
+                    VStack (spacing: 15) {
                         
                         PeriodCardView(
                             startDate: budgetManager.currentPeriod.startDate,
@@ -83,7 +83,7 @@ struct HomeTabView: View {
                             budgetfb.userLogout()
                         }
                     }
-                    .padding()
+                    .padding(.horizontal, isDarkMode ? 5 : 15)
                     .toolbar {
                         ToolbarItem(placement: .topBarLeading) {
                             
@@ -112,8 +112,7 @@ struct HomeTabView: View {
                 if showingNewPeriod {
                     NewBudgetPeriodView(isPresented: $showingNewPeriod, isLandingPage: false)
                         .navigationBarBackButtonHidden(true)
-                        .padding(.horizontal, 24)
-                        .shadow(radius: 10)
+                        .padding(.horizontal, 16)
                 }
             }
         }

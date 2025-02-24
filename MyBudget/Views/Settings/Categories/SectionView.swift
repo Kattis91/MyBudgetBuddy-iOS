@@ -38,7 +38,7 @@ struct SectionView: View {
                             Image(systemName: "trash")
                                 .resizable()
                                 .frame(width: 20, height: 20)
-                                .foregroundColor(.red)
+                                .foregroundColor(Color("ButtonsBackground"))
                         }
                         .buttonStyle(BorderlessButtonStyle())
                     }
@@ -77,7 +77,7 @@ struct SectionView: View {
             }
             .padding(.horizontal, 10)
             .listRowSeparator(.hidden)
-            .listRowInsets(EdgeInsets(top: 7, leading: 0, bottom: 7, trailing: 0))
+            .listRowInsets(EdgeInsets(top: 7, leading: 10, bottom: 7, trailing: 10))
             
             Button(action: onAdd) {
                 HStack {
@@ -101,11 +101,14 @@ struct SectionView: View {
                 .shadow(color: .black.opacity(0.4), radius: 1, x: -2, y: 4)
                 .padding(.top, 15)
             }
+            .padding(.horizontal, 20)
+            .listRowSeparator(.hidden)
         } header: {
             Text(headerText)
                 .font(.title2)
                 .textCase(nil)  // This will override any inherited text transformation
                 .shadow(color: .black.opacity(0.15), radius: 4, x: 0, y: 2)
+                .padding(.leading, 10)
         }
     }
 }

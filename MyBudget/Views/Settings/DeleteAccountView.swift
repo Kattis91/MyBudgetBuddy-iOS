@@ -19,39 +19,39 @@ struct DeleteAccountView: View {
                 if !showingConfirmation && !showForgotPassword {
                     
                     VStack(spacing: 20) {
-                    VStack(spacing: 10) {
-                        Image(systemName: "exclamationmark.triangle.fill")
-                            .foregroundColor(.orange)
-                            .font(.largeTitle)
-                        
-                        Text("Warning: Account Deletion")
-                            .font(.headline)
-                            .foregroundColor(.orange)
-                        
-                        Text("This action cannot be undone. All your data will be permanently deleted.")
-                            .multilineTextAlignment(.center)
-                            .foregroundColor(.gray)
-                    }
+                        VStack(spacing: 10) {
+                            Image(systemName: "exclamationmark.triangle.fill")
+                                .foregroundColor(.orange)
+                                .font(.largeTitle)
+                            
+                            Text("Warning: Account Deletion")
+                                .font(.headline)
+                                .foregroundColor(.orange)
+                            
+                            Text("This action cannot be undone. All your data will be permanently deleted.")
+                                .multilineTextAlignment(.center)
+                                .foregroundColor(.gray)
+                        }
                     
-                    VStack(spacing: 15) {
-                        
-                        Button(action: {
-                            withAnimation(.spring()) {
-                                showingConfirmation.toggle()
+                        VStack(spacing: 15) {
+                            
+                            Button(action: {
+                                withAnimation(.spring()) {
+                                    showingConfirmation.toggle()
+                                }
+                            }) {
+                                ButtonView(buttontext: "Delete with password", maxWidth: 250, expenseButton: true)
                             }
-                        }) {
-                            ButtonView(buttontext: "Delete with password", maxWidth: 250, expenseButton: true)
-                        }
-                        
-                        Button(action: {
-                            withAnimation(.spring()) {
-                                showForgotPassword.toggle()
+                            
+                            Button(action: {
+                                withAnimation(.spring()) {
+                                    showForgotPassword.toggle()
+                                }
+                            }) {
+                                ButtonView(buttontext: "Forgot password?", maxWidth: 250, expenseButton: true)
                             }
-                        }) {
-                            ButtonView(buttontext: "Forgot password?", maxWidth: 250, expenseButton: true)
                         }
                     }
-                }
                     .padding()
                     .navigationTitle("Delete Account")
                     .navigationBarTitleDisplayMode(.inline)
