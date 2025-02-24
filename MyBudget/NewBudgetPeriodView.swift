@@ -73,7 +73,7 @@ struct NewBudgetPeriodView: View {
                     isPresented = false
                 }) {
                     Image(systemName: "xmark")
-                        .foregroundStyle(Color.red)
+                        .foregroundStyle(Color("ButtonsBackground"))
                         .padding(.horizontal)
                         .padding(.top, 20)
                 }
@@ -85,28 +85,22 @@ struct NewBudgetPeriodView: View {
                     .fontDesign(.rounded)
                     .tracking(1.5)
                     .font(.title3)
-                    .foregroundStyle(Color("SecondaryTextColor"))
+                    .foregroundStyle(Color("PrimaryTextColor"))
                 
                 DatePicker("Start Date",
                     selection: $startDate,
                     displayedComponents: [.date]
                 )
-                .padding(.vertical, 5)
-                .font(.title3)
-                .foregroundStyle(Color("SecondaryTextColor"))
-                .colorMultiply(Color("SecondaryTextColor"))
+                .foregroundStyle(Color("PrimaryTextColor"))
                 
                 DatePicker("End Date",
                     selection: $endDate,
                     in: startDate...,  // Ensures end date can't be before start date
                     displayedComponents: [.date]
                 )
-                .padding(.vertical, 5)
-                .font(.title3)
-                .foregroundStyle(Color("SecondaryTextColor"))
-                .colorMultiply(Color("SecondaryTextColor"))
+                .foregroundStyle(Color("PrimaryTextColor"))
             }
-            .padding(.horizontal, 45)
+            .padding(.horizontal, 35)
             
             if !isLandingPage {
                 if !budgetManager.incomeList.isEmpty || !budgetManager.fixedExpenseList.isEmpty {
@@ -115,18 +109,27 @@ struct NewBudgetPeriodView: View {
                             .fontDesign(.rounded)
                             .tracking(1.5)
                             .font(.title3)
-                            .foregroundStyle(Color("SecondaryTextColor"))
+                            .foregroundStyle(Color("PrimaryTextColor"))
                         Spacer()
                     }
-                    .padding(.horizontal, 45)
+                    .padding(.horizontal, 35)
                     .padding(.vertical, 10)
                 }
                 
                 if !budgetManager.incomeList.isEmpty {
                     Toggle("Include Incomes", isOn: $includeIncomes)
-                        .tint(Color("CustomGreen"))
-                        .padding(.horizontal, 45)
-                        .foregroundStyle(Color("SecondaryTextColor"))
+                        .tint(
+                            LinearGradient(
+                            gradient: Gradient(colors: [
+                              .addIncomeStart,   // Start color
+                              .addIncomeMiddle,  // Middle color
+                              .addIncomeEnd     // End color
+                            ]),
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing)
+                        )
+                        .padding(.horizontal, 35)
+                        .foregroundStyle(Color("PrimaryTextColor"))
                     
                     if includeIncomes {
                         VStack(alignment: .leading, spacing: 18) {
@@ -140,19 +143,35 @@ struct NewBudgetPeriodView: View {
                                         }
                                         .padding(.horizontal, 12) // Reduced horizontal padding
                                         .padding(.vertical, 8)    // Reduced vertical padding
-                                        .background(Color.white)
-                                        .foregroundColor(Color("SecondaryTextColor"))
-                                        
-                                        if income.id != budgetManager.incomeList.last?.id {
-                                            Divider()
-                                                .opacity(0.5)
-                                        }
+                                        .background(
+                                            LinearGradient(
+                                                gradient: Gradient(colors: isDarkMode ?
+                                                   [.inputGradientLight, .inputGradientDark] :
+                                                   [.backgroundTintLight, .backgroundTintDark]
+                                                ),
+                                                startPoint: .topLeading,
+                                                endPoint: .bottomTrailing
+                                            )
+                                        )
+                                        .cornerRadius(12)
+                                        .shadow(
+                                            color: isDarkMode ? Color.black.opacity(0.6) : Color.black.opacity(0.3),
+                                            radius: isDarkMode ? 6 : 2,
+                                            x: 0,
+                                            y: isDarkMode ? 6 : 4
+                                        )
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 12)
+                                                .stroke(isDarkMode ? Color.white.opacity(0.5) : Color.white.opacity(0.3), lineWidth: 0.4)
+                                                .shadow(color: isDarkMode ? Color.white.opacity(0.05) : Color.clear, radius: 5)
+                                        )
+                                        .padding(.horizontal, 4)
+                                        .foregroundColor(Color("PrimaryTextColor"))
                                     }
+                                    .padding(.bottom, 6)
                                 }
                             }
-                            .background(Color.white)
-                            .cornerRadius(16) // Added corner radius
-                            .frame(maxHeight: 110)
+                            .frame(maxHeight: 130)
                             
                             // Scroll indicator with matching corner radius
                             HStack {
@@ -165,16 +184,25 @@ struct NewBudgetPeriodView: View {
                             }
                             .offset(y: -12)
                         }
-                        .padding(.horizontal, 42)
+                        .padding(.horizontal, 35)
                     }
                 }
                 
                 if !budgetManager.fixedExpenseList.isEmpty {
                     Toggle("Include Fast Expenses", isOn: $includeFixedExpenses)
-                        .tint(Color("CustomGreen"))
-                        .padding(.horizontal, 45)
+                        .tint(
+                            LinearGradient(
+                            gradient: Gradient(colors: [
+                              .addIncomeStart,   // Start color
+                              .addIncomeMiddle,  // Middle color
+                              .addIncomeEnd     // End color
+                            ]),
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing)
+                        )
+                        .padding(.horizontal, 35)
                         .padding(.bottom, 10)
-                        .foregroundStyle(Color("SecondaryTextColor"))
+                        .foregroundStyle(Color("PrimaryTextColor"))
                     
                     if includeFixedExpenses {
                         VStack(alignment: .leading, spacing: 18) {
@@ -188,19 +216,35 @@ struct NewBudgetPeriodView: View {
                                         }
                                         .padding(.horizontal, 12)
                                         .padding(.vertical, 8)
-                                        .background(Color.white)
-                                        .foregroundColor(Color("SecondaryTextColor"))
-                                        
-                                        if expense.id != budgetManager.fixedExpenseList.last?.id {
-                                            Divider()
-                                                .opacity(0.5)
-                                        }
+                                        .background(
+                                            LinearGradient(
+                                                gradient: Gradient(colors: isDarkMode ?
+                                                   [.inputGradientLight, .inputGradientDark] :
+                                                   [.backgroundTintLight, .backgroundTintDark]
+                                                ),
+                                                startPoint: .topLeading,
+                                                endPoint: .bottomTrailing
+                                            )
+                                        )
+                                        .cornerRadius(12)
+                                        .shadow(
+                                            color: isDarkMode ? Color.black.opacity(0.6) : Color.black.opacity(0.3),
+                                            radius: isDarkMode ? 6 : 2,
+                                            x: 0,
+                                            y: isDarkMode ? 6 : 4
+                                        )
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 12)
+                                                .stroke(isDarkMode ? Color.white.opacity(0.5) : Color.white.opacity(0.3), lineWidth: 0.4)
+                                                .shadow(color: isDarkMode ? Color.white.opacity(0.05) : Color.clear, radius: 5)
+                                        )
+                                        .padding(.horizontal, 4)
+                                        .foregroundColor(Color("PrimaryTextColor"))
                                     }
+                                    .padding(.bottom, 6)
                                 }
                             }
-                            .background(Color.white)
-                            .cornerRadius(16) // Added corner radius
-                            .frame(maxHeight: 110)
+                            .frame(maxHeight: 130)
                             
                             HStack {
                                 Spacer()
@@ -212,7 +256,7 @@ struct NewBudgetPeriodView: View {
                             }
                             .offset(y: -12)
                         }
-                        .padding(.horizontal, 42)
+                        .padding(.horizontal, 35)
                     }
                 }
             }
@@ -250,7 +294,7 @@ struct NewBudgetPeriodView: View {
                     }
                 }
             }) {
-                ButtonView(buttontext: String(localized: "Start New Period"), maxWidth: 180)
+                ButtonView(buttontext: String(localized: "Start New Period"), maxWidth: 180, incomeButton: true)
                     .padding(.bottom, 25)
             }
         }
@@ -268,8 +312,36 @@ struct NewBudgetPeriodView: View {
         }
         .scrollContentBackground(.hidden)
         .frame(maxWidth: .infinity)
-        .background(Color("TabColor"))
-        .cornerRadius(12)
+        .background(
+            LinearGradient(
+                gradient: Gradient(colors: colorScheme == .dark ? [
+                    Color(.darkGray), Color(.black)
+                ] : [
+                    Color(red: 245/255, green: 247/255, blue: 245/255),
+                    Color(red: 240/255, green: 242/255, blue: 240/255)
+                ]),
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+        )
+        .cornerRadius(16)
+        .shadow(
+            color: colorScheme == .dark ?
+                .black.opacity(0.35) :
+                .black.opacity(0.25),
+            radius: colorScheme == .dark ? 2 : 1,
+            x: -2,
+            y: 4
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(
+                    colorScheme == .dark ?
+                        Color.white.opacity(0.2) :
+                        Color.white.opacity(0.4),
+                    lineWidth: 0.8
+                )
+        )
     }
 }
 struct ToastView: View {
