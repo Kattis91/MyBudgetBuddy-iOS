@@ -38,6 +38,11 @@ struct InvoiceReminderView: View {
         return formatter
     }()
     
+    @Environment(\.colorScheme) var colorScheme
+    var isDarkMode: Bool {
+        return colorScheme == .dark
+    }
+    
     var body: some View {
         
         NavigationStack {
@@ -88,9 +93,11 @@ struct InvoiceReminderView: View {
                     Button(action: {
                         showScanner = true
                     }) {
-                        HStack {
+                        VStack {
                             Image(systemName: "qrcode.viewfinder")
-                            Text("Or scan the invoice")
+                                .font(.system(size: 25))
+                                .padding(.vertical, 3)
+                            Text("Scan the invoice")
                         }
                     }
                     .sheet(isPresented: $showScanner, onDismiss: {
@@ -114,8 +121,6 @@ struct InvoiceReminderView: View {
                     }) {
                         InvoiceScannerView(scannedAmount: $scannedAmount, scannedDueDate: $scannedDueDate)
                     }
-                    
-                    ErrorMessageView(errorMessage: errorMessage, height: 15)
                     
                     Button(action: {
                         
@@ -148,6 +153,9 @@ struct InvoiceReminderView: View {
                     }) {
                         ButtonView(buttontext: String(localized: "Save").uppercased(), expenseButton: true, height: 41, topPadding: 0)
                     }
+                    .padding(.bottom, 5)
+                    
+                    ErrorMessageView(errorMessage: errorMessage, height: 15)
                 }
                
                 
@@ -156,8 +164,9 @@ struct InvoiceReminderView: View {
                     Text("Processed Invoices").tag(1)
                 }
                 .pickerStyle(SegmentedPickerStyle())
-                .padding(.horizontal, 28)
-                .padding(.vertical, 30)
+                .padding(.horizontal, 24)
+                .padding(.bottom, 30)
+                .padding(.top, 10)
                 
                 switch selectedTab {
                 case 0:
@@ -168,6 +177,7 @@ struct InvoiceReminderView: View {
                             .padding(.top)
                             .padding(.horizontal, 20)
                             .multilineTextAlignment(.center)
+                            .foregroundColor(Color("PrimaryTextColor"))
                     }
                     
                     if !unprocessedInvoices.isEmpty {
@@ -189,6 +199,7 @@ struct InvoiceReminderView: View {
                             }
                         )
                         .padding(.top, -15)
+                        .padding(.horizontal, isDarkMode ? 14 : 5)
                     }
                 case 1:
                     // Processed Invoices Section
@@ -198,6 +209,7 @@ struct InvoiceReminderView: View {
                             .padding(.top)
                             .padding(.horizontal, 20)
                             .multilineTextAlignment(.center)
+                            .foregroundColor(Color("PrimaryTextColor"))
                     }
                     
                     if !processedInvoices.isEmpty {
@@ -216,6 +228,7 @@ struct InvoiceReminderView: View {
                             onMarkProcessed: nil
                         )
                         .padding(.top, -15)
+                        .padding(.horizontal, isDarkMode ? 14 : 5)
                     }
                 default:
                     EmptyView()
