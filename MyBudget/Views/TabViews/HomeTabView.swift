@@ -67,13 +67,13 @@ struct HomeTabView: View {
                                 .padding()
                                 .background(
                                     LinearGradient(
-                                        gradient: Gradient(colors: isDarkMode ? [.inputGradientLight, .inputGradientDark] : [.buttonGradientLight, .buttonGradientDark]),
-                                        startPoint: .leading,
-                                        endPoint: .trailing
+                                        gradient: Gradient(colors: isDarkMode ? [Color(red: 45/255, green: 50/255, blue: 60/255), Color(red: 32/255, green: 35/255, blue: 42/255)] : [.buttonGradientLight, .buttonGradientDark]),
+                                        startPoint: isDarkMode ? .topLeading : .leading,
+                                        endPoint: isDarkMode ? .bottomTrailing : .trailing
                                     )
                                 )
                                 .cornerRadius(16)
-                                .shadow(color: .black.opacity(0.4), radius: 1, x: -2, y: 4)
+                                .shadow(color: isDarkMode ? Color.black.opacity(0.2) : .black.opacity(0.4), radius: isDarkMode ? 2 : 1, x: isDarkMode ? 2 : -2, y: isDarkMode ? 2 : 4)
                                 .padding(.top, 15)
                         }
                     }

@@ -17,6 +17,11 @@ struct ButtonView: View {
     var trailingPadding: CGFloat = 24
     var topPadding: CGFloat = 10
     
+    @Environment(\.colorScheme) var colorScheme
+    var isDarkMode: Bool {
+        return colorScheme == .dark
+    }
+    
     var body: some View {
         
         Text(buttontext)
@@ -29,9 +34,9 @@ struct ButtonView: View {
                 expenseButton ?
                     LinearGradient(
                       gradient: Gradient(colors: [
-                        .addExpenseStart,
-                        .addExpenseMiddle,
-                        .addExpenseEnd
+                        isDarkMode ? .addExpenseStartDark : .addExpenseStart,
+                        isDarkMode ? .addExpenseMiddleDark : .addExpenseMiddle,
+                        isDarkMode ? .addExpenseEndDark : .addExpenseEnd
                       ]),
                       startPoint: .topLeading,
                       endPoint: .bottomTrailing
@@ -39,9 +44,9 @@ struct ButtonView: View {
                 incomeButton ?
                   LinearGradient(
                       gradient: Gradient(colors: [
-                        .addIncomeStart,   // Start color
-                        .addIncomeMiddle,  // Middle color
-                        .addIncomeEnd     // End color
+                        isDarkMode ? .addIncomeStartDark : .addIncomeStart,   // Start color
+                        isDarkMode ? .addIncomeMiddleDark : .addIncomeMiddle,  // Middle color
+                        isDarkMode ? .addIncomeEndDark : .addIncomeEnd     // End color
                       ]),
                       startPoint: .topLeading,
                       endPoint: .bottomTrailing
