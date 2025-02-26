@@ -27,6 +27,18 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
 
         application.registerForRemoteNotifications()
         
+        // Add auth state listener
+        Auth.auth().addStateDidChangeListener { (auth, user) in
+            if let user = user {
+                // User is signed in, refresh token
+                Messaging.messaging().token { token, error in
+                    if let token = token {
+                        let ref = Database.database().reference()
+                        ref.child("userTokens").child(user.uid).setValue(["token": token])
+                    }
+                }
+            }
+        }
         return true
     }
     
