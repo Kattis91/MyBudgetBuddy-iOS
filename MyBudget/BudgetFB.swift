@@ -44,7 +44,38 @@ import FirebaseAuth
                 completion(nil)
             } catch {
                 print("Registration failed: \(error.localizedDescription)")
-                completion(error.localizedDescription) // Return Firebase error
+                completion(error.localizedDescription)
+            }
+        }
+    }
+
+    func createCleanBudgetPeriod(startDate: Date, endDate: Date, completion: @escaping (Bool) -> Void) {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            completion(false)
+            return
+        }
+        
+        let newBudgetPeriod = BudgetPeriod(
+            startDate: startDate,
+            endDate: endDate,
+            incomes: [],
+            fixedExpenses: [],
+            variableExpenses: []
+        )
+ 
+        let ref = Database.database().reference()
+        let budgetId = UUID().uuidString
+        let newBudgetRef = ref.child("budgetPeriods").child(userId).child(budgetId)
+        
+        // We're manually saving the period to ensure no data transfer happens
+        let periodData = newBudgetPeriod.toDictionary()
+        newBudgetRef.setValue(periodData) { error, _ in
+            if let error = error {
+                print("Error creating clean budget period: \(error.localizedDescription)")
+                completion(false)
+            } else {
+                print("Clean budget period created successfully")
+                completion(true)
             }
         }
     }

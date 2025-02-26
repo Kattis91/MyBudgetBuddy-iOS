@@ -22,6 +22,7 @@ struct NewBudgetPeriodView: View {
     @State private var includeIncomes = true
     @State private var includeFixedExpenses = true
     @State var isLandingPage: Bool = false
+    @State var isFirstTimeUser: Bool = false
     
     @Environment(\.presentationMode) var presentationMode
     
@@ -264,29 +265,57 @@ struct NewBudgetPeriodView: View {
             
             Button(action: {
                 if validatePeriod() {
-                    // First create the new period
-                    let newPeriod = budgetManager.startNewPeriod(
-                        startDate: startDate,
-                        endDate: endDate,
-                        includeIncomes: includeIncomes,
-                        includeFixedExpenses: includeFixedExpenses
-                    )
-                    
-                    budgetfb.saveBudgetPeriod(newPeriod, transferData: (
-                        incomes: includeIncomes,
-                        expenses: includeFixedExpenses
-                    ),  isfixed: includeFixedExpenses) { success in
-                        if success {
-                            Task {
-                                await budgetManager.updateCurrentPeriodData(newPeriod)
-                                withAnimation {
-                                    showToast = true
-                                }
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    if isLandingPage && isFirstTimeUser {
+                        budgetfb.createCleanBudgetPeriod(startDate: startDate, endDate: endDate) { success in
+                            if success {
+                                Task {
+                                    // Create a local budget period object to update UI
+                                    let newPeriod = BudgetPeriod(
+                                        startDate: startDate,
+                                        endDate: endDate,
+                                        incomes: [],
+                                        fixedExpenses: [],
+                                        variableExpenses: []
+                                    )
+                                    await budgetManager.updateCurrentPeriodData(newPeriod)
                                     withAnimation {
-                                        showToast = false
-                                        onSuccess?()
-                                        isPresented = false
+                                        showToast = true
+                                    }
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                        withAnimation {
+                                            showToast = false
+                                            onSuccess?()
+                                            isPresented = false
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        // First create the new period
+                        let newPeriod = budgetManager.startNewPeriod(
+                            startDate: startDate,
+                            endDate: endDate,
+                            includeIncomes: includeIncomes,
+                            includeFixedExpenses: includeFixedExpenses
+                        )
+                        
+                        budgetfb.saveBudgetPeriod(newPeriod, transferData: (
+                            incomes: includeIncomes,
+                            expenses: includeFixedExpenses
+                        ),  isfixed: includeFixedExpenses) { success in
+                            if success {
+                                Task {
+                                    await budgetManager.updateCurrentPeriodData(newPeriod)
+                                    withAnimation {
+                                        showToast = true
+                                    }
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                        withAnimation {
+                                            showToast = false
+                                            onSuccess?()
+                                            isPresented = false
+                                        }
                                     }
                                 }
                             }
