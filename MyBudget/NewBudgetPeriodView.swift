@@ -22,7 +22,7 @@ struct NewBudgetPeriodView: View {
     @State private var includeIncomes = true
     @State private var includeFixedExpenses = true
     @State var isLandingPage: Bool = false
-    @State var isFirstTimeUser: Bool = false
+    @State var noCurrentPeriod: Bool = false
     
     @Environment(\.presentationMode) var presentationMode
     
@@ -265,7 +265,10 @@ struct NewBudgetPeriodView: View {
             
             Button(action: {
                 if validatePeriod() {
-                    if isLandingPage && isFirstTimeUser {
+                    // We use createCleanBudgetPeriod for any user without a current period
+                    // (both first-time users and users with expired periods) to prevent
+                    // data inheritance issues between users or periods
+                    if isLandingPage && noCurrentPeriod {
                         budgetfb.createCleanBudgetPeriod(startDate: startDate, endDate: endDate) { success in
                             if success {
                                 Task {
@@ -292,7 +295,7 @@ struct NewBudgetPeriodView: View {
                             }
                         }
                     } else {
-                        // First create the new period
+                        // Standard flow with optional data transfer for users with active periods
                         let newPeriod = budgetManager.startNewPeriod(
                             startDate: startDate,
                             endDate: endDate,

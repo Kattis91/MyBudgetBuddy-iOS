@@ -76,7 +76,7 @@ struct NoCurrentPeriodView: View {
                             showingNewPeriod = false
                             onPeriodCreated()
                         }, isLandingPage: true,
-                        isFirstTimeUser: isFirstTime)
+                        noCurrentPeriod: true)
                         .navigationBarBackButtonHidden(true)
                         .padding(.horizontal, 24)
                         .cornerRadius(12)
