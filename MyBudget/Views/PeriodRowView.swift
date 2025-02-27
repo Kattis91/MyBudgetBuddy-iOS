@@ -43,7 +43,7 @@ struct PeriodRowView: View {
                     RoundedRectangle(cornerRadius: 16)
                         .stroke(
                             colorScheme == .dark ?
-                                Color.white.opacity(0.2) :
+                                Color.white.opacity(0.3) :
                                 Color.white.opacity(0.4),
                             lineWidth: 0.8
                         )
