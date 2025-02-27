@@ -36,8 +36,8 @@ struct CustomTextFieldView: View {
             // Conditionally render SecureField or TextField
             if isSecure {
                 SecureField("", text: $text, prompt: isDarkMode ? Text(placeholder).foregroundStyle(.white.opacity(0.8)) : Text(placeholder).foregroundStyle(.black.opacity(0.5)))
-                    .foregroundColor(Color.black)
-                    .tint(.black)
+                    .foregroundColor(isDarkMode ? Color.white : Color.black)
+                    .tint(isDarkMode ? .white : .black)
                     .onChange(of: text) { oldValue, newValue in
                         if let maxLength = maxLength, newValue.count > maxLength {
                             text = String(newValue.prefix(maxLength))
@@ -46,8 +46,8 @@ struct CustomTextFieldView: View {
                     }
             } else {
                 TextField("", text: $text, prompt: isDarkMode ? Text(placeholder).foregroundStyle(.white.opacity(0.8)) : Text(placeholder).foregroundStyle(.black.opacity(0.5)))
-                    .foregroundColor(Color.black)
-                    .tint(.black)
+                    .foregroundColor(isDarkMode ? Color.white : Color.black)
+                    .tint(isDarkMode ? .white : .black)
                     .onChange(of: text) { oldValue, newValue in
                         if let maxLength = maxLength, newValue.count > maxLength {
                             text = String(newValue.prefix(maxLength))
