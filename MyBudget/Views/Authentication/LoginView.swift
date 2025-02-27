@@ -79,7 +79,6 @@ struct LoginView: View {
                 ForgotPasswordView(isPresented: $showForgotPassword, deletingAccountReset: false)
                     .navigationBarBackButtonHidden(true)
                     .frame(height: 330)
-                    .background(Color.white)
                     .padding(.horizontal, 24)
                     .cornerRadius(12)
             }

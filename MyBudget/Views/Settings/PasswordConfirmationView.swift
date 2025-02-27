@@ -11,6 +11,11 @@ import Firebase
 
 struct PasswordConfirmationView: View {
     
+    @Environment(\.colorScheme) var colorScheme
+    var isDarkMode: Bool {
+        return colorScheme == .dark
+    }
+    
     @State private var showingPasswordOption = false
     @State private var showingConfirmation = false
     @State private var password = ""
@@ -36,7 +41,7 @@ struct PasswordConfirmationView: View {
             
             Text("Confirm Deletion")
                 .font(.title2)
-                .foregroundStyle(Color("SecondaryTextColor"))
+                .foregroundStyle(Color("PrimaryTextColor"))
                 .padding(.bottom, 35)
             
             CustomTextFieldView(placeholder: "Type DELETE to confirm", text: $confirmationText, systemName: "trash.circle")
@@ -55,9 +60,36 @@ struct PasswordConfirmationView: View {
         }
         .padding(.bottom, 50)
         .frame(maxWidth: .infinity)
-        .frame(height: 350)
-        .background(Color("TabColor"))
-        .cornerRadius(12)
+        .frame(height: 330)
+        .background(
+            LinearGradient(
+                gradient: Gradient(colors: colorScheme == .dark ? [
+                    Color(.darkGray), Color(.black)
+                ] : [
+                    Color(red: 229/255, green: 237/255, blue: 235/255),
+                ]),
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+        )
+        .cornerRadius(16)
+        .shadow(
+            color: colorScheme == .dark ?
+                .black.opacity(0.35) :
+                .black.opacity(0.25),
+            radius: colorScheme == .dark ? 2 : 1,
+            x: -2,
+            y: 4
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(
+                    colorScheme == .dark ?
+                        Color.white.opacity(0.2) :
+                        Color.white.opacity(0.4),
+                    lineWidth: 0.8
+                )
+        )
     }
     
     private func deleteAccount(password: String) {

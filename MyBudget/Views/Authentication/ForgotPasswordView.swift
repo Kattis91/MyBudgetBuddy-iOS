@@ -9,6 +9,11 @@ import SwiftUI
 
 struct ForgotPasswordView: View {
     
+    @Environment(\.colorScheme) var colorScheme
+    var isDarkMode: Bool {
+        return colorScheme == .dark
+    }
+    
     @Binding var isPresented: Bool
     
     @State var budgetfb = BudgetFB()
@@ -39,7 +44,7 @@ struct ForgotPasswordView: View {
             
             Text("Reset Password")
                 .font(.title2)
-                .foregroundStyle(Color("SecondaryTextColor"))
+                .foregroundStyle(Color("PrimaryTextColor"))
                 .padding(.bottom, 50)
             
             CustomTextFieldView(placeholder: "Email", text: $email, onChange: {
@@ -83,8 +88,35 @@ struct ForgotPasswordView: View {
         }
         .frame(maxWidth: .infinity)
         .frame(height: 330)
-        .background(Color("TabColor"))
-        .cornerRadius(12)
+        .background(
+            LinearGradient(
+                gradient: Gradient(colors: colorScheme == .dark ? [
+                    Color(.darkGray), Color(.black)
+                ] : [
+                    Color(red: 229/255, green: 237/255, blue: 235/255),
+                ]),
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+        )
+        .cornerRadius(16)
+        .shadow(
+            color: colorScheme == .dark ?
+                .black.opacity(0.35) :
+                .black.opacity(0.25),
+            radius: colorScheme == .dark ? 2 : 1,
+            x: -2,
+            y: 4
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(
+                    colorScheme == .dark ?
+                        Color.white.opacity(0.2) :
+                        Color.white.opacity(0.4),
+                    lineWidth: 0.8
+                )
+        )
     }
 }
 
