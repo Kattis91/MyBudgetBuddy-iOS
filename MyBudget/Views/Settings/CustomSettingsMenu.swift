@@ -44,7 +44,7 @@ struct CustomSettingsMenu: View {
                             .frame(width: 24)
                             .foregroundColor(Color("CustomGreen"))
                         Text("Manage Categories")
-                            .foregroundColor(Color("SecondaryTextColor"))
+                            .foregroundColor(Color("PrimaryTextColor"))
                         Spacer()
                     }
                     .padding(.horizontal, 16)
@@ -66,7 +66,7 @@ struct CustomSettingsMenu: View {
                             .frame(width: 24)
                             .foregroundColor(Color("ButtonsBackground"))
                         Text("Invoice Reminders")
-                            .foregroundColor(Color("SecondaryTextColor"))
+                            .foregroundColor(Color("PrimaryTextColor"))
                         Spacer()
                     }
                     .padding(.horizontal, 16)
@@ -88,7 +88,7 @@ struct CustomSettingsMenu: View {
                             .frame(width: 24)
                             .foregroundColor(Color("ButtonsBackground"))
                         Text("Delete account")
-                            .foregroundColor(Color("SecondaryTextColor"))
+                            .foregroundColor(Color("PrimaryTextColor"))
                         Spacer()
                     }
                     .padding(.horizontal, 16)
@@ -98,7 +98,8 @@ struct CustomSettingsMenu: View {
             .frame(width: 280)
             .background(
                 LinearGradient(
-                    gradient: Gradient(colors: [
+                    gradient: Gradient(colors: isDarkMode ?
+                        [Color(.darkGray), Color(.black)] : [
                         Color(red: 245/255, green: 247/255, blue: 245/255),
                         Color(red: 240/255, green: 242/255, blue: 240/255)
                     ]),
@@ -107,10 +108,16 @@ struct CustomSettingsMenu: View {
                 )
             )
             .cornerRadius(12)
-            .shadow(color: .black.opacity(0.15), radius: 4, x: 0, y: 2)
+            .shadow(
+                color: isDarkMode ? Color.black.opacity(0.35) : Color.black.opacity(0.15),
+                radius: isDarkMode ? 2 : 4,
+                x: isDarkMode ? -2 : 0,
+                y: isDarkMode ? 4 : 2
+            )
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
-                    .stroke(Color.white.opacity(0.4), lineWidth: 0.8)
+                    .stroke(isDarkMode ? Color.white.opacity(0.2) :
+                                Color.white.opacity(0.4), lineWidth: 0.8)
             )
             .presentationCompactAdaptation(.popover)
         }
