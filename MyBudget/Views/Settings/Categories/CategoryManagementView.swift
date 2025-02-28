@@ -128,6 +128,20 @@ struct CategoryManagementView: View {
                             EmptyView()
                         }
                     }
+                    .navigationTitle("Manage Categories")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            Button(action: {
+                                Task {
+                                    dismiss()
+                                }
+                            }) {
+                                Image(systemName: "xmark")
+                                    .foregroundStyle(Color("ButtonsBackground"))
+                            }
+                        }
+                    }
                     .background(Color.clear)
                     .alert("Are you sure you want to delete \(selectedCategory?.0 ?? "this category")?", isPresented: $showingDeleteAlert) {
                         Button("Cancel", role: .cancel) { }
@@ -143,6 +157,8 @@ struct CategoryManagementView: View {
                     .task {
                         await loadAllCategories()
                     }
+                } else {
+                    Color.clear
                 }
                 
                 if showEditForm {
@@ -161,20 +177,6 @@ struct CategoryManagementView: View {
                         categoryType: categoryType,
                         onComplete: { await loadAllCategories() }
                     )
-                }
-            }
-            .navigationTitle("Manage Categories")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        Task {
-                            dismiss()
-                        }
-                    }) {
-                        Image(systemName: "xmark")
-                            .foregroundStyle(Color("ButtonsBackground"))
-                    }
                 }
             }
             .onChange(of: incomeCats) {
