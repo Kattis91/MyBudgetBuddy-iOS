@@ -46,114 +46,108 @@ struct CategoryManagementView: View {
             ZStack {
                 if !showEditForm && !showNewCategoryField {
                     VStack {
-                        List {
-                            // Add segmented control
-                            Picker("Category", selection: $selectedTab) {
-                                Text("Incomes").tag(0)
-                                Text("Fixed").tag(1)
-                                Text("Variable").tag(2)
-                            }
-                            .pickerStyle(SegmentedPickerStyle())
-                            .padding(.top, 10)
-                            .padding(.horizontal, 10)
-                            .listRowSeparator(.hidden)
-                            
-                            switch selectedTab {
-                            case 0:
-                                SectionView(
-                                    title: String(localized: "Income category"),
-                                    categories: incomeCats,
-                                    onEdit: { category in
-                                        editingCategory = EditingCategory(name: category, type: .income)
-                                        withAnimation(.spring()) {
-                                            showEditForm = true
-                                        }
-                                        closeNewCategoryField()
-                                    },
-                                    onDelete: { category in
-                                        selectedCategory = (category, .income)
-                                        showingDeleteAlert = true
-                                        closeNewCategoryField()
-                                    },
-                                    onAdd: {
-                                        withAnimation(.spring()) {
-                                            showNewCategoryField = true
-                                        }
-                                        selectedCategoryType = .income
-                                    },
-                                    headerText: String(localized: "Income categories")
-                                )
-                            case 1:
-                                SectionView(
-                                    title: String(localized: "Fixed Expense category"),
-                                    categories: fixedExpenseCats,
-                                    onEdit: { category in
-                                        editingCategory = EditingCategory(name: category, type: .fixedExpense)
-                                        withAnimation(.spring()) {
-                                            showEditForm = true
-                                        }
-                                        closeNewCategoryField()
-                                    },
-                                    onDelete: { category in
-                                        selectedCategory = (category, .fixedExpense)
-                                        showingDeleteAlert = true
-                                        closeNewCategoryField()
-                                    },
-                                    onAdd: {
-                                        withAnimation(.spring()) {
-                                            showNewCategoryField = true
-                                        }
-                                        selectedCategoryType = .fixedExpense
-                                    },
-                                    headerText: String(localized: "Fixed Expense categories")
-                                )
-                            case 2:
-                                SectionView(
-                                    title: String(localized: "Variable Expense category"),
-                                    categories: variableExpenseCats,
-                                    onEdit:  { category in
-                                        editingCategory = EditingCategory(name: category, type: .variableExpense)
-                                        withAnimation(.spring()) {
-                                            showEditForm = true
-                                        }
-                                        closeNewCategoryField()
-                                    },
-                                    onDelete: { category in
-                                        selectedCategory = (category, .variableExpense)
-                                        showingDeleteAlert = true
-                                        closeNewCategoryField()
-                                    },
-                                    onAdd: {
-                                        withAnimation(.spring()) {
-                                            showNewCategoryField = true
-                                        }
-                                        selectedCategoryType = .variableExpense
-                                    },
-                                    headerText: String(localized: "Variable Expense categories")
-                                )
-                            default:
-                                EmptyView()
-                            }
+                        // Add segmented control
+                        Picker("Category", selection: $selectedTab) {
+                            Text("Incomes").tag(0)
+                            Text("Fixed").tag(1)
+                            Text("Variable").tag(2)
                         }
-                        .scrollContentBackground(.hidden)
-                        .listStyle(PlainListStyle())
-                        .background(Color.clear)
-                        .alert("Are you sure you want to delete \(selectedCategory?.0 ?? "this category")?", isPresented: $showingDeleteAlert) {
-                            Button("Cancel", role: .cancel) { }
-                            Button("Delete", role: .destructive) {
-                                if let (category, type) = selectedCategory {
-                                    Task {
-                                        _ = await budgetfb.deleteCategory(name: category, type: type)
-                                        await loadAllCategories()
+                        .pickerStyle(SegmentedPickerStyle())
+                        .padding(.vertical, 10)
+                        .padding(.horizontal, 10)
+                        
+                        // Display the appropriate section based on tab selection
+                        switch selectedTab {
+                        case 0:
+                            SectionView(
+                                title: String(localized: "Income category"),
+                                categories: incomeCats,
+                                onEdit: { category in
+                                    editingCategory = EditingCategory(name: category, type: .income)
+                                    withAnimation(.spring()) {
+                                        showEditForm = true
                                     }
+                                    closeNewCategoryField()
+                                },
+                                onDelete: { category in
+                                    selectedCategory = (category, .income)
+                                    showingDeleteAlert = true
+                                    closeNewCategoryField()
+                                },
+                                onAdd: {
+                                    withAnimation(.spring()) {
+                                        showNewCategoryField = true
+                                    }
+                                    selectedCategoryType = .income
+                                }
+                            )
+                        case 1:
+                            SectionView(
+                                title: String(localized: "Fixed Expense category"),
+                                categories: fixedExpenseCats,
+                                onEdit: { category in
+                                    editingCategory = EditingCategory(name: category, type: .fixedExpense)
+                                    withAnimation(.spring()) {
+                                        showEditForm = true
+                                    }
+                                    closeNewCategoryField()
+                                },
+                                onDelete: { category in
+                                    selectedCategory = (category, .fixedExpense)
+                                    showingDeleteAlert = true
+                                    closeNewCategoryField()
+                                },
+                                onAdd: {
+                                    withAnimation(.spring()) {
+                                        showNewCategoryField = true
+                                    }
+                                    selectedCategoryType = .fixedExpense
+                                }
+                            )
+                        case 2:
+                            SectionView(
+                                title: String(localized: "Variable Expense category"),
+                                categories: variableExpenseCats,
+                                onEdit:  { category in
+                                    editingCategory = EditingCategory(name: category, type: .variableExpense)
+                                    withAnimation(.spring()) {
+                                        showEditForm = true
+                                    }
+                                    closeNewCategoryField()
+                                },
+                                onDelete: { category in
+                                    selectedCategory = (category, .variableExpense)
+                                    showingDeleteAlert = true
+                                    closeNewCategoryField()
+                                },
+                                onAdd: {
+                                    withAnimation(.spring()) {
+                                        showNewCategoryField = true
+                                    }
+                                    selectedCategoryType = .variableExpense
+                                }
+                            )
+                        default:
+                            EmptyView()
+                        }
+                    }
+                    .background(Color.clear)
+                    .alert("Are you sure you want to delete \(selectedCategory?.0 ?? "this category")?", isPresented: $showingDeleteAlert) {
+                        Button("Cancel", role: .cancel) { }
+                        Button("Delete", role: .destructive) {
+                            if let (category, type) = selectedCategory {
+                                Task {
+                                    _ = await budgetfb.deleteCategory(name: category, type: type)
+                                    await loadAllCategories()
                                 }
                             }
                         }
-                        .task {
-                            await loadAllCategories()
-                        }
+                    }
+                    .task {
+                        await loadAllCategories()
                     }
                 }
+                
                 if showEditForm {
                     EditCategoryView(
                         isPresented: $showEditForm,
