@@ -172,7 +172,7 @@ struct NewBudgetPeriodView: View {
                                     .padding(.bottom, 6)
                                 }
                             }
-                            .frame(maxHeight: 130)
+                            .frame(maxHeight: 125)
                             
                             // Scroll indicator with matching corner radius
                             HStack {
@@ -245,7 +245,7 @@ struct NewBudgetPeriodView: View {
                                     .padding(.bottom, 6)
                                 }
                             }
-                            .frame(maxHeight: 130)
+                            .frame(maxHeight: 125)
                             
                             HStack {
                                 Spacer()

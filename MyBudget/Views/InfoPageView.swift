@@ -123,7 +123,7 @@ struct InfoPageView: View {
                             attributedText: creditsText()
                         )
                     }
-                    .padding(.bottom, 20)
+                    .padding(.bottom, 15)
                     .padding(.horizontal, 5)
                 default:
                     EmptyView()
@@ -135,7 +135,7 @@ struct InfoPageView: View {
                 }) {
                     ButtonView(buttontext: "Close", expenseButton: true)
                 }
-                .padding(20)
+                .padding(10)
             }
             .padding(.horizontal)
         }

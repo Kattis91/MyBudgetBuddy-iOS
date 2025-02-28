@@ -36,7 +36,7 @@ struct ForgotPasswordView: View {
                     isPresented = false
                 }) {
                     Image(systemName: "xmark")
-                        .foregroundStyle(.red)
+                        .foregroundStyle(Color("ButtonsBackground"))
                 }
             }
             .padding(.horizontal)
