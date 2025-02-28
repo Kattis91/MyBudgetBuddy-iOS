@@ -9,6 +9,11 @@ import SwiftUI
 
 struct NewCategoryView: View {
     
+    @Environment(\.colorScheme) var colorScheme
+    var isDarkMode: Bool {
+        return colorScheme == .dark
+    }
+    
     @Binding var isPresented: Bool
     @State var budgetfb: BudgetFB
     let categoryType: CategoryType 
@@ -26,14 +31,14 @@ struct NewCategoryView: View {
                     isPresented = false
                 }) {
                     Image(systemName: "xmark")
-                        .foregroundColor(.red)
+                        .foregroundColor(Color("ButtonsBackground"))
                 }
             }
             
             Text("Add Category")
                 .font(.title3)
-                .padding(.vertical, 15)
-                .foregroundStyle(Color("SecondaryTextColor"))
+                .padding(.bottom, 50)
+                .foregroundStyle(Color("PrimaryTextColor"))
             
             // Input field
             CustomTextFieldView(
@@ -44,10 +49,7 @@ struct NewCategoryView: View {
                 maxLength: 30
             )
             
-            // Error message
-            if !errorMessage.isEmpty {
-                ErrorMessageView(errorMessage: errorMessage, height: 20)
-            }
+            ErrorMessageView(errorMessage: errorMessage, height: 20)
             
             HStack {
                 Button(action: {
@@ -61,16 +63,42 @@ struct NewCategoryView: View {
                         }
                     }
                 }) {
-                    ButtonView(buttontext: String(localized: "Save"), maxWidth: 150)
+                    ButtonView(buttontext: String(localized: "Save"), maxWidth: 150, incomeButton: true)
                 }
             }
         }
         .frame(width: UIScreen.main.bounds.width * 0.85) // Relative width
         .frame(height: 270)
         .padding()
-        .background(Color("TabColor"))
-        .cornerRadius(12)
-        .shadow(radius: 10)
+        .background(
+            LinearGradient(
+                gradient: Gradient(colors: colorScheme == .dark ? [
+                    Color(.darkGray), Color(.black)
+                ] : [
+                    Color(red: 229/255, green: 237/255, blue: 235/255),
+                ]),
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+        )
+        .cornerRadius(16)
+        .shadow(
+            color: colorScheme == .dark ?
+                .black.opacity(0.35) :
+                .black.opacity(0.25),
+            radius: colorScheme == .dark ? 2 : 1,
+            x: -2,
+            y: 4
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(
+                    colorScheme == .dark ?
+                        Color.white.opacity(0.2) :
+                        Color.white.opacity(0.4),
+                    lineWidth: 0.8
+                )
+        )
     }
 }
 
