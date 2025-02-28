@@ -60,7 +60,6 @@ struct CategoryManagementView: View {
                         switch selectedTab {
                         case 0:
                             SectionView(
-                                title: String(localized: "Income category"),
                                 categories: incomeCats,
                                 onEdit: { category in
                                     editingCategory = EditingCategory(name: category, type: .income)
@@ -83,7 +82,6 @@ struct CategoryManagementView: View {
                             )
                         case 1:
                             SectionView(
-                                title: String(localized: "Fixed Expense category"),
                                 categories: fixedExpenseCats,
                                 onEdit: { category in
                                     editingCategory = EditingCategory(name: category, type: .fixedExpense)
@@ -106,7 +104,6 @@ struct CategoryManagementView: View {
                             )
                         case 2:
                             SectionView(
-                                title: String(localized: "Variable Expense category"),
                                 categories: variableExpenseCats,
                                 onEdit:  { category in
                                     editingCategory = EditingCategory(name: category, type: .variableExpense)
