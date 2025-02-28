@@ -67,7 +67,10 @@ struct DeleteAccountView: View {
                             }
                         }
                     }
+                } else {
+                    Color.clear
                 }
+                
                 if showingConfirmation {
                     PasswordConfirmationView(isPresented: $showingConfirmation)
                         .navigationBarBackButtonHidden(true)
@@ -78,7 +81,7 @@ struct DeleteAccountView: View {
                 if showForgotPassword {
                     ForgotPasswordView(isPresented: $showForgotPassword, deletingAccountReset: true)
                         .navigationBarBackButtonHidden(true)
-                        .frame(height: 330)
+                        .frame(height: 350)
                         .padding(.horizontal, 24)
                         .cornerRadius(12)
                 }
