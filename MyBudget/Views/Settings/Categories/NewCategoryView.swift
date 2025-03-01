@@ -22,6 +22,17 @@ struct NewCategoryView: View {
     @State private var categoryName = ""
     @State private var errorMessage = ""
     
+    private func getCategoryTypeString() -> String {
+        switch categoryType {
+        case .income:
+            return String(localized: "Income Category")
+        case .fixedExpense:
+            return String(localized: "Fixed Expense Category")
+        case .variableExpense:
+            return String(localized: "Variable Expense Category")
+        }
+    }
+    
     var body: some View {
         VStack {
             // Close button
@@ -35,9 +46,9 @@ struct NewCategoryView: View {
                 }
             }
             
-            Text("Add Category")
+            Text("Add \(getCategoryTypeString())")
                 .font(.title3)
-                .padding(.bottom, 50)
+                .padding(.vertical, 25)
                 .foregroundStyle(Color("PrimaryTextColor"))
             
             // Input field

@@ -22,6 +22,17 @@ struct EditCategoryView: View {
     @State private var categoryName = ""
     @State private var errorMessage = ""
     
+    private func getCategoryTypeString() -> String {
+        switch category.type {
+        case .income:
+            return String(localized: "Income")
+        case .fixedExpense:
+            return String(localized: "Fixed Expense")
+        case .variableExpense:
+            return String(localized: "Variable Expense")
+        }
+    }
+    
     var body: some View {
         
         VStack {
@@ -35,10 +46,16 @@ struct EditCategoryView: View {
                 }
             }
             
-            Text("Editing Category")
-                .font(.title3)
-                .padding(.bottom, 50)
-                .foregroundStyle(Color("PrimaryTextColor"))
+            VStack(spacing: 4) {
+                Text("Editing")
+                    .font(.title3)
+                    .foregroundStyle(Color("PrimaryTextColor"))
+                
+                Text("\(getCategoryTypeString()) category")
+                    .font(.headline)
+                    .foregroundStyle(Color("PrimaryTextColor"))
+            }
+            .padding(.vertical, 25)
             
             CustomTextFieldView(placeholder: String(localized: "Category name"), text: $categoryName, systemName: "folder", forget: true, maxLength: 30)
                 .foregroundStyle(Color("SecondaryTextColor"))
