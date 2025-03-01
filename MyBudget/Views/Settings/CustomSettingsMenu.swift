@@ -64,7 +64,7 @@ struct CustomSettingsMenu: View {
                     HStack {
                         Image(systemName: "bell")
                             .frame(width: 24)
-                            .foregroundColor(Color("ButtonsBackground"))
+                            .foregroundColor(Color.orange)
                         Text("Invoice Reminders")
                             .foregroundColor(Color("PrimaryTextColor"))
                         Spacer()
