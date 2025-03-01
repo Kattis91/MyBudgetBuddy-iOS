@@ -25,14 +25,14 @@ struct HomeView: View {
         // Create dynamic colors for unselected items
         let dynamicNormalColor = UIColor { traitCollection in
             return traitCollection.userInterfaceStyle == .dark
-                ? UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1.0)  // Dark mode
+                ? UIColor(red: 100/255, green: 105/255, blue: 120/255, alpha: 1.0)  // Darker slate gray
                 : UIColor(red: 170/255, green: 170/255, blue: 216/255, alpha: 1.0)  // Light mode
         }
         
         // Create dynamic colors for selected items
         let dynamicSelectedColor = UIColor { traitCollection in
             return traitCollection.userInterfaceStyle == .dark
-                ? UIColor.white  // Dark mode
+                ? UIColor.white  // Pure white for maximum visibility
                 : UIColor(red: 0/255, green: 51/255, blue: 102/255, alpha: 1.0)  // Light mode
         }
         
