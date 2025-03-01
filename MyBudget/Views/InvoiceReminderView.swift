@@ -56,38 +56,20 @@ struct InvoiceReminderView: View {
                     
                     HStack {
                         Image(systemName: "clock")
-                            .foregroundColor(.black.opacity(0.5))
+                            .foregroundColor(Color("PrimaryTextColor"))
                         Text("Due to:")
-                            .foregroundColor(.black.opacity(0.5))
+                            .foregroundColor(Color("PrimaryTextColor"))
                         DatePicker(
                             "",
                             selection: $expiryDate,
                             displayedComponents: [.date]
                         )
-                        .datePickerStyle(.automatic)
-                        .foregroundStyle(Color("SecondaryTextColor"))
-                        .colorMultiply(Color("SecondaryTextColor"))
+                        .foregroundStyle(Color("PrimaryTextColor"))
+                        .colorMultiply(Color("PrimaryTextColor"))
                     }
-                    .padding(.horizontal)
-                    .padding(.vertical, 4)
-                    .background(
-                        LinearGradient(
-                            gradient: Gradient(colors: [
-                                Color(red: 245/255, green: 247/255, blue: 245/255),
-                                Color(red: 240/255, green: 242/255, blue: 240/255)
-                            ]),
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
-                    .cornerRadius(18)
-                    .shadow(color: .black.opacity(0.25), radius: 1, x: -2, y: 4)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 16)
-                            .stroke(Color.white.opacity(0.4), lineWidth: 0.8)
-                    )
                     .tint(.pink)
-                    .padding(.horizontal, 25)
+                    .padding(.trailing, 25)
+                    .padding(.leading, 30)
                     .padding(.bottom, 10)
                     
                     Button(action: {
