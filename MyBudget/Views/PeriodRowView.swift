@@ -51,17 +51,11 @@ struct PeriodRowView: View {
                 
                 VStack {
                     NavigationLink(destination: PeriodDetailView(period: period)) {
-                        HStack (spacing: 10) {
-                            VStack (spacing: 8) {
-                                Text(DateUtils.formattedDateRange(startDate: period.startDate, endDate: period.endDate))
-                                    .fontWeight(.bold)
-                                    .foregroundStyle(Color("PrimaryTextColor"))
-                                Text("Outcome: \(period.totalIncome - (period.totalFixedExpenses + period.totalVariableExpenses), specifier: "%.2f")")
-                                    .foregroundStyle(Color("PrimaryTextColor"))
-                            }
-                            Spacer()
-                            
-                            Image(systemName: "info.circle.fill")
+                        VStack (spacing: 8) {
+                            Text(DateUtils.formattedDateRange(startDate: period.startDate, endDate: period.endDate))
+                                .fontWeight(.bold)
+                                .foregroundStyle(Color("PrimaryTextColor"))
+                            Text("Outcome: \(period.totalIncome - (period.totalFixedExpenses + period.totalVariableExpenses), specifier: "%.2f")")
                                 .foregroundStyle(Color("PrimaryTextColor"))
                         }
                     }
