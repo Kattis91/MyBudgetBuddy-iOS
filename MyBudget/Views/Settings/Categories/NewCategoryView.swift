@@ -25,11 +25,11 @@ struct NewCategoryView: View {
     private func getCategoryTypeString() -> String {
         switch categoryType {
         case .income:
-            return String(localized: "Income Category")
+            return String(localized: "Add Income Category")
         case .fixedExpense:
-            return String(localized: "Fixed Expense Category")
+            return String(localized: "Add Fixed Expense Category")
         case .variableExpense:
-            return String(localized: "Variable Expense Category")
+            return String(localized: "Add Variable Expense Category")
         }
     }
     
@@ -46,7 +46,7 @@ struct NewCategoryView: View {
                 }
             }
             
-            Text("Add \(getCategoryTypeString())")
+            Text(getCategoryTypeString())
                 .font(.title3)
                 .padding(.vertical, 25)
                 .foregroundStyle(Color("PrimaryTextColor"))

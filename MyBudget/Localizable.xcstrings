@@ -41,6 +41,16 @@
         }
       }
     },
+    "%@" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@"
+          }
+        }
+      }
+    },
     "+ Add new category" : {
       "localizations" : {
         "da" : {
@@ -81,32 +91,22 @@
         }
       }
     },
-    "Add %@" : {
-      "localizations" : {
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tilføj %@"
-          }
-        }
-      }
-    },
-    "Add Category" : {
-      "localizations" : {
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tilføj kategori"
-          }
-        }
-      }
-    },
     "Add expense" : {
       "localizations" : {
         "da" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tilføj udgift"
+          }
+        }
+      }
+    },
+    "Add Fixed Expense Category" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilføj Fast Udgiftskategori"
           }
         }
       }
@@ -121,12 +121,32 @@
         }
       }
     },
+    "Add Income Category" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilføj Indkomstkategori"
+          }
+        }
+      }
+    },
     "Add New Period" : {
       "localizations" : {
         "da" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tilføj ny periode"
+          }
+        }
+      }
+    },
+    "Add Variable Expense Category" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilføj Variabel Udgiftskategori"
           }
         }
       }
@@ -422,12 +442,12 @@
         }
       }
     },
-    "Editing Category" : {
+    "Editing" : {
       "localizations" : {
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Redigere Kategori"
+            "value" : "Redigerer"
           }
         }
       }
@@ -452,22 +472,22 @@
         }
       }
     },
+    "Enter Expense" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indtast udgift"
+          }
+        }
+      }
+    },
     "Enter Income" : {
       "localizations" : {
         "da" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Indtast indkomst"
-          }
-        }
-      }
-    },
-    "Expense amount" : {
-      "localizations" : {
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Udgiftsbeløb"
           }
         }
       }
@@ -522,22 +542,12 @@
         }
       }
     },
-    "Fixed Expense categories" : {
+    "Fixed Expense Category" : {
       "localizations" : {
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Faste udgiftskategorier"
-          }
-        }
-      }
-    },
-    "Fixed Expense category" : {
-      "localizations" : {
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fast udgiftskategori"
+            "value" : "Fast Udgiftskategori"
           }
         }
       }
@@ -642,17 +652,7 @@
         }
       }
     },
-    "Income categories" : {
-      "localizations" : {
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Indkomstkategorier"
-          }
-        }
-      }
-    },
-    "Income category" : {
+    "Income Category" : {
       "localizations" : {
         "da" : {
           "stringUnit" : {
@@ -742,22 +742,12 @@
         }
       }
     },
-    "Manage your categories:" : {
+    "Manage Invoices" : {
       "localizations" : {
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Administrer dine kategorier:"
-          }
-        }
-      }
-    },
-    "Manage your invoices:" : {
-      "localizations" : {
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Administrer dine fakturaer:"
+            "value" : "Administrer fakturaer"
           }
         }
       }
@@ -818,16 +808,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
-          }
-        }
-      }
-    },
-    "Or scan the invoice" : {
-      "localizations" : {
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Eller scan fakturaen"
           }
         }
       }
@@ -992,6 +972,16 @@
         }
       }
     },
+    "Scan the invoice" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan fakturaen"
+          }
+        }
+      }
+    },
     "Scanning not supported on this device" : {
       "localizations" : {
         "da" : {
@@ -1068,6 +1058,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Stryg til venstre for at slette indkomster"
+          }
+        }
+      }
+    },
+    "Swipe left to delete periods" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stryg til venstre for at slette perioder"
           }
         }
       }
@@ -1212,22 +1212,12 @@
         }
       }
     },
-    "Variable Expense categories" : {
+    "Variable Expense Category" : {
       "localizations" : {
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Variable udgiftskategorier"
-          }
-        }
-      }
-    },
-    "Variable Expense category" : {
-      "localizations" : {
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Variabel udgiftskategori"
+            "value" : "Variabel Udgiftskategori"
           }
         }
       }
