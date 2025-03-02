@@ -141,9 +141,14 @@ struct DataScannerView: UIViewControllerRepresentable {
                 let cleanText = text.transcript.trimmingCharacters(in: .whitespacesAndNewlines)
                 print("Tapped text: \(cleanText)")
                 
-                var messages: [String] = []
+                // First try to process the entire text as an amount or date
+                if let message = processFullText(cleanText) {
+                    showFeedback(message: message)
+                    return // Exit early if we successfully processed the full text
+                }
                 
-                // Split text if it contains multiple lines
+                // If full text processing didn't work, try component-based processing as fallback
+                var messages: [String] = []
                 let textComponents = cleanText.components(separatedBy: .whitespacesAndNewlines)
                 
                 for component in textComponents {
@@ -159,6 +164,33 @@ struct DataScannerView: UIViewControllerRepresentable {
             default:
                 break
             }
+        }
+        
+        private func processFullText(_ text: String) -> String? {
+            // Try to process the entire text without splitting
+            
+            // Check for amounts with spaces like "10 000,00"
+            let amountPattern = #"(\d{1,3}(?: \d{3})+)[,.](\d{2})"#
+            if let range = text.range(of: amountPattern, options: .regularExpression) {
+                let match = String(text[range])
+                print("Amount match found: \(match)")
+                
+                // Remove spaces for storage but keep the format consistent
+                let numericText = match.replacingOccurrences(of: " ", with: "")
+                scannedAmount.wrappedValue = numericText
+                return "Amount captured: \(match)"
+            }
+            
+            // Check for dates
+            let datePattern = #/(\d{4}[-/.]\d{2}[-/.]\d{2}|\d{2}[-/.]\d{2}[-/.]\d{4})/#
+            if text.matches(of: datePattern).count > 0 {
+                if let formattedDate = formatDate(text) {
+                    scannedDueDate.wrappedValue = formattedDate
+                    return "Due date captured: \(formattedDate)"
+                }
+            }
+            
+            return nil
         }
         
         private func processScannedText(_ text: String) -> String? {
