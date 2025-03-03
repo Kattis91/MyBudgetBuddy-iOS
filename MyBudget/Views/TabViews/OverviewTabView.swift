@@ -80,8 +80,16 @@ struct OverviewTabView: View {
                     .scrollContentBackground(.hidden)
                     .background(Color.clear)
                 } else {
-                    Text("You have no historical periods right now.")
-                        .padding(.top, 20)
+                    VStack {
+                        Text("You have no historical periods right now.")
+                            .font(.title3)
+                            .padding(.top, 40)
+                            .foregroundColor(Color("PrimaryTextColor"))
+                            .padding(.horizontal, 20)
+                            .multilineTextAlignment(.center)
+                        
+                        Spacer() 
+                    }
                 }
             }
             .background(Color.clear)
