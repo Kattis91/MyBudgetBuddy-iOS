@@ -7,6 +7,7 @@
 
 import SwiftUI
 import FirebaseAuth
+import Combine
 
 struct HomeView: View {
     
@@ -66,6 +67,9 @@ struct HomeView: View {
     @State private var variableExpenseErrorMessage = ""
     
     @State private var showingNewPeriod = false
+    
+    // Timer
+    @State private var timer: AnyCancellable? = nil
     
     var body: some View {
         
@@ -131,11 +135,15 @@ struct HomeView: View {
                         hasCurrentPeriod = true
                         loadInitialData()
                     }, isFirstTime: true)
-                    }
                 }
             }
-            .onAppear {
-                checkInitialState()
+        }
+        .onAppear {
+            checkInitialState()
+            startTimer()
+        }
+        .onDisappear {
+            timer?.cancel()
         }
     }
     
@@ -180,6 +188,36 @@ struct HomeView: View {
         }
     }
     
+    private func startTimer() {
+        // Cancel any existing timer first
+        timer?.cancel()
+        
+        let calendar = Calendar.current
+        let midnight = calendar.startOfDay(for: Date().addingTimeInterval(86400))
+        let timeUntilMidnight = midnight.timeIntervalSinceNow
+        
+        timer = Timer.publish(every: timeUntilMidnight, on: .main, in: .default)
+            .autoconnect()
+            .sink { _ in
+                checkPeriodExpiration()
+                // Schedule the next day's timer after a short delay
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    startTimer()
+                }
+            }
+    }
+    
+    private func checkPeriodExpiration() {
+        budgetfb.loadCurrentBudgetPeriod { loadedPeriod in
+            if let loadedPeriod = loadedPeriod, loadedPeriod.endDate < Date() {
+                DispatchQueue.main.async {
+                    hasCurrentPeriod = false
+                    // Trigger UI update via your existing notification mechanism
+                    NotificationCenter.default.post(name: .periodUpdated, object: nil)
+                }
+            }
+        }
+    }
 }
 
 #Preview {
