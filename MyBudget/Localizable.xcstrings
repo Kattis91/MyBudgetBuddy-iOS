@@ -282,16 +282,6 @@
         }
       }
     },
-    "Category Name" : {
-      "localizations" : {
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kategorinavn"
-          }
-        }
-      }
-    },
     "Choose Category" : {
       "localizations" : {
         "da" : {
@@ -428,16 +418,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Forfaldsdato:"
-          }
-        }
-      }
-    },
-    "Edit Category" : {
-      "localizations" : {
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rediger kategori"
           }
         }
       }
@@ -857,7 +837,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Adgangskodefeltet må ikke være tomt."
+            "value" : "Kodeordsfeltet må ikke være tomt."
           }
         }
       }
@@ -867,7 +847,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Adgangskoden skal være på 6+ tegn."
+            "value" : "Koden skal være på 6+ tegn."
           }
         }
       }
@@ -877,7 +857,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Adgangskoder stemmer ikke overens."
+            "value" : "Koder stemmer ikke overens."
           }
         }
       }
@@ -1147,7 +1127,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Samlet udgift"
+            "value" : "Udgifter"
           }
         }
       }
@@ -1157,7 +1137,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Samlede udgifter:"
+            "value" : "Samlet udgift:"
           }
         }
       }
@@ -1167,7 +1147,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Samlet indkomst"
+            "value" : "Indkomst"
           }
         }
       }

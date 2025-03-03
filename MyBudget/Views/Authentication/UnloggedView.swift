@@ -32,7 +32,10 @@ struct UnloggedView: View {
                     Text("Managing money shouldn’t be hard")
                         .foregroundStyle(Color("PrimaryTextColor"))
                         .font(.title3)
-                        .multilineTextAlignment(.leading)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .frame(maxWidth: 280)
+                        .multilineTextAlignment(.center)
+                        .padding()
                 }
                 
                 Spacer()
