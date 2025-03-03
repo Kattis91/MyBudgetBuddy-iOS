@@ -83,7 +83,7 @@ struct OutcomeBoxView: View {
         .shadow(
             color: isDarkMode ? Color.black.opacity(0.6) : Color.black.opacity(0.3),
             radius: isDarkMode ? 6 : 2,
-            x: 0,
+            x: isDarkMode ? 0 : -2,
             y: isDarkMode ? 6 : 4
         )
         .overlay(

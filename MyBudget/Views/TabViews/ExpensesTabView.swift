@@ -70,7 +70,7 @@ struct ExpensesTabView: View {
                         Color.black.opacity(0.25) :
                         Color.black.opacity(0.3),
                     radius: isDarkMode ? 3 : 1,
-                    x: 0,
+                    x: isDarkMode ? 0 : -2,
                     y: 3
                 )
                 .overlay(

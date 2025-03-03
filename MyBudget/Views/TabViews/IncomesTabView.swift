@@ -74,7 +74,7 @@ struct IncomesTabView: View {
                         Color.black.opacity(0.25) :
                         Color.black.opacity(0.3),
                     radius: isDarkMode ? 3 : 1,
-                    x: 0,
+                    x: isDarkMode ? 0 : -2,
                     y: 3
                 )
                 .overlay(
@@ -138,8 +138,8 @@ struct IncomesTabView: View {
                                         [.inputGradientLight, .inputGradientDark] :
                                         [Color(red: 245/255, green: 247/255, blue: 245/255),
                                          Color(red: 240/255, green: 242/255, blue: 240/255)]),
-                                    startPoint: .topLeading,
-                                    endPoint: .bottomTrailing
+                                    startPoint: isDarkMode ? .topLeading : .leading,
+                                    endPoint: isDarkMode ? .bottomTrailing : .trailing
                                 )
                             )
                             .cornerRadius(18)
