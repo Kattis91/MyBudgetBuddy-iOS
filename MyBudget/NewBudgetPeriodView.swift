@@ -172,18 +172,19 @@ struct NewBudgetPeriodView: View {
                                     .padding(.bottom, 6)
                                 }
                             }
-                            .frame(maxHeight: 125)
+                            .frame(height: min(CGFloat(budgetManager.incomeList.count * 44), 125))
                             
-                            // Scroll indicator with matching corner radius
-                            HStack {
-                                Spacer()
-                                Image(systemName: "chevron.down")
-                                    .foregroundColor(.gray)
-                                    .opacity(0.6)
-                                    .font(.caption)
-                                Spacer()
+                            if budgetManager.incomeList.count > 3 {
+                                HStack {
+                                    Spacer()
+                                    Image(systemName: "chevron.down")
+                                        .foregroundColor(.gray)
+                                        .opacity(0.6)
+                                        .font(.caption)
+                                    Spacer()
+                                }
+                                .offset(y: -12)
                             }
-                            .offset(y: -12)
                         }
                         .padding(.horizontal, 35)
                     }
@@ -245,17 +246,19 @@ struct NewBudgetPeriodView: View {
                                     .padding(.bottom, 6)
                                 }
                             }
-                            .frame(maxHeight: 125)
+                            .frame(height: min(CGFloat(budgetManager.fixedExpenseList.count * 44), 125))
                             
-                            HStack {
-                                Spacer()
-                                Image(systemName: "chevron.down")
-                                    .foregroundColor(.gray)
-                                    .opacity(0.6)
-                                    .font(.caption)
-                                Spacer()
+                            if budgetManager.fixedExpenseList.count > 3 {
+                                HStack {
+                                    Spacer()
+                                    Image(systemName: "chevron.down")
+                                        .foregroundColor(.gray)
+                                        .opacity(0.6)
+                                        .font(.caption)
+                                    Spacer()
+                                }
+                                .offset(y: -12)
                             }
-                            .offset(y: -12)
                         }
                         .padding(.horizontal, 35)
                     }
@@ -376,6 +379,7 @@ struct NewBudgetPeriodView: View {
         )
     }
 }
+
 struct ToastView: View {
     let message: String
     
@@ -389,6 +393,7 @@ struct ToastView: View {
             .shadow(radius: 5)
     }
 }
+
 struct NewBudgetPeriodView_Previews: PreviewProvider {
     static var previews: some View {
         NewBudgetPeriodView(isPresented: .constant(true), onSuccess: nil)
