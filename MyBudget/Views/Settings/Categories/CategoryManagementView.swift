@@ -54,7 +54,7 @@ struct CategoryManagementView: View {
                         }
                         .pickerStyle(SegmentedPickerStyle())
                         .padding(.vertical, 10)
-                        .padding(.horizontal, 10)
+                        .padding(.horizontal, 24)
                         
                         // Display the appropriate section based on tab selection
                         switch selectedTab {

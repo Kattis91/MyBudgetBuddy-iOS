@@ -80,11 +80,11 @@ struct SectionView: View {
                                 )
                         )
                         .listRowSeparator(.hidden)
-                        .listRowInsets(EdgeInsets(top: 7, leading: 10, bottom: 7, trailing: 10))
+                        .listRowInsets(EdgeInsets(top: 7, leading: 20, bottom: 7, trailing: 20))
                         .listRowBackground(Color.clear)
                     }
                     .listRowSeparator(.hidden)
-                    .listRowInsets(EdgeInsets(top: 15, leading: 20, bottom: 10, trailing: 20))
+                    .listRowInsets(EdgeInsets(top: 15, leading: 24, bottom: 10, trailing: 24))
                     .listRowBackground(Color.clear)
                 }
                 .listStyle(PlainListStyle())

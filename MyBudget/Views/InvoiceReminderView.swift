@@ -181,7 +181,7 @@ struct InvoiceReminderView: View {
                             }
                         )
                         .padding(.top, -15)
-                        .padding(.horizontal, isDarkMode ? 14 : 5)
+                        .padding(.horizontal, isDarkMode ? 9 : 5)
                     }
                 case 1:
                     // Processed Invoices Section
@@ -210,7 +210,7 @@ struct InvoiceReminderView: View {
                             onMarkProcessed: nil
                         )
                         .padding(.top, -15)
-                        .padding(.horizontal, isDarkMode ? 14 : 5)
+                        .padding(.horizontal, isDarkMode ? 9 : 5)
                     }
                 default:
                     EmptyView()

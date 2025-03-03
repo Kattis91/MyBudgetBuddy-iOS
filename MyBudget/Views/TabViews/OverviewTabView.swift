@@ -25,7 +25,7 @@ struct OverviewTabView: View {
         NavigationView {
             VStack(spacing: 0) {
                 PeriodRowView(period: budgetManager.currentPeriod, isCurrent: true)
-                    .padding(.horizontal, isDarkMode ? 10 : 20)
+                    .padding(.horizontal, isDarkMode ? 15 : 20)
                     .padding(.top, 20)
                     .padding(.bottom, 8)
                 
@@ -34,7 +34,7 @@ struct OverviewTabView: View {
                         Text("Historical Periods")
                             .font(.title2)
                             .textCase(nil)
-                            .padding(.leading, isDarkMode ? 10 : 20)
+                            .padding(.leading, isDarkMode ? 15 : 20)
                             .foregroundColor(Color("PrimaryTextColor"))
                         Spacer()
                     }
@@ -55,7 +55,7 @@ struct OverviewTabView: View {
                         ForEach(nonEmptyPeriods.reversed()) { period in
                             PeriodRowView(period: period, isCurrent: false)
                                 .listRowInsets(EdgeInsets())
-                                .padding(.horizontal, isDarkMode ? 10 : 20)
+                                .padding(.horizontal, isDarkMode ? 15 : 20)
                                 .padding(.bottom, 15)
                         }
                         .onDelete { offsets in

@@ -112,7 +112,7 @@ struct CustomListView<T: Identifiable>: View {
             }
             .onDelete(perform: deleteAction)
             .listRowSeparator(.hidden)
-            .listRowInsets(EdgeInsets(top: 5, leading: isDarkMode ? 10 : 20, bottom: 5, trailing: isDarkMode ? 10 : 20))
+            .listRowInsets(EdgeInsets(top: 5, leading: isDarkMode ? 15 : 20, bottom: 5, trailing: isDarkMode ? 15 : 20))
         }
         .scrollContentBackground(.hidden)
         .listStyle(PlainListStyle())

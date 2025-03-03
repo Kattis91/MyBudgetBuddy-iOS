@@ -20,7 +20,7 @@ struct PeriodDetailView: View {
         VStack {
             // Summary card
             SummaryBoxView(period: period, isCurrent: false)
-                .padding(.horizontal, isDarkMode ? 10 : 20)
+                .padding(.horizontal, isDarkMode ? 15 : 20)
                 .padding(.bottom, 30)
                 .padding(.top, 15)
             
@@ -31,7 +31,7 @@ struct PeriodDetailView: View {
                 Text("Variable").tag(2)
             }
             .pickerStyle(SegmentedPickerStyle())
-            .padding(.horizontal, isDarkMode ? 10 : 20)
+            .padding(.horizontal, isDarkMode ? 15 : 20)
             .padding(.bottom, 15)
             
             // Add tab view content
