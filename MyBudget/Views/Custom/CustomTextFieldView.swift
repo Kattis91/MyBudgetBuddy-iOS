@@ -24,20 +24,27 @@ struct CustomTextFieldView: View {
         return colorScheme == .dark
     }
     
+    var forceLightMode: Bool = false
+    
     var body: some View {
+        
+        let effectiveIsDarkMode = forceLightMode ? false : isDarkMode
+        
         HStack {
+            
+            let effectiveIsDarkMode = forceLightMode ? false : isDarkMode
             // Add the icon
             Image(systemName: systemName ?? "")
-                .foregroundColor(isDarkMode ? Color.white.opacity(0.5) : Color.black.opacity(0.5))
+                .foregroundColor(effectiveIsDarkMode  ? Color.white.opacity(0.5) : Color.black.opacity(0.5))
                 .padding(.horizontal, 5)
                 .scaledToFit()
                 .frame(width: 20, height: 20)
             
             // Conditionally render SecureField or TextField
             if isSecure {
-                SecureField("", text: $text, prompt: isDarkMode ? Text(placeholder).foregroundStyle(.white.opacity(0.8)) : Text(placeholder).foregroundStyle(.black.opacity(0.5)))
-                    .foregroundColor(isDarkMode ? Color.white : Color.black)
-                    .tint(isDarkMode ? .white : .black)
+                SecureField("", text: $text, prompt: effectiveIsDarkMode ? Text(placeholder).foregroundStyle(.white.opacity(0.8)) : Text(placeholder).foregroundStyle(.black.opacity(0.5)))
+                    .foregroundColor(effectiveIsDarkMode ? Color.white : Color.black)
+                    .tint(effectiveIsDarkMode ? .white : .black)
                     .onChange(of: text) { oldValue, newValue in
                         if let maxLength = maxLength, newValue.count > maxLength {
                             text = String(newValue.prefix(maxLength))
@@ -45,9 +52,9 @@ struct CustomTextFieldView: View {
                         onChange?()
                     }
             } else {
-                TextField("", text: $text, prompt: isDarkMode ? Text(placeholder).foregroundStyle(.white.opacity(0.8)) : Text(placeholder).foregroundStyle(.black.opacity(0.5)))
-                    .foregroundColor(isDarkMode ? Color.white : Color.black)
-                    .tint(isDarkMode ? .white : .black)
+                TextField("", text: $text, prompt: effectiveIsDarkMode ? Text(placeholder).foregroundStyle(.white.opacity(0.8)) : Text(placeholder).foregroundStyle(.black.opacity(0.5)))
+                    .foregroundColor(effectiveIsDarkMode ? Color.white : Color.black)
+                    .tint(effectiveIsDarkMode ? .white : .black)
                     .onChange(of: text) { oldValue, newValue in
                         if let maxLength = maxLength, newValue.count > maxLength {
                             text = String(newValue.prefix(maxLength))
@@ -61,7 +68,7 @@ struct CustomTextFieldView: View {
         .padding(.horizontal)
         .background(
             LinearGradient(
-                gradient: Gradient(colors: isDarkMode ?
+                gradient: Gradient(colors: effectiveIsDarkMode ?
                     [.inputGradientLight, .inputGradientDark] :
                     [.backgroundTintLight, .backgroundTintDark]),
                 startPoint: .topLeading,

@@ -32,13 +32,13 @@ struct LoginView: View {
                     
                     CustomTextFieldView(placeholder: "Email", text: $email, onChange: {
                             emailErrorMessage = ""
-                    }, leadingPadding: 45, trailingPadding: 45, systemName: "envelope", maxLength: 50)
+                    }, leadingPadding: 45, trailingPadding: 45, systemName: "envelope", maxLength: 50, forceLightMode: true)
                     
                     ErrorMessageView(errorMessage: emailErrorMessage, height: 15, padding: 30)
                     
                     CustomTextFieldView(placeholder: "Password", text: $password, isSecure: true, onChange: {
                         passwordErrorMessage = ""
-                    }, leadingPadding: 45, trailingPadding: 45, systemName: "lock")
+                    }, leadingPadding: 45, trailingPadding: 45, systemName: "lock", forceLightMode: true)
                     
                     ErrorMessageView(errorMessage: passwordErrorMessage, height: 15, padding: 30)
                   
@@ -78,7 +78,7 @@ struct LoginView: View {
             if showForgotPassword {
                 ForgotPasswordView(isPresented: $showForgotPassword, deletingAccountReset: false)
                     .navigationBarBackButtonHidden(true)
-                    .frame(height: 330)
+                    .frame(height: 350)
                     .padding(.horizontal, 24)
                     .cornerRadius(12)
             }

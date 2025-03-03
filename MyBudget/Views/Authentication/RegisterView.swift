@@ -33,19 +33,19 @@ struct RegisterView: View {
                     
                     CustomTextFieldView(placeholder: "Email", text: $email, onChange: {
                         emailErrorMessage = ""
-                    }, leadingPadding: 45, trailingPadding: 45, systemName: "envelope", maxLength: 50)
+                    }, leadingPadding: 45, trailingPadding: 45, systemName: "envelope", maxLength: 50, forceLightMode: true)
                     
                     ErrorMessageView(errorMessage: emailErrorMessage, height: 15, padding: 30)
                     
                     CustomTextFieldView(placeholder: "Password", text: $password, isSecure: true, onChange: {
                         passwordErrorMessage = ""
-                    }, leadingPadding: 45, trailingPadding: 45, systemName: "lock")
+                    }, leadingPadding: 45, trailingPadding: 45, systemName: "lock", forceLightMode: true)
                     
                     ErrorMessageView(errorMessage: passwordErrorMessage, height: 15, padding: 30)
                     
                     CustomTextFieldView(placeholder: "Confirm Password", text: $confirmPassword, isSecure: true, onChange: {
                         confirmPasswordErrorMessage = ""
-                    }, leadingPadding: 45, trailingPadding: 45, systemName: "lock")
+                    }, leadingPadding: 45, trailingPadding: 45, systemName: "lock", forceLightMode: true)
                     
                     ErrorMessageView(errorMessage: confirmPasswordErrorMessage, height: 15, padding: 30)
                     
