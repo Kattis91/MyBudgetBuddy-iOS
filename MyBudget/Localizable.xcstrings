@@ -1015,6 +1015,16 @@
         }
       }
     },
+    "Preparing your budget details..." : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forbereder dine budgetoplysninger..."
+          }
+        }
+      }
+    },
     "Processed Invoices" : {
       "localizations" : {
         "da" : {

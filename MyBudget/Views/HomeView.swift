@@ -8,6 +8,7 @@
 import SwiftUI
 import FirebaseAuth
 import Combine
+import Firebase
 
 struct HomeView: View {
     
@@ -75,7 +76,16 @@ struct HomeView: View {
         
         Group {
             if isCheckingPeriods {
-                ProgressView()
+                VStack(spacing: 20) {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: Color("CustomGreen")))
+                        .scaleEffect(2.5)
+                    
+                    Text(String(localized: "Preparing your budget details..."))
+                        .font(.headline)
+                        .foregroundColor(Color("PrimaryTextColor"))
+                        .padding(.top, 10)
+                }
             } else {
                 if hasExistingPeriods {
                     if hasCurrentPeriod {
