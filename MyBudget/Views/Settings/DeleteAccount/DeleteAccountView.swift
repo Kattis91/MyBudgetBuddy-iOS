@@ -40,7 +40,7 @@ struct DeleteAccountView: View {
                                     showingConfirmation.toggle()
                                 }
                             }) {
-                                ButtonView(buttontext: "Delete with password", maxWidth: 250, expenseButton: true)
+                                ButtonView(buttontext: String(localized: "Delete with password"), maxWidth: 250, expenseButton: true)
                             }
                             
                             Button(action: {
@@ -48,7 +48,7 @@ struct DeleteAccountView: View {
                                     showForgotPassword.toggle()
                                 }
                             }) {
-                                ButtonView(buttontext: "Forgot password?", maxWidth: 250, expenseButton: true)
+                                ButtonView(buttontext: String(localized: "Forgot password?"), maxWidth: 250, expenseButton: true)
                             }
                         }
                     }

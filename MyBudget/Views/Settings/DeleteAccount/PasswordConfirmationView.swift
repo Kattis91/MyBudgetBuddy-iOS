@@ -44,10 +44,10 @@ struct PasswordConfirmationView: View {
                 .foregroundStyle(Color("PrimaryTextColor"))
                 .padding(.bottom, 35)
             
-            CustomTextFieldView(placeholder: "Type DELETE to confirm", text: $confirmationText, systemName: "trash.circle")
+            CustomTextFieldView(placeholder: String(localized: "Type DELETE to confirm"), text: $confirmationText, systemName: "trash.circle")
                 .padding(.bottom, 10)
             
-            CustomTextFieldView(placeholder: "Current Password", text: $password, isSecure: true, onChange: { errorMessage = "" }, systemName: "lock")
+            CustomTextFieldView(placeholder: String(localized: "Current Password"), text: $password, isSecure: true, onChange: { errorMessage = "" }, systemName: "lock")
             
             ErrorMessageView(errorMessage: errorMessage, height: 30)
             

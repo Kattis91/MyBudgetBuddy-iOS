@@ -15,11 +15,11 @@ enum CategoryType: String {
     var defaultCategories: [String] {
         switch self {
         case .income:
-            return ["Salary", "Study grant", "Child benefit", "Housing insurance", "Sickness insurance", "Business"]
+            return [String(localized: "Salary"), String(localized: "Study grant"), String(localized: "Child benefit"), String(localized: "Housing insurance"), String(localized: "Sickness insurance"), String(localized: "Business")]
         case .fixedExpense:
-            return ["Rent", "Water", "Heat", "Electricity", "Insurance", "WiFi"]
+            return [String(localized: "Rent"), String(localized: "Water"), String(localized: "Heat"), String(localized: "Electricity"), String(localized: "Insurance"), String(localized: "WiFi")]
         case .variableExpense:
-            return ["Groceries", "Dining Out", "Shopping", "Entertainment", "Transport", "Savings"]
+            return [String(localized: "Groceries"), String(localized: "Dining Out"), String(localized: "Shopping"), String(localized: "Entertainment"), String(localized: "Transport"), String(localized: "Savings")]
         }
     }
 }

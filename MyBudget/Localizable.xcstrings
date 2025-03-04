@@ -2,14 +2,7 @@
   "sourceLanguage" : "en",
   "strings" : {
     "" : {
-      "localizations" : {
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(Tom streng)"
-          }
-        }
-      }
+
     },
     "- %.2f" : {
       "localizations" : {
@@ -252,6 +245,16 @@
         }
       }
     },
+    "Business" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forretning"
+          }
+        }
+      }
+    },
     "Cancel" : {
       "localizations" : {
         "da" : {
@@ -278,6 +281,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kategorinavn"
+          }
+        }
+      }
+    },
+    "Child benefit" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Børneydelse"
           }
         }
       }
@@ -328,6 +341,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nuværende budgetperiode"
+          }
+        }
+      }
+    },
+    "Current Password" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nuværende adgangskode"
           }
         }
       }
@@ -392,12 +415,32 @@
         }
       }
     },
+    "Delete with password" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slet med adgangskode"
+          }
+        }
+      }
+    },
     "Development" : {
       "localizations" : {
         "da" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Udvikling"
+          }
+        }
+      }
+    },
+    "Dining Out" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restaurantbesøg"
           }
         }
       }
@@ -428,6 +471,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Redigerer"
+          }
+        }
+      }
+    },
+    "Electricity" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elektricitet"
           }
         }
       }
@@ -468,6 +521,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Indtast indkomst"
+          }
+        }
+      }
+    },
+    "Entertainment" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Underholdning"
           }
         }
       }
@@ -562,6 +625,26 @@
         }
       }
     },
+    "Groceries" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dagligvarer"
+          }
+        }
+      }
+    },
+    "Heat" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Varme"
+          }
+        }
+      }
+    },
     "Historical Periods" : {
       "localizations" : {
         "da" : {
@@ -578,6 +661,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hjem"
+          }
+        }
+      }
+    },
+    "Housing insurance" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Boligforsikring"
           }
         }
       }
@@ -658,6 +751,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Info"
+          }
+        }
+      }
+    },
+    "Insurance" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forsikring"
           }
         }
       }
@@ -922,6 +1025,16 @@
         }
       }
     },
+    "Rent" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leje"
+          }
+        }
+      }
+    },
     "Reset Password" : {
       "localizations" : {
         "da" : {
@@ -932,12 +1045,32 @@
         }
       }
     },
+    "Salary" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Løn"
+          }
+        }
+      }
+    },
     "Save" : {
       "localizations" : {
         "da" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Spare"
+          }
+        }
+      }
+    },
+    "Savings" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opsparing"
           }
         }
       }
@@ -968,6 +1101,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Scanning understøttes ikke på denne enhed"
+          }
+        }
+      }
+    },
+    "Shopping" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shopping"
+          }
+        }
+      }
+    },
+    "Sickness insurance" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sygeforsikring"
           }
         }
       }
@@ -1018,6 +1171,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bevar kontrollen – Få rettidige påmindelser, når din budgetperiode slutter, så du kan planlægge fremad med tillid."
+          }
+        }
+      }
+    },
+    "Study grant" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Studielegat"
           }
         }
       }
@@ -1172,6 +1335,26 @@
         }
       }
     },
+    "Transport" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transportere"
+          }
+        }
+      }
+    },
+    "Type DELETE to confirm" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skriv DELETE for at bekræfte"
+          }
+        }
+      }
+    },
     "Unprocessed Invoices" : {
       "localizations" : {
         "da" : {
@@ -1222,12 +1405,32 @@
         }
       }
     },
+    "Water" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vand"
+          }
+        }
+      }
+    },
     "Welcome to MyBudgetBuddy!" : {
       "localizations" : {
         "da" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Velkommen til MyBudgetBuddy!"
+          }
+        }
+      }
+    },
+    "WiFi" : {
+      "localizations" : {
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi"
           }
         }
       }
