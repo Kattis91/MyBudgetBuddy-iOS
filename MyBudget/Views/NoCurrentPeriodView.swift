@@ -81,6 +81,7 @@ struct NoCurrentPeriodView: View {
                         .padding(.horizontal, 24)
                         .cornerRadius(12)
                         .shadow(radius: 10)
+                        .frame(height: 350)
                 }
             }
         }

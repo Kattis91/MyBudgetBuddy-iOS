@@ -63,7 +63,7 @@ struct CustomListView<T: Identifiable>: View {
                                 colorScheme == .dark ?
                                     Color.white.opacity(0.3) :
                                     Color.white.opacity(0.4),
-                                lineWidth: 0.8
+                                lineWidth: isDarkMode ? 0.6 : 0.8
                             )
                     )
                     

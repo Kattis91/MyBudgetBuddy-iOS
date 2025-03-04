@@ -81,7 +81,7 @@ struct PeriodCardView: View {
         )
         .overlay(
             RoundedRectangle(cornerRadius: 12)
-                .stroke(isDarkMode ? Color.white.opacity(0.5) : Color.white.opacity(0.3), lineWidth: isDarkMode ? 0.6 : 0.5)
+                .stroke(isDarkMode ? Color.white.opacity(0.5) : Color.white.opacity(0.3), lineWidth: isDarkMode ? 0.4 : 0.5)
                 .shadow(color: isDarkMode ? Color.white.opacity(0.05) : Color.clear, radius: 5)
         )
     }

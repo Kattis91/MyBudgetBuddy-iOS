@@ -63,7 +63,7 @@ struct HomeTabView: View {
                                 .font(.headline)
                                 .foregroundColor(.white)
                                 .shadow(radius: 10)
-                                .frame(maxWidth: 150)
+                                .frame(maxWidth: 200)
                                 .padding()
                                 .background(
                                     LinearGradient(
@@ -73,7 +73,12 @@ struct HomeTabView: View {
                                     )
                                 )
                                 .cornerRadius(16)
-                                .shadow(color: isDarkMode ? Color.black.opacity(0.2) : .black.opacity(0.4), radius: isDarkMode ? 2 : 1, x: isDarkMode ? 2 : -2, y: isDarkMode ? 2 : 4)
+                                .shadow(
+                                    color: isDarkMode ? Color.black.opacity(0.3) : Color.black.opacity(0.4),
+                                    radius: isDarkMode ? 3 : 1,
+                                    x: isDarkMode ? 0 : -2,
+                                    y: isDarkMode ? 4 : 4
+                                )
                                 .padding(.top, 15)
                         }
                     }
