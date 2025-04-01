@@ -232,19 +232,42 @@ import FirebaseAuth
             guard let budgetPeriod = budgetPeriod,
                   let self = self else { return }
             
-            for offset in offsets {
-                let incomeItem = self.incomeList[offset]
-                ref.child("budgetPeriods")
-                    .child(userId)
-                    .child(budgetPeriod.id)
-                    .child("incomes")
-                    .child(incomeItem.id)
-                    .removeValue()
+            // Create a mutable copy of the income list
+            var updatedIncomeList = self.incomeList
+            // Remove the items at the specified offsets
+            updatedIncomeList.remove(atOffsets: offsets)
+            
+            // Convert to Firebase format - array of dictionaries
+            let incomesToSave: [[String: Any]] = updatedIncomeList.map { income in
+                return [
+                    "id": income.id,
+                    "amount": income.amount,
+                    "category": income.category
+                ]
             }
             
-            // Update local data
-            self.incomeList.remove(atOffsets: offsets)
-            self.totalIncome = self.incomeList.reduce(0.0) { $0 + $1.amount }
+            // Update the entire incomes array in Firebase
+            ref.child("budgetPeriods")
+                .child(userId)
+                .child(budgetPeriod.id)
+                .child("incomes")
+                .setValue(incomesToSave) { error, _ in
+                    if error == nil {
+                        // Update local data only after successful Firebase update
+                        self.incomeList.remove(atOffsets: offsets)
+                        
+                        // Calculate and update the total
+                        let newTotal = updatedIncomeList.reduce(0.0) { $0 + $1.amount }
+                        self.totalIncome = newTotal
+                        
+                        // Update the total in Firebase
+                        ref.child("budgetPeriods")
+                           .child(userId)
+                           .child(budgetPeriod.id)
+                           .child("totalIncome")
+                           .setValue(newTotal)
+                    }
+                }
         }
     }
     
@@ -469,44 +492,67 @@ import FirebaseAuth
     
     
     func deleteExpense(isfixed: Bool, from listType: String, at offsets: IndexSet) {
-        let userId = Auth.auth().currentUser?.uid
-        guard let userId else { return }
-        
-        var ref: DatabaseReference!
-        ref = Database.database().reference()
+        guard let userId = Auth.auth().currentUser?.uid else { return }
+        let ref = Database.database().reference()
         
         loadCurrentBudgetPeriod { [weak self] budgetPeriod in
             guard let budgetPeriod = budgetPeriod,
                   let self = self else { return }
             
-            var expenseList: [Expense] // Common array for handling expenses
-            
             // Determine which list to use based on `listType`
+            var expenseList: [Expense]
             switch listType {
             case "fixed":
-                expenseList = fixedExpenseList
+                expenseList = self.fixedExpenseList
             case "variable":
-                expenseList = variableExpenseList
+                expenseList = self.variableExpenseList
             default:
                 print("Invalid list type")
                 return
             }
             
-            for offset in offsets {
-                let expenseItem = expenseList[offset]
-                ref.child("budgetPeriods").child(userId).child(budgetPeriod.id).child(isfixed ? "fixedExpenses" : "variableExpenses").child(expenseItem.id).removeValue()
+            // Create a mutable copy of the expense list
+            var updatedExpenseList = expenseList
+            // Remove the items at the specified offsets
+            updatedExpenseList.remove(atOffsets: offsets)
+            
+            // Convert to Firebase format - array of dictionaries
+            let expensesToSave: [[String: Any]] = updatedExpenseList.map { expense in
+                return [
+                    "id": expense.id,
+                    "amount": expense.amount,
+                    "category": expense.category,
+                    "isfixed": expense.isfixed
+                ]
             }
             
-            // Update local data
-            if listType == "fixed" {
-                fixedExpenseList.remove(atOffsets: offsets)
-            } else if listType == "variable" {
-                variableExpenseList.remove(atOffsets: offsets)
-            }
-            
-            // Recalculate total expenses
-            totalExpenses = (fixedExpenseList + variableExpenseList)
-                .reduce(0.0) { $0 + $1.amount }
+            // Update the entire expenses array in Firebase
+            let expenseType = isfixed ? "fixedExpenses" : "variableExpenses"
+            ref.child("budgetPeriods")
+                .child(userId)
+                .child(budgetPeriod.id)
+                .child(expenseType)
+                .setValue(expensesToSave) { error, _ in
+                    if error == nil {
+                        // Update local data only after successful Firebase update
+                        if listType == "fixed" {
+                            self.fixedExpenseList.remove(atOffsets: offsets)
+                        } else if listType == "variable" {
+                            self.variableExpenseList.remove(atOffsets: offsets)
+                        }
+                        
+                        // Recalculate total expenses
+                        self.totalExpenses = (self.fixedExpenseList + self.variableExpenseList)
+                            .reduce(0.0) { $0 + $1.amount }
+                        
+                        // Update the total in Firebase
+                        ref.child("budgetPeriods")
+                            .child(userId)
+                            .child(budgetPeriod.id)
+                            .child("totalExpenses")
+                            .setValue(self.totalExpenses)
+                    }
+                }
         }
     }
     
